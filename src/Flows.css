@@ -1,0 +1,25 @@
+.flow-item-row img {
+    max-width: 100%;
+}
+
+.flow-item-row pre {
+    white-space: pre-wrap;
+    font-family: '微软雅黑', 'Microsoft YaHei', sans-serif;
+}
+
+.box-header-badge {
+    float: right;
+    border: 1px solid black;
+    border-radius: 7px;
+    margin: 0 .5em;
+    padding: 0 .5em;
+}
+
+.box-id {
+    font-family: Consolas, Courier, monospace;
+    opacity: .6;
+}
+
+.flow-reply-gray {
+    background-color: #e7e7e7;
+}

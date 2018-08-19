@@ -1,0 +1,30 @@
+.box {
+    background-color: #fff;
+    border-radius: 5px;
+    margin: 1em 0;
+    padding: .5em;
+    box-shadow: 0 5px 20px #999;
+}
+
+.left-container .centered-line {
+    width: calc(100% - 2 * 50px);
+}
+.flow-item {
+    flex: 0 0 600px;
+}
+.flow-reply {
+    flex: 0 0 300px;
+    max-height: 15em;
+    overflow-y: hidden;
+}
+
+.left-container .centered-line,
+.left-container .flow-item {
+    margin-left: 50px;
+}
+
+.flow-item-row {
+    display: flex;
+    overflow-x: hidden;
+    align-items: flex-start;
+}
