@@ -23,6 +23,8 @@ export function Title(props) {
                             <li>英梨梨是我的，你们都不要抢</li>
                         </ul>
                         <br />
+                        <p>By @xmcp</p>
+                        <br />
                         <p>
                             This program is free software: you can redistribute it and/or modify
                             it under the terms of the GNU General Public License as published by
