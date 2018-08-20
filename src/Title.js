@@ -22,6 +22,19 @@ export function Title(props) {
                             <li>不接受关于修改 UI 的建议</li>
                             <li>英梨梨是我的，你们都不要抢</li>
                         </ul>
+                        <br />
+                        <p>
+                            This program is free software: you can redistribute it and/or modify
+                            it under the terms of the GNU General Public License as published by
+                            the Free Software Foundation, either version 3 of the License, or
+                            (at your option) any later version.
+                        </p>
+                        <p>
+                            This program is distributed in the hope that it will be useful,
+                            but WITHOUT ANY WARRANTY; without even the implied warranty of
+                            MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+                            GNU General Public License for more details.
+                        </p>
                     </div>
                 )}}>Help</a>
                 <a href="https://github.com/xmcp/ashole" target="_blank">GitHub</a>
