@@ -1,0 +1,40 @@
+.sidebar-shadow {
+    opacity: 0;
+    background-color: black;
+    pointer-events: none;
+    transition: opacity 200ms ease-out;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 2;
+}
+.sidebar-on .sidebar-shadow {
+    opacity: .3;
+    pointer-events: initial;
+}
+
+.sidebar {
+    transition: left 200ms ease-out;
+    position: fixed;
+    left: 100%;
+    top: 0;
+    height: 100%;
+    width: calc(100% - 700px);
+    padding: 1em;
+    background-color: #fff;
+    z-index: 3;
+    overflow-y: auto;
+}
+.sidebar-on .sidebar {
+    left: 700px;
+}
+
+.sidebar-flow-item {
+    display: block;
+}
+.sidebar-flow-item .box {
+    margin: 1em;
+    width: calc(100% - 2em);
+}
