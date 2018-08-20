@@ -1,8 +1,12 @@
 body {
+    min-width: 700px;
     margin: 0;
     padding: 0;
     font-family: '微软雅黑', 'Microsoft YaHei', sans-serif;
-    background-color: #eee;
+    background-color: black;
+    background-image: url(/eriri_bg.jpg);
+    background-size: cover;
+    background-attachment: fixed;
 }
 
 body::-webkit-scrollbar {
@@ -19,7 +23,7 @@ p {
 
 a {
     text-decoration: none;
-    color: blue;
+    color: #00c;
     cursor: pointer;
     margin: 0 .5em;
 }

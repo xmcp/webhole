@@ -24,7 +24,8 @@
     margin-left: 50px;
 }
 
-.flow-item-row {
+:not(.sidebar-flow-item).flow-item-row {
+    cursor: pointer;
     transition: margin-left 200ms ease-out;
 }
 :not(.sidebar-flow-item).flow-item-row:hover {
@@ -44,6 +45,7 @@
 .flow-item-row pre {
     white-space: pre-wrap;
     font-family: '微软雅黑', 'Microsoft YaHei', sans-serif;
+    word-wrap: break-word;
 }
 
 .box-header-badge {
@@ -57,5 +59,5 @@
 }
 
 .flow-reply-gray {
-    background-color: #e7e7e7;
+    background-color: #eee;
 }

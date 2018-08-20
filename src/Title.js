@@ -8,6 +8,7 @@ export function Title(props) {
                 <a onClick={()=>{props.callback(
                     '关于 P大树洞（非官方） 网页版',
                     <div>
+                        <br />
                         <p>使用提示：</p>
                         <ul>
                             <li>为保证使用体验，请使用分辨率恰好为 1920*1080 像素的电脑，并用 Chrome 浏览器 stable 分支最新版</li>
