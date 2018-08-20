@@ -2,6 +2,7 @@
     overflow: hidden;
     text-align: center;
     color: #fff;
+    margin-top: 1em;
 }
 
 .centered-line::before,
@@ -23,4 +24,15 @@
 .centered-line::after {
     left: 0.5em;
     margin-right: -50%;
+}
+
+.bg-img {
+    position: fixed;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: midnightblue url(/eriri_bg.jpg) fixed center center;
+    background-size: cover;
 }

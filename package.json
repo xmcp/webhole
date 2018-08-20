@@ -5,6 +5,7 @@
   "dependencies": {
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
+    "react-lazyload": "^2.3.0",
     "react-scripts": "1.1.4",
     "react-timeago": "^4.1.9"
   },

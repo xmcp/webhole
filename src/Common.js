@@ -24,7 +24,7 @@ export function Time(props) {
 
 export function CenteredLine(props) {
     return (
-        <p className="centered-line">
+        <p className="centered-line aux-margin">
             <span>{props.text}</span>
         </p>
     )

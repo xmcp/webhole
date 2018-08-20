@@ -33,10 +33,10 @@
 
 @media screen and (max-width: 1200px) {
     .sidebar {
-        width: 600px;
+        width: 550px;
     }
     .sidebar-on .sidebar {
-        left: calc(100% - 600px);
+        left: calc(100% - 550px);
     }
 }
 

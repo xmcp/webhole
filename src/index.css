@@ -1,12 +1,9 @@
 body {
-    min-width: 700px;
+    min-width: 620px;
     margin: 0;
     padding: 0;
     font-family: '微软雅黑', 'Microsoft YaHei', sans-serif;
-    background-color: black;
-    background-image: url(/eriri_bg.jpg);
     background-size: cover;
-    background-attachment: fixed;
 }
 
 body::-webkit-scrollbar {
@@ -25,5 +22,12 @@ a {
     text-decoration: none;
     color: #00c;
     cursor: pointer;
-    margin: 0 .5em;
+    padding: 0 .5em;
+}
+
+input {
+    padding: 0 1em;
+    border-radius: 5px;
+    border: 1px solid black;
+    outline: none;
 }
