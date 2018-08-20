@@ -1,13 +1,11 @@
 .centered-line {
     overflow: hidden;
     text-align: center;
-    color: #fff;
-    margin-top: 1em;
 }
 
 .centered-line::before,
 .centered-line::after {
-    background-color: #fff;
+    background-color: #000;
     content: "";
     display: inline-block;
     height: 1px;
@@ -24,6 +22,15 @@
 .centered-line::after {
     left: 0.5em;
     margin-right: -50%;
+}
+
+.title-line {
+    color: #fff;
+    margin-top: 1em;
+}
+.title-line::before,
+.title-line::after {
+    background-color: #fff;
 }
 
 .bg-img {

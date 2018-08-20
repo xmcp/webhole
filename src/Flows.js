@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Time, CenteredLine} from './Common.js';
+import {Time, TitleLine} from './Common.js';
 import './Flows.css';
 import LazyLoad from 'react-lazyload';
 
@@ -97,7 +97,7 @@ class FlowItemRow extends Component {
 function FlowChunk(props) {
     return (
         <div className="flow-chunk">
-            <CenteredLine text={props.title} />
+            <TitleLine text={props.title} />
             {props.list.map((info)=>(
                 <LazyLoad key={info.pid} offset={500} height="15em">
                     <FlowItemRow info={info} callback={props.callback} />
@@ -111,7 +111,11 @@ export class Flow extends Component {
     constructor(props) {
         super(props);
         this.state={
-            mode: props.search_text===null ? 'list' : 'search',
+            mode: (
+                props.search_text===null ? 'list' :
+                props.search_text.charAt(0)==='#' ? 'single' :
+                'search'
+            ),
             search_param: props.search_text,
             loaded_pages: 0,
             chunks: [],
@@ -154,15 +158,42 @@ export class Flow extends Component {
                         if(json.code!==0)
                             throw new Error(json.code);
                         const finished=json.data.length<SEARCH_PAGESIZE;
-                        this.setState((prev,props)=>({
+                        this.setState({
                             chunks: [{
                                 title: 'Result for "'+this.state.search_param+'"',
                                 data: json.data,
                                 mode: finished ? 'search_finished' : 'search',
                             }],
                             loading: false,
-                        }));
+                        });
                     })
+                    .catch((err)=>{
+                        console.trace(err);
+                        alert('load failed');
+                    });
+            } else if(this.state.mode==='single') {
+                const pid=parseInt(this.state.search_param.substr(1),10);
+                fetch(
+                    'http://www.pkuhelper.com:10301/services/pkuhole/api.php?action=getone'+
+                    '&pid='+pid
+                )
+                    .then((res)=>res.json())
+                    .then((json)=>{
+                        if(json.code!==0)
+                            throw new Error(json.code);
+                        this.setState({
+                            chunks: [{
+                                title: 'PID = '+pid,
+                                data: [json.data],
+                                mode: 'single_finished',
+                            }],
+                            loading: false,
+                        });
+                    })
+                    .catch((err)=>{
+                        console.trace(err);
+                        alert('load failed');
+                    });
             }
             this.setState((prev,props)=>({
                 loaded_pages: prev.loaded_pages+1,
@@ -195,7 +226,7 @@ export class Flow extends Component {
                 {this.state.chunks.map((chunk)=>(
                     <FlowChunk title={chunk.title} list={chunk.data} key={chunk.title} callback={this.props.callback} />
                 ))}
-                <CenteredLine text={this.state.loading ? 'Loading...' : '© xmcp'} />
+                <TitleLine text={this.state.loading ? 'Loading...' : '© xmcp'} />
             </div>
         );
     }

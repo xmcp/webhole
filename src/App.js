@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {Flow} from './Flows';
 import {Title} from './Title';
 import {Sidebar} from './Sidebar';
-import {ControlBar} from './ControlBar';
 
 class App extends Component {
     constructor(props) {
@@ -33,9 +32,8 @@ class App extends Component {
         return (
             <div>
                 <div className="bg-img" />
-                <Title callback={this.show_sidebar.bind(this)} />
+                <Title callback={this.show_sidebar.bind(this)} set_search_text={this.set_search_text.bind(this)} />
                 <div className="left-container">
-                    <ControlBar set_search_text={this.set_search_text.bind(this)} />
                     <Flow key={this.state.flow_render_key}
                         callback={this.show_sidebar.bind(this)} search_text={this.state.search_text}
                     />

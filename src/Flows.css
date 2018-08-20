@@ -16,20 +16,20 @@
     overflow-y: hidden;
 }
 
-.left-container .aux-margin,
+.aux-margin,
 .left-container .flow-item {
     margin-left: 50px;
 }
-.left-container .aux-margin {
+.aux-margin {
     width: calc(100% - 2 * 50px);
 }
 
 @media screen and (max-width: 1200px) {
-    .left-container .aux-margin,
+    .aux-margin,
     .left-container .flow-item {
         margin-left: 10px;
     }
-    .left-container .aux-margin {
+    .aux-margin {
         width: calc(100% - 2 * 10px);
     }
 }
