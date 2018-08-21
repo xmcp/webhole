@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {ColorPicker} from './color_picker';
 import {Time, TitleLine, AutoLink} from './Common.js';
 import './Flows.css';
 import LazyLoad from 'react-lazyload';
@@ -9,7 +10,9 @@ const SEARCH_PAGESIZE=50;
 
 function Reply(props) {
     return (
-        <div className={'flow-reply box '+(props.info.islz ? '' : 'flow-reply-gray')}>
+        <div className={'flow-reply box'} style={{
+            backgroundColor: props.info._display_color,
+        }}>
             <div className="box-header">
                 <span className="box-id">#{props.info.cid}</span>&nbsp;
                 <Time stamp={props.info.timestamp} />
@@ -51,6 +54,7 @@ class FlowItemRow extends Component {
             reply_loading: false,
         };
         this.info=props.info;
+        this.color_picker=new ColorPicker();
     }
 
     componentDidMount() {
@@ -70,7 +74,10 @@ class FlowItemRow extends Component {
                 if(json.code!==0)
                     throw new Error(json.code);
                 this.setState({
-                    replies: json.data.slice(0,10),
+                    replies: json.data.map((info)=>{
+                        info._display_color=info.islz ? '#fff' : this.color_picker.get(info.name)
+                        return info;
+                    }),
                     reply_loading: false,
                 });
             });
@@ -91,7 +98,7 @@ class FlowItemRow extends Component {
             }}>
                 <FlowItem info={this.info} />
                 {!!this.state.reply_loading && <ReplyPlaceholder count={this.info.reply} />}
-                {this.state.replies.map((reply)=><Reply info={reply} key={reply.cid} />)}
+                {this.state.replies.slice(0,10).map((reply)=><Reply info={reply} key={reply.cid} />)}
             </div>
         );
     }
