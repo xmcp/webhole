@@ -7,7 +7,8 @@ const HELP_TEXT=(
         <ul>
             <li>为保证使用体验，请使用 Chrome 浏览器 stable 分支最新版</li>
             <li>在列表中点击帖子可以显示全部回复</li>
-            <li>搜索框输入 #472865 等可以查看指定 ID 的树洞</li>
+            <li>在搜索框输入 #472865 等可以查看指定 ID 的树洞</li>
+            <li>自定义背景图片请修改 localStorage['REPLACE_ERIRI_WITH_URL']</li>
         </ul>
         <p>使用本网站时，您需要了解并同意：</p>
         <ul>

@@ -36,7 +36,7 @@ export function Time(props) {
 export function TitleLine(props) {
     return (
         <p className="centered-line title-line aux-margin">
-            <span>{props.text}</span>
+            <span className="black-outline">{props.text}</span>
         </p>
     )
 }

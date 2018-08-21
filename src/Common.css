@@ -31,6 +31,7 @@
 .title-line::before,
 .title-line::after {
     background-color: #fff;
+    box-shadow: 0 1px 1px #000;
 }
 
 .bg-img {
@@ -40,6 +41,16 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: #124 url(/eriri_bg.jpg) fixed center center;
+    background: #124 fixed center center;
     background-size: cover;
+}
+
+.black-outline {
+    text-shadow:
+        -1px -1px 0 #000,
+        0 -1px 0 #000,
+        1px -1px 0 #000,
+        -1px 1px 0 #000,
+        0 1px 0 #000,
+        1px 1px 0 #000;
 }
