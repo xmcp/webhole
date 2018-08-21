@@ -6,8 +6,9 @@
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-lazyload": "^2.3.0",
+    "react-linkify": "^0.2.2",
     "react-scripts": "1.1.4",
-    "react-timeago": "^4.1.9"
+    "react-timeago": "^4.1.9",
   },
   "scripts": {
     "start": "react-scripts start",

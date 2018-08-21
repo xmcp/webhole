@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Time, TitleLine} from './Common.js';
+import {Time, TitleLine, AutoLink} from './Common.js';
 import './Flows.css';
 import LazyLoad from 'react-lazyload';
 
@@ -14,7 +14,7 @@ function Reply(props) {
                 <span className="box-id">#{props.info.cid}</span>&nbsp;
                 <Time stamp={props.info.timestamp} />
             </div>
-            <pre>{props.info.text}</pre>
+            <AutoLink text={props.info.text} />
         </div>
     );
 }
@@ -36,7 +36,7 @@ function FlowItem(props) {
                 <span className="box-id">#{props.info.pid}</span>&nbsp;
                 <Time stamp={props.info.timestamp} />
             </div>
-            <pre>{props.info.text}</pre>
+            <AutoLink text={props.info.text} />
             {props.info.type==='image' ? <img src={IMAGE_BASE+props.info.url} /> : null}
             {props.info.type==='audio' ? <audio src={AUDIO_BASE+props.info.url} /> : null}
         </div>
@@ -79,13 +79,16 @@ class FlowItemRow extends Component {
     render() {
         // props.do_show_details
         return (
-            <div className="flow-item-row" onClick={()=>{this.props.callback(
-                '帖子详情',
-                <div className="flow-item-row sidebar-flow-item">
-                    <FlowItem info={this.info} />
-                    {this.state.replies.map((reply)=><Reply info={reply} key={reply.cid} />)}
-                </div>
-            )}}>
+            <div className="flow-item-row" onClick={(event)=>{
+                if(event.target.tagName.toLowerCase()!=='a')
+                    this.props.callback(
+                        '帖子详情',
+                        <div className="flow-item-row sidebar-flow-item">
+                            <FlowItem info={this.info} />
+                            {this.state.replies.map((reply)=><Reply info={reply} key={reply.cid} />)}
+                        </div>
+                    );
+            }}>
                 <FlowItem info={this.info} />
                 {!!this.state.reply_loading && <ReplyPlaceholder count={this.info.reply} />}
                 {this.state.replies.map((reply)=><Reply info={reply} key={reply.cid} />)}
@@ -121,7 +124,6 @@ export class Flow extends Component {
             chunks: [],
             loading: false,
         };
-        setTimeout(this.load_page.bind(this,1), 0);
     }
 
     load_page(page) {
@@ -212,6 +214,7 @@ export class Flow extends Component {
     }
 
     componentDidMount() {
+        this.load_page(1);
         window.addEventListener('scroll',this.on_scroll.bind(this));
         window.addEventListener('resize',this.on_scroll.bind(this));
     }

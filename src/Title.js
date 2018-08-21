@@ -42,6 +42,16 @@ class ControlBar extends Component {
         this.set_search_text=props.set_search_text;
     }
 
+    componentDidMount() {
+        if(window.location.hash) {
+            const text=window.location.hash.substr(1);
+            this.setState({
+                search_text: text,
+            });
+            this.set_search_text(text);
+        }
+    }
+
     on_change(event) {
         this.setState({
             search_text: event.target.value,

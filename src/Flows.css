@@ -35,7 +35,7 @@
 }
 
 .left-container .flow-item-row {
-    cursor: pointer;
+    cursor: default;
     transition: margin-left 200ms ease-out;
 }
 .left-container .flow-item-row:hover {
