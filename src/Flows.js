@@ -3,11 +3,14 @@ import {ColorPicker} from './color_picker';
 import {Time, TitleLine, AutoLink} from './Common.js';
 import './Flows.css';
 import LazyLoad from 'react-lazyload';
+import {AudioWidget} from './AudioWidget.js';
 
 const IMAGE_BASE='http://www.pkuhelper.com/services/pkuhole/images/';
-const AUDIO_BASE='http://www.pkuhelper.com/services/pkuhole/audios/';
+const AUDIO_BASE='/audio_proxy/';
 const API_BASE=window.location.protocol==='https:' ? '/api_proxy' : 'http://www.pkuhelper.com:10301/services/pkuhole';
+
 const SEARCH_PAGESIZE=50;
+const CLICKABLE_TAGS={a: true, audio: true};
 
 function Reply(props) {
     return (
@@ -42,7 +45,7 @@ function FlowItem(props) {
             </div>
             <AutoLink text={props.info.text} />
             {props.info.type==='image' ? <img src={IMAGE_BASE+props.info.url} /> : null}
-            {props.info.type==='audio' ? <audio src={AUDIO_BASE+props.info.url} /> : null}
+            {props.info.type==='audio' ? <AudioWidget src={AUDIO_BASE+props.info.url} /> : null}
         </div>
     );
 }
@@ -88,7 +91,7 @@ class FlowItemRow extends Component {
         // props.do_show_details
         return (
             <div className="flow-item-row" onClick={(event)=>{
-                if(event.target.tagName.toLowerCase()!=='a')
+                if(!CLICKABLE_TAGS[event.target.tagName.toLowerCase()])
                     this.props.callback(
                         '帖子详情',
                         <div className="flow-item-row sidebar-flow-item">

@@ -39,6 +39,7 @@ class App extends Component {
                     <Flow key={this.state.flow_render_key}
                         callback={this.show_sidebar.bind(this)} search_text={this.state.search_text}
                     />
+                    <br />
                 </div>
                 <Sidebar do_close={()=>{
                     this.setState({
