@@ -6,6 +6,7 @@ import LazyLoad from 'react-lazyload';
 
 const IMAGE_BASE='http://www.pkuhelper.com/services/pkuhole/images/';
 const AUDIO_BASE='http://www.pkuhelper.com/services/pkuhole/audios/';
+const API_BASE=window.location.protocol==='https:' ? '/api_proxy' : 'http://www.pkuhelper.com:10301/services/pkuhole';
 const SEARCH_PAGESIZE=50;
 
 function Reply(props) {
@@ -68,7 +69,7 @@ class FlowItemRow extends Component {
 
     load_replies() {
         console.log('fetching reply',this.info.pid);
-        fetch('http://www.pkuhelper.com:10301/services/pkuhole/api.php?action=getcomment&pid='+this.info.pid)
+        fetch(API_BASE+'/api.php?action=getcomment&pid='+this.info.pid)
             .then((res)=>res.json())
             .then((json)=>{
                 if(json.code!==0)
@@ -139,7 +140,7 @@ export class Flow extends Component {
         if(page===this.state.loaded_pages+1) {
             console.log('fetching page',page);
             if(this.state.mode==='list') {
-                fetch('http://www.pkuhelper.com:10301/services/pkuhole/api.php?action=getlist&p='+page)
+                fetch(API_BASE+'/api.php?action=getlist&p='+page)
                     .then((res)=>res.json())
                     .then((json)=>{
                         if(json.code!==0)
@@ -158,7 +159,7 @@ export class Flow extends Component {
                     });
             } else if(this.state.mode==='search') {
                 fetch(
-                    'http://www.pkuhelper.com:10301/services/pkuhole/api.php?action=search'+
+                    API_BASE+'/api.php?action=search'+
                     '&pagesize='+SEARCH_PAGESIZE*page+
                     '&keywords='+encodeURIComponent(this.state.search_param)
                 )
@@ -183,7 +184,7 @@ export class Flow extends Component {
             } else if(this.state.mode==='single') {
                 const pid=parseInt(this.state.search_param.substr(1),10);
                 fetch(
-                    'http://www.pkuhelper.com:10301/services/pkuhole/api.php?action=getone'+
+                    API_BASE+'/api.php?action=getone'+
                     '&pid='+pid
                 )
                     .then((res)=>res.json())

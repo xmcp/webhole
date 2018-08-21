@@ -1,0 +1,1 @@
+/api_proxy/*  http://www.pkuhelper.com:10301/services/pkuhole/:splat  200
