@@ -39,11 +39,18 @@
         left: calc(100% - 550px);
     }
 }
+@media screen and (max-width: 600px) {
+    .sidebar {
+        width: calc(100% - 50px);
+    }
+    .sidebar-on .sidebar {
+        left: 50px;
+    }
+}
 
 .sidebar-flow-item {
     display: block;
 }
 .sidebar-flow-item .box {
-    margin: 1em;
-    width: calc(100% - 2em);
+    width: 100%;
 }

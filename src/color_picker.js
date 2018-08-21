@@ -12,7 +12,7 @@ export class ColorPicker {
         if(!this.names[name]) {
             this.current_h+=golden_ratio_conjugate;
             this.current_h%=1;
-            this.names[name]=`hsl(${this.current_h*360}, 40%, 80%)`;
+            this.names[name]=`hsl(${this.current_h*360}, 40%, 85%)`;
         }
         return this.names[name];
     }

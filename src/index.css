@@ -1,9 +1,9 @@
 body {
-    min-width: 620px;
     margin: 0;
     padding: 0;
     font-family: '微软雅黑', 'Microsoft YaHei', sans-serif;
     background-size: cover;
+    overflow-x: hidden;
 }
 
 body::-webkit-scrollbar {
@@ -12,6 +12,8 @@ body::-webkit-scrollbar {
 
 * {
     box-sizing: border-box;
+    word-wrap: break-word;
+    -webkit-overflow-scrolling: touch;
 }
 
 p {
@@ -33,4 +35,9 @@ input {
 
 audio {
     vertical-align: middle;
+}
+
+pre {
+    white-space: pre-wrap;
+    font-family: '微软雅黑', 'Microsoft YaHei', sans-serif;
 }

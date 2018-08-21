@@ -65,7 +65,7 @@ class ControlBar extends Component {
 
     on_keypress(event) {
         if(event.key==='Enter')
-            this.set_search_text(this.state.search_text);
+            this.set_search_text(this.state.search_text||null);
     }
 
     do_refresh() {
@@ -90,7 +90,6 @@ class ControlBar extends Component {
                     '关于 P大树洞（非官方） 网页版',
                     HELP_TEXT
                 )}}>Help</a>
-                <a href="https://github.com/xmcp/ashole" target="_blank">GitHub</a>
             </div>
         )
     }

@@ -14,9 +14,9 @@ const CLICKABLE_TAGS={a: true, audio: true};
 
 function Reply(props) {
     return (
-        <div className={'flow-reply box'} style={{
+        <div className={'flow-reply box'} style={props.info._display_color ? {
             backgroundColor: props.info._display_color,
-        }}>
+        } : null}>
             <div className="box-header">
                 <span className="box-id">#{props.info.cid}</span>&nbsp;
                 <Time stamp={props.info.timestamp} />
@@ -39,7 +39,7 @@ function FlowItem(props) {
         <div className="flow-item box">
             <div className="box-header">
                 {!!parseInt(props.info.likenum, 10) && <span className="box-header-badge">{props.info.likenum}★</span>}
-                {!!parseInt(props.info.reply, 10) && <span className="box-header-badge">{props.info.reply} 回复</span>}
+                {!!parseInt(props.info.reply, 10) && <span className="box-header-badge">{props.info.reply}回复</span>}
                 <span className="box-id">#{props.info.pid}</span>&nbsp;
                 <Time stamp={props.info.timestamp} />
             </div>
@@ -79,7 +79,7 @@ class FlowItemRow extends Component {
                     throw new Error(json.code);
                 this.setState({
                     replies: json.data.map((info)=>{
-                        info._display_color=info.islz ? '#fff' : this.color_picker.get(info.name)
+                        info._display_color=info.islz ? null : this.color_picker.get(info.name)
                         return info;
                     }),
                     reply_loading: false,
@@ -101,8 +101,10 @@ class FlowItemRow extends Component {
                     );
             }}>
                 <FlowItem info={this.info} />
-                {!!this.state.reply_loading && <ReplyPlaceholder count={this.info.reply} />}
-                {this.state.replies.slice(0,10).map((reply)=><Reply info={reply} key={reply.cid} />)}
+                <div className="flow-reply-row">
+                    {!!this.state.reply_loading && <ReplyPlaceholder count={this.info.reply} />}
+                    {this.state.replies.slice(0,10).map((reply)=><Reply info={reply} key={reply.cid} />)}
+                </div>
             </div>
         );
     }
