@@ -36,7 +36,7 @@ function FlowItem(props) {
                 <span className="box-id">#{props.info.pid}</span>&nbsp;
                 <Time stamp={props.info.timestamp} />
             </div>
-            <HighlightedText text={props.info.text} />
+            <HighlightedText text={props.info.text} color_picker={props.color_picker} />
             {props.info.type==='image' ? <img src={IMAGE_BASE+props.info.url} /> : null}
             {props.info.type==='audio' ? <AudioWidget src={AUDIO_BASE+props.info.url} /> : null}
         </div>
@@ -105,7 +105,7 @@ class FlowItemRow extends Component {
                         this.load_replies(this.show_sidebar);
                     }}>更新回复</a>
                 </div>
-                <FlowItem info={this.state.info} />
+                <FlowItem info={this.state.info} color_picker={this.color_picker} />
                 {this.state.replies.map((reply)=>(
                     <Reply key={reply.cid} info={reply} color_picker={this.color_picker} />
                 ))}
@@ -120,7 +120,7 @@ class FlowItemRow extends Component {
                 if(!CLICKABLE_TAGS[event.target.tagName.toLowerCase()])
                     this.show_sidebar();
             }}>
-                <FlowItem info={this.state.info} />
+                <FlowItem info={this.state.info} color_picker={this.color_picker} />
                 <div className="flow-reply-row">
                     {this.state.reply_status==='loading' && <div className="box box-tip">加载中</div>}
                     {this.state.reply_status==='failed' &&
