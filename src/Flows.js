@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {ColorPicker} from './color_picker';
-import {Time, TitleLine, AutoLink} from './Common.js';
+import {Time, TitleLine, HighlightedText} from './Common.js';
 import './Flows.css';
 import LazyLoad from 'react-lazyload';
 import {AudioWidget} from './AudioWidget.js';
@@ -22,7 +22,7 @@ function Reply(props) {
                 <span className="box-id">#{props.info.cid}</span>&nbsp;
                 <Time stamp={props.info.timestamp} />
             </div>
-            <AutoLink text={props.info.text} />
+            <HighlightedText text={props.info.text} color_picker={props.color_picker} />
         </div>
     );
 }
@@ -36,7 +36,7 @@ function FlowItem(props) {
                 <span className="box-id">#{props.info.pid}</span>&nbsp;
                 <Time stamp={props.info.timestamp} />
             </div>
-            <AutoLink text={props.info.text} />
+            <HighlightedText text={props.info.text} />
             {props.info.type==='image' ? <img src={IMAGE_BASE+props.info.url} /> : null}
             {props.info.type==='audio' ? <AudioWidget src={AUDIO_BASE+props.info.url} /> : null}
         </div>
@@ -49,38 +49,42 @@ class FlowItemRow extends Component {
         this.state={
             replies: [],
             reply_status: 'done',
+            info: props.info,
         };
-        this.info=props.info;
         this.color_picker=new ColorPicker();
     }
 
     componentDidMount() {
-        if(parseInt(this.info.reply,10)) {
+        if(parseInt(this.state.info.reply,10)) {
             this.load_replies();
         }
     }
 
     load_replies(callback) {
-        console.log('fetching reply',this.info.pid);
+        console.log('fetching reply',this.state.info.pid);
         this.setState({
             reply_status: 'loading',
         });
-        fetch(API_BASE+'/api.php?action=getcomment&pid='+this.info.pid)
+        fetch(API_BASE+'/api.php?action=getcomment&pid='+this.state.info.pid)
             .then((res)=>res.json())
             .then((json)=>{
                 if(json.code!==0)
                     throw new Error(json.code);
-                this.setState({
-                    replies: json.data
-                        .sort((a,b)=>{
-                            return parseInt(a.timestamp,10)-parseInt(b.timestamp,10);
-                        })
-                        .map((info)=>{
-                            info._display_color=info.islz ? null : this.color_picker.get(info.name);
-                            return info;
-                        }),
+                const replies=json.data
+                    .sort((a,b)=>{
+                        return parseInt(a.timestamp,10)-parseInt(b.timestamp,10);
+                    })
+                    .map((info)=>{
+                        info._display_color=this.color_picker.get(info.name);
+                        return info;
+                    });
+                this.setState((prev,props)=>({
+                    replies: replies,
+                    info: Object.assign({}, prev.info, {
+                        reply: ''+replies.length,
+                    }),
                     reply_status: 'done',
-                },callback);
+                }),callback);
             })
             .catch((e)=>{
                 console.trace(e);
@@ -101,8 +105,10 @@ class FlowItemRow extends Component {
                         this.load_replies(this.show_sidebar);
                     }}>更新回复</a>
                 </div>
-                <FlowItem info={this.info} />
-                {this.state.replies.map((reply)=><Reply info={reply} key={reply.cid} />)}
+                <FlowItem info={this.state.info} />
+                {this.state.replies.map((reply)=>(
+                    <Reply key={reply.cid} info={reply} color_picker={this.color_picker} />
+                ))}
             </div>
         );
     }
@@ -114,13 +120,15 @@ class FlowItemRow extends Component {
                 if(!CLICKABLE_TAGS[event.target.tagName.toLowerCase()])
                     this.show_sidebar();
             }}>
-                <FlowItem info={this.info} />
+                <FlowItem info={this.state.info} />
                 <div className="flow-reply-row">
                     {this.state.reply_status==='loading' && <div className="box box-tip">加载中</div>}
                     {this.state.reply_status==='failed' &&
                         <div className="box box-tip"><a onClick={()=>{this.load_replies()}}>重新加载</a></div>
                     }
-                    {this.state.replies.slice(0,PREVIEW_REPLY_COUNT).map((reply)=><Reply info={reply} key={reply.cid} />)}
+                    {this.state.replies.slice(0,PREVIEW_REPLY_COUNT).map((reply)=>(
+                        <Reply key={reply.cid} info={reply} color_picker={this.color_picker} />
+                    ))}
                     {this.state.replies.length>PREVIEW_REPLY_COUNT &&
                         <div className="box box-tip">还有 {this.state.replies.length-PREVIEW_REPLY_COUNT} 条</div>
                     }

@@ -8,14 +8,9 @@ import buildFormatter from 'react-timeago/lib/formatters/buildFormatter';
 import './Common.css';
 
 const chinese_format=buildFormatter(chineseStrings);
-const PID_RE_TEXT=/(?:^|[^\d])(\d{5,6})(?!\d)/g;
 
-linkify.add('#', {
-    validate: /^(\d{5,6})/,
-    normalize: (match) => {
-        match.url='#'+match.url;
-    },
-});
+const PID_RE=/(^|[^\d])([1-9]\d{4,5})(?!\d)/g;
+const NICKNAME_RE=/((?:(?:Angry|Baby|Crazy|Diligent|Excited|Fat|Greedy|Hungry|Interesting|Japanese|Kind|Little|Magic|Naïve|Old|Powerful|Quiet|Rich|Superman|THU|Undefined|Valuable|Wifeless|Xiangbuchulai|Young|Zombie)\s)?(?:Alice|Bob|Carol|Dave|Eve|Francis|Grace|Hans|Isabella|Jason|Kate|Louis|Margaret|Nathan|Olivia|Paul|Queen|Richard|Susan|Thomas|Uma|Vivian|Winnie|Xander|Yasmine|Zach)|You Win|洞主)/gi;
 
 function pad2(x) {
     return x<10 ? '0'+x : ''+x;
@@ -41,10 +36,19 @@ export function TitleLine(props) {
     )
 }
 
-export function AutoLink(props) {
+export function HighlightedText(props) {
+    let parts=[].concat.apply([], props.text.split(PID_RE).map((p)=>p.split(NICKNAME_RE)));
     return (
         <Linkify properties={{target: '_blank'}}>
-            <pre>{props.text.replace(new RegExp(PID_RE_TEXT,'g'),' #$1 ')}</pre>
+            <pre>
+                {parts.map((p,idx)=>(
+                    <span key={idx}>{
+                        PID_RE.test(p) ? <a href={'##'+p} target="_blank">{p}</a> :
+                        NICKNAME_RE.test(p) ? <span style={{backgroundColor: props.color_picker.get(p)}}>{p}</span> :
+                        p
+                    }</span>
+                ))}
+            </pre>
         </Linkify>
     )
 }
