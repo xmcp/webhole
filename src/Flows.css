@@ -6,6 +6,12 @@
     box-shadow: 0 5px 20px rgba(0,0,0,.5);
 }
 
+.box-tip {
+    min-width: 100px;
+    z-index: 1;
+    text-align: center;
+}
+
 .left-container .flow-item {
     display: inline-block;
     width: 600px;
@@ -18,8 +24,13 @@
     width: calc(100% - 625px);
     margin-left: -25px;
     padding-left: 20px;
-    overflow-x: hidden;
+    overflow-x: auto;
 }
+
+.flow-reply-row::-webkit-scrollbar {
+    display: none;
+}
+
 .flow-reply-row:empty {
     margin: 0 !important;
     display: none;
@@ -41,9 +52,9 @@
 
     .flow-reply-row {
         display: flex;
-        width: calc(100% - 10px) !important;
-        margin-left: 10px;
-        padding-left: 20px;
+        width: 100% !important;
+        margin-left: 0;
+        padding-left: 30px;
         margin-top: -2.5em;
         margin-bottom: -1em;
     }

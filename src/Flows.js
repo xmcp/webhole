@@ -11,6 +11,7 @@ const API_BASE=window.location.protocol==='https:' ? '/api_proxy' : 'http://www.
 
 const SEARCH_PAGESIZE=50;
 const CLICKABLE_TAGS={a: true, audio: true};
+const PREVIEW_REPLY_COUNT=10;
 
 function Reply(props) {
     return (
@@ -22,14 +23,6 @@ function Reply(props) {
                 <Time stamp={props.info.timestamp} />
             </div>
             <AutoLink text={props.info.text} />
-        </div>
-    );
-}
-
-function ReplyPlaceholder(props) {
-    return (
-        <div className="box">
-            加载中
         </div>
     );
 }
@@ -102,8 +95,11 @@ class FlowItemRow extends Component {
             }}>
                 <FlowItem info={this.info} />
                 <div className="flow-reply-row">
-                    {!!this.state.reply_loading && <ReplyPlaceholder count={this.info.reply} />}
-                    {this.state.replies.slice(0,10).map((reply)=><Reply info={reply} key={reply.cid} />)}
+                    {!!this.state.reply_loading && <div className="box box-tip">加载中</div>}
+                    {this.state.replies.slice(0,PREVIEW_REPLY_COUNT).map((reply)=><Reply info={reply} key={reply.cid} />)}
+                    {this.state.replies.length>PREVIEW_REPLY_COUNT && <div className="box box-tip">
+                        还有 {this.state.replies.length-PREVIEW_REPLY_COUNT} 条
+                    </div>}
                 </div>
             </div>
         );
