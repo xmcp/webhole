@@ -31,8 +31,8 @@ function FlowItem(props) {
     return (
         <div className="flow-item box">
             <div className="box-header">
-                {!!parseInt(props.info.likenum, 10) && <span className="box-header-badge">{props.info.likenum}★</span>}
-                {!!parseInt(props.info.reply, 10) && <span className="box-header-badge">{props.info.reply}回复</span>}
+                {!!parseInt(props.info.likenum,10) && <span className="box-header-badge">{props.info.likenum}★</span>}
+                {!!parseInt(props.info.reply,10) && <span className="box-header-badge">{props.info.reply}回复</span>}
                 <span className="box-id">#{props.info.pid}</span>&nbsp;
                 <Time stamp={props.info.timestamp} />
             </div>
@@ -71,10 +71,14 @@ class FlowItemRow extends Component {
                 if(json.code!==0)
                     throw new Error(json.code);
                 this.setState({
-                    replies: json.data.map((info)=>{
-                        info._display_color=info.islz ? null : this.color_picker.get(info.name)
-                        return info;
-                    }),
+                    replies: json.data
+                        .sort((a,b)=>{
+                            return parseInt(a.timestamp,10)-parseInt(b.timestamp,10);
+                        })
+                        .map((info)=>{
+                            info._display_color=info.islz ? null : this.color_picker.get(info.name)
+                            return info;
+                        }),
                     reply_loading: false,
                 });
             });
