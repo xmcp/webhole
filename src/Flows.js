@@ -137,6 +137,7 @@ export class Flow extends Component {
             chunks: [],
             loading: false,
         };
+        this.on_scroll_bound=this.on_scroll.bind(this);
     }
 
     load_page(page) {
@@ -153,7 +154,10 @@ export class Flow extends Component {
                         this.setState((prev,props)=>({
                             chunks: prev.chunks.concat([{
                                 title: 'Page '+page,
-                                data: json.data,
+                                data: json.data.filter((x)=>(
+                                    prev.chunks.length===0 ||
+                                    !(prev.chunks[prev.chunks.length-1].data.some((p)=>p.pid===x.pid))
+                                )),
                             }]),
                             loading: false,
                         }));
@@ -200,8 +204,8 @@ export class Flow extends Component {
                             chunks: [{
                                 title: 'PID = '+pid,
                                 data: [json.data],
-                                mode: 'single_finished',
                             }],
+                            mode: 'single_finished',
                             loading: false,
                         });
                     })
@@ -209,6 +213,9 @@ export class Flow extends Component {
                         console.trace(err);
                         alert('load failed');
                     });
+            } else {
+                console.log('nothing to load');
+                return;
             }
             this.setState((prev,props)=>({
                 loaded_pages: prev.loaded_pages+1,
@@ -228,12 +235,12 @@ export class Flow extends Component {
 
     componentDidMount() {
         this.load_page(1);
-        window.addEventListener('scroll',this.on_scroll.bind(this));
-        window.addEventListener('resize',this.on_scroll.bind(this));
+        window.addEventListener('scroll',this.on_scroll_bound);
+        window.addEventListener('resize',this.on_scroll_bound);
     }
     componentWillUnmount() {
-        window.removeEventListener('scroll',this.on_scroll.bind(this));
-        window.removeEventListener('resize',this.on_scroll.bind(this));
+        window.removeEventListener('scroll',this.on_scroll_bound);
+        window.removeEventListener('resize',this.on_scroll_bound);
     }
 
     render() {
