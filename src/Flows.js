@@ -48,7 +48,7 @@ class FlowItemRow extends Component {
         super(props);
         this.state={
             replies: [],
-            reply_loading: false,
+            reply_status: 'done',
         };
         this.info=props.info;
         this.color_picker=new ColorPicker();
@@ -56,15 +56,15 @@ class FlowItemRow extends Component {
 
     componentDidMount() {
         if(parseInt(this.info.reply,10)) {
-            this.setState({
-                reply_loading: true,
-            });
             this.load_replies();
         }
     }
 
-    load_replies() {
+    load_replies(callback) {
         console.log('fetching reply',this.info.pid);
+        this.setState({
+            reply_status: 'loading',
+        });
         fetch(API_BASE+'/api.php?action=getcomment&pid='+this.info.pid)
             .then((res)=>res.json())
             .then((json)=>{
@@ -76,12 +76,35 @@ class FlowItemRow extends Component {
                             return parseInt(a.timestamp,10)-parseInt(b.timestamp,10);
                         })
                         .map((info)=>{
-                            info._display_color=info.islz ? null : this.color_picker.get(info.name)
+                            info._display_color=info.islz ? null : this.color_picker.get(info.name);
                             return info;
                         }),
-                    reply_loading: false,
-                });
+                    reply_status: 'done',
+                },callback);
+            })
+            .catch((e)=>{
+                console.trace(e);
+                this.setState({
+                    replies: [],
+                    reply_status: 'failed',
+                },callback);
             });
+    }
+
+    show_sidebar() {
+        this.props.callback(
+            '帖子详情',
+            <div className="flow-item-row sidebar-flow-item">
+                <div className="box box-tip">
+                    <a onClick={()=>{
+                        this.props.callback('帖子详情',<p className="box box-tip">加载中……</p>);
+                        this.load_replies(this.show_sidebar);
+                    }}>更新回复</a>
+                </div>
+                <FlowItem info={this.info} />
+                {this.state.replies.map((reply)=><Reply info={reply} key={reply.cid} />)}
+            </div>
+        );
     }
 
     render() {
@@ -89,21 +112,18 @@ class FlowItemRow extends Component {
         return (
             <div className="flow-item-row" onClick={(event)=>{
                 if(!CLICKABLE_TAGS[event.target.tagName.toLowerCase()])
-                    this.props.callback(
-                        '帖子详情',
-                        <div className="flow-item-row sidebar-flow-item">
-                            <FlowItem info={this.info} />
-                            {this.state.replies.map((reply)=><Reply info={reply} key={reply.cid} />)}
-                        </div>
-                    );
+                    this.show_sidebar();
             }}>
                 <FlowItem info={this.info} />
                 <div className="flow-reply-row">
-                    {!!this.state.reply_loading && <div className="box box-tip">加载中</div>}
+                    {this.state.reply_status==='loading' && <div className="box box-tip">加载中</div>}
+                    {this.state.reply_status==='failed' &&
+                        <div className="box box-tip"><a onClick={()=>{this.load_replies()}}>重新加载</a></div>
+                    }
                     {this.state.replies.slice(0,PREVIEW_REPLY_COUNT).map((reply)=><Reply info={reply} key={reply.cid} />)}
-                    {this.state.replies.length>PREVIEW_REPLY_COUNT && <div className="box box-tip">
-                        还有 {this.state.replies.length-PREVIEW_REPLY_COUNT} 条
-                    </div>}
+                    {this.state.replies.length>PREVIEW_REPLY_COUNT &&
+                        <div className="box box-tip">还有 {this.state.replies.length-PREVIEW_REPLY_COUNT} 条</div>
+                    }
                 </div>
             </div>
         );
@@ -135,7 +155,7 @@ export class Flow extends Component {
             search_param: props.search_text,
             loaded_pages: 0,
             chunks: [],
-            loading: false,
+            loading_status: 'done',
         };
         this.on_scroll_bound=this.on_scroll.bind(this);
     }
@@ -159,12 +179,15 @@ export class Flow extends Component {
                                     !(prev.chunks[prev.chunks.length-1].data.some((p)=>p.pid===x.pid))
                                 )),
                             }]),
-                            loading: false,
+                            loading_status: 'done',
                         }));
                     })
                     .catch((err)=>{
                         console.trace(err);
-                        alert('load failed');
+                        this.setState((prev,props)=>({
+                            loaded_pages: prev.loaded_pages-1,
+                            loading_status: 'failed',
+                        }));
                     });
             } else if(this.state.mode==='search') {
                 fetch(
@@ -183,12 +206,15 @@ export class Flow extends Component {
                                 data: json.data,
                                 mode: finished ? 'search_finished' : 'search',
                             }],
-                            loading: false,
+                            loading_status: 'done',
                         });
                     })
                     .catch((err)=>{
                         console.trace(err);
-                        alert('load failed');
+                        this.setState((prev,props)=>({
+                            loaded_pages: prev.loaded_pages-1,
+                            loading_status: 'failed',
+                        }));
                     });
             } else if(this.state.mode==='single') {
                 const pid=parseInt(this.state.search_param.substr(1),10);
@@ -206,29 +232,32 @@ export class Flow extends Component {
                                 data: [json.data],
                             }],
                             mode: 'single_finished',
-                            loading: false,
+                            loading_status: 'done',
                         });
                     })
                     .catch((err)=>{
                         console.trace(err);
-                        alert('load failed');
+                        this.setState((prev,props)=>({
+                            loaded_pages: prev.loaded_pages-1,
+                            loading_status: 'failed',
+                        }));
                     });
             } else {
                 console.log('nothing to load');
                 return;
             }
+
             this.setState((prev,props)=>({
                 loaded_pages: prev.loaded_pages+1,
-                loading: true,
+                loading_status: 'loading',
             }));
         }
     }
 
     on_scroll(event) {
         if(event.target===document) {
-            //console.log(event);
             const avail=document.body.scrollHeight-window.scrollY-window.innerHeight;
-            if(avail<window.innerHeight && this.state.loading===false)
+            if(avail<window.innerHeight && this.state.loading_status==='done')
                 this.load_page(this.state.loaded_pages+1);
         }
     }
@@ -249,7 +278,12 @@ export class Flow extends Component {
                 {this.state.chunks.map((chunk)=>(
                     <FlowChunk title={chunk.title} list={chunk.data} key={chunk.title} callback={this.props.callback} />
                 ))}
-                <TitleLine text={this.state.loading ? 'Loading...' : '© xmcp'} />
+                {this.state.loading_status==='failed' &&
+                    <div className="box box-tip">
+                        <a onClick={()=>{this.load_page(this.state.loaded_pages+1)}}>重新加载</a>
+                    </div>
+                }
+                <TitleLine text={this.state.loading_status==='loading' ? 'Loading...' : '© xmcp'} />
             </div>
         );
     }
