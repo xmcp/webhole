@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 import TimeAgo from 'react-timeago';
-import Linkify, {linkify} from 'react-linkify';
+import Linkify from 'react-linkify';
 import chineseStrings from 'react-timeago/lib/language-strings/zh-CN';
 import buildFormatter from 'react-timeago/lib/formatters/buildFormatter';
 
@@ -9,8 +9,8 @@ import './Common.css';
 
 const chinese_format=buildFormatter(chineseStrings);
 
-const PID_RE=/(^|[^\d])([1-9]\d{4,5})(?!\d)/g;
-const NICKNAME_RE=/((?:(?:Angry|Baby|Crazy|Diligent|Excited|Fat|Greedy|Hungry|Interesting|Japanese|Kind|Little|Magic|Naïve|Old|Powerful|Quiet|Rich|Superman|THU|Undefined|Valuable|Wifeless|Xiangbuchulai|Young|Zombie)\s)?(?:Alice|Bob|Carol|Dave|Eve|Francis|Grace|Hans|Isabella|Jason|Kate|Louis|Margaret|Nathan|Olivia|Paul|Queen|Richard|Susan|Thomas|Uma|Vivian|Winnie|Xander|Yasmine|Zach)|You Win|洞主)/gi;
+const PID_RE=/(^|\D)([1-9]\d{4,5})(?=\D)/g;
+const NICKNAME_RE=/(^|\W)((?:(?:Angry|Baby|Crazy|Diligent|Excited|Fat|Greedy|Hungry|Interesting|Japanese|Kind|Little|Magic|Naïve|Old|Powerful|Quiet|Rich|Superman|THU|Undefined|Valuable|Wifeless|Xiangbuchulai|Young|Zombie)\s)?(?:Alice|Bob|Carol|Dave|Eve|Francis|Grace|Hans|Isabella|Jason|Kate|Louis|Margaret|Nathan|Olivia|Paul|Queen|Richard|Susan|Thomas|Uma|Vivian|Winnie|Xander|Yasmine|Zach)|You Win|洞主)(?=\W)/gi;
 
 function pad2(x) {
     return x<10 ? '0'+x : ''+x;

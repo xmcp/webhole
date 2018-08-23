@@ -110,3 +110,15 @@
     font-family: Consolas, Courier, monospace;
     opacity: .6;
 }
+
+.flow-item-dot {
+    position: relative;
+    top: calc(-.5em - 5px);
+    left: calc(-.5em - 5px);
+    width: 10px;
+    height: 10px;
+    margin-bottom: -10px;
+    border-radius: 50%;
+    background-color: orange;
+    box-shadow: 0 0 5px rgba(0,0,0,.4);
+}

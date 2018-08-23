@@ -13,6 +13,8 @@ const SEARCH_PAGESIZE=50;
 const CLICKABLE_TAGS={a: true, audio: true};
 const PREVIEW_REPLY_COUNT=10;
 
+const LATEST_POST_ID=parseInt(localStorage['_LATEST_POST_ID'],10)||0;
+
 function Reply(props) {
     return (
         <div className={'flow-reply box'} style={props.info._display_color ? {
@@ -30,6 +32,7 @@ function Reply(props) {
 function FlowItem(props) {
     return (
         <div className="flow-item box">
+            {parseInt(props.info.pid,10)>LATEST_POST_ID && <div className="flow-item-dot" /> }
             <div className="box-header">
                 {!!parseInt(props.info.likenum,10) && <span className="box-header-badge">{props.info.likenum}★</span>}
                 {!!parseInt(props.info.reply,10) && <span className="box-header-badge">{props.info.reply}回复</span>}
@@ -179,6 +182,10 @@ export class Flow extends Component {
                     .then((json)=>{
                         if(json.code!==0)
                             throw new Error(json.code);
+                        json.data.forEach((x)=>{
+                            if(parseInt(x.pid,10)>(parseInt(localStorage['_LATEST_POST_ID'],10)||0))
+                                localStorage['_LATEST_POST_ID']=x.pid;
+                        });
                         this.setState((prev,props)=>({
                             chunks: prev.chunks.concat([{
                                 title: 'Page '+page,
