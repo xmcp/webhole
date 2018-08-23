@@ -12,6 +12,8 @@ class App extends Component {
             search_text: null,
             flow_render_key: +new Date(),
         };
+        this.show_sidebar_bound=this.show_sidebar.bind(this);
+        this.set_search_text_bound=this.set_search_text.bind(this);
     }
 
     show_sidebar(title,content) {
@@ -34,10 +36,10 @@ class App extends Component {
                 <div className="bg-img" style={{
                     backgroundImage: 'url('+(localStorage['REPLACE_ERIRI_WITH_URL'] || 'static/eriri_bg.jpg')+')'
                 }} />
-                <Title callback={this.show_sidebar.bind(this)} set_search_text={this.set_search_text.bind(this)} />
+                <Title callback={this.show_sidebar_bound} set_search_text={this.set_search_text_bound} />
                 <div className="left-container">
                     <Flow key={this.state.flow_render_key}
-                        callback={this.show_sidebar.bind(this)} search_text={this.state.search_text}
+                        callback={this.show_sidebar_bound} search_text={this.state.search_text}
                     />
                     <br />
                 </div>

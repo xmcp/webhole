@@ -5,7 +5,7 @@
   Cache-Control: public, max-age=86400
 
 /
-    Cache-Control: public, max-age=120
+  Cache-Control: public, max-age=120
 
 /?src=pwa
-    Cache-Control: public, max-age=120
+  Cache-Control: public, max-age=120

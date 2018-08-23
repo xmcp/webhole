@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, PureComponent} from 'react';
 import {ColorPicker} from './color_picker';
 import {Time, TitleLine, HighlightedText} from './Common.js';
 import './Flows.css';
@@ -46,7 +46,7 @@ function FlowItem(props) {
     );
 }
 
-class FlowItemRow extends Component {
+class FlowItemRow extends PureComponent {
     constructor(props) {
         super(props);
         this.state={
@@ -156,7 +156,7 @@ function FlowChunk(props) {
     );
 }
 
-export class Flow extends Component {
+export class Flow extends PureComponent {
     constructor(props) {
         super(props);
         this.state={
@@ -222,8 +222,8 @@ export class Flow extends Component {
                             chunks: [{
                                 title: 'Result for "'+this.state.search_param+'"',
                                 data: json.data,
-                                mode: finished ? 'search_finished' : 'search',
                             }],
+                            mode: finished ? 'search_finished' : 'search',
                             loading_status: 'done',
                         });
                     })

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, PureComponent} from 'react';
 
 import TimeAgo from 'react-timeago';
 import Linkify from 'react-linkify';
@@ -36,19 +36,21 @@ export function TitleLine(props) {
     )
 }
 
-export function HighlightedText(props) {
-    let parts=[].concat.apply([], props.text.split(PID_RE).map((p)=>p.split(NICKNAME_RE)));
-    return (
-        <Linkify properties={{target: '_blank'}}>
-            <pre>
-                {parts.map((p,idx)=>(
-                    <span key={idx}>{
-                        PID_RE.test(p) ? <a href={'##'+p} target="_blank">{p}</a> :
-                        NICKNAME_RE.test(p) ? <span style={{backgroundColor: props.color_picker.get(p)}}>{p}</span> :
-                        p
-                    }</span>
-                ))}
-            </pre>
-        </Linkify>
-    )
+export class HighlightedText extends PureComponent {
+    render() {
+        let parts=[].concat.apply([], props.text.split(PID_RE).map((p)=>p.split(NICKNAME_RE)));
+        return (
+            <Linkify properties={{target: '_blank'}}>
+                <pre>
+                    {parts.map((p,idx)=>(
+                        <span key={idx}>{
+                            PID_RE.test(p) ? <a href={'##'+p} target="_blank">{p}</a> :
+                            NICKNAME_RE.test(p) ? <span style={{backgroundColor: props.color_picker.get(p)}}>{p}</span> :
+                            p
+                        }</span>
+                    ))}
+                </pre>
+            </Linkify>
+        )
+    }
 }

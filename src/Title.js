@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, PureComponent} from 'react';
 import './Title.css';
 
 const HELP_TEXT=(
@@ -39,7 +39,7 @@ const HELP_TEXT=(
     </div>
 );
 
-class ControlBar extends Component {
+class ControlBar extends PureComponent {
     constructor(props) {
         super(props);
         this.state={
