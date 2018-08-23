@@ -40,7 +40,7 @@ function FlowItem(props) {
                 <Time stamp={props.info.timestamp} />
             </div>
             <HighlightedText text={props.info.text} color_picker={props.color_picker} />
-            {props.info.type==='image' ? <img src={IMAGE_BASE+props.info.url} /> : null}
+            {props.info.type==='image' ? <p className="img"><img src={IMAGE_BASE+props.info.url} /></p> : null}
             {props.info.type==='audio' ? <AudioWidget src={AUDIO_BASE+props.info.url} /> : null}
         </div>
     );
@@ -110,7 +110,9 @@ class FlowItemRow extends Component {
                 </div>
                 <FlowItem info={this.state.info} color_picker={this.color_picker} />
                 {this.state.replies.map((reply)=>(
-                    <Reply key={reply.cid} info={reply} color_picker={this.color_picker} />
+                    <LazyLoad offset={500} height="5em" overflow={true} once={true}>
+                        <Reply key={reply.cid} info={reply} color_picker={this.color_picker} />
+                    </LazyLoad>
                 ))}
             </div>
         );
@@ -146,7 +148,7 @@ function FlowChunk(props) {
         <div className="flow-chunk">
             <TitleLine text={props.title} />
             {props.list.map((info)=>(
-                <LazyLoad key={info.pid} offset={500} height="15em">
+                <LazyLoad key={info.pid} offset={500} height="15em" once={true} >
                     <FlowItemRow info={info} callback={props.callback} />
                 </LazyLoad>
             ))}
