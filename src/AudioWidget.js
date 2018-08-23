@@ -8,7 +8,7 @@ function load_amrnb() {
         if(window.AMR)
             resolve();
         else
-            load('amr_all.min.js', (err)=>{
+            load('static/amr_all.min.js', (err)=>{
                 if(err)
                     reject(err);
                 else

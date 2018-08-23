@@ -32,7 +32,7 @@ class App extends Component {
         return (
             <div>
                 <div className="bg-img" style={{
-                    backgroundImage: 'url('+(localStorage['REPLACE_ERIRI_WITH_URL'] || '/eriri_bg.jpg')+')'
+                    backgroundImage: 'url('+(localStorage['REPLACE_ERIRI_WITH_URL'] || 'static/eriri_bg.jpg')+')'
                 }} />
                 <Title callback={this.show_sidebar.bind(this)} set_search_text={this.set_search_text.bind(this)} />
                 <div className="left-container">
