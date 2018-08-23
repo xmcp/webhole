@@ -13,7 +13,7 @@ const SEARCH_PAGESIZE=50;
 const CLICKABLE_TAGS={a: true, audio: true};
 const PREVIEW_REPLY_COUNT=10;
 
-const LATEST_POST_ID=parseInt(localStorage['_LATEST_POST_ID'],10)||0;
+window.LATEST_POST_ID=parseInt(localStorage['_LATEST_POST_ID'],10)||0;
 
 function Reply(props) {
     return (
@@ -32,7 +32,7 @@ function Reply(props) {
 function FlowItem(props) {
     return (
         <div className="flow-item box">
-            {parseInt(props.info.pid,10)>LATEST_POST_ID && <div className="flow-item-dot" /> }
+            {parseInt(props.info.pid,10)>window.LATEST_POST_ID && <div className="flow-item-dot" /> }
             <div className="box-header">
                 {!!parseInt(props.info.likenum,10) && <span className="box-header-badge">{props.info.likenum}★</span>}
                 {!!parseInt(props.info.reply,10) && <span className="box-header-badge">{props.info.reply}回复</span>}
@@ -171,6 +171,7 @@ export class Flow extends Component {
             loading_status: 'done',
         };
         this.on_scroll_bound=this.on_scroll.bind(this);
+        window.LATEST_POST_ID=parseInt(localStorage['_LATEST_POST_ID'],10)||0;
     }
 
     load_page(page) {

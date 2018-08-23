@@ -1,0 +1,15 @@
+{
+  "short_name": "树洞",
+  "name": "P大树洞（非官方）",
+  "icons": [
+    {
+      "src": "favicon-precomposed.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "./index.html",
+  "display": "standalone",
+  "theme_color": "#112244",
+  "background_color": "#112244"
+}
