@@ -1,4 +1,7 @@
 import React, {Component, PureComponent} from 'react';
+import {LoginForm} from './UserAction';
+import {TokenCtx} from './UserAction';
+
 import './Title.css';
 
 const HELP_TEXT=(
@@ -10,7 +13,7 @@ const HELP_TEXT=(
             <li>在搜索框输入 #472865 等可以查看指定 ID 的树洞</li>
             <li>新的帖子会在左上角显示一个圆点</li>
             <li>请注意：使用 HTTPS 访问本站可能会<b>大幅减慢</b>加载速度</li>
-            <li>自定义背景图片请修改 localStorage['REPLACE_ERIRI_WITH_URL']</li>
+            <li>自定义背景图片请修改 <code>localStorage['REPLACE_ERIRI_WITH_URL']</code></li>
         </ul>
         <p>使用本网站时，您需要了解并同意：</p>
         <ul>
@@ -50,6 +53,7 @@ class ControlBar extends PureComponent {
         this.on_change_bound=this.on_change.bind(this);
         this.on_keypress_bound=this.on_keypress.bind(this);
         this.do_refresh_bound=this.do_refresh.bind(this);
+        this.do_attention_bound=this.do_attention.bind(this);
     }
 
     componentDidMount() {
@@ -69,8 +73,10 @@ class ControlBar extends PureComponent {
     }
 
     on_keypress(event) {
-        if(event.key==='Enter')
-            this.set_mode('search',this.state.search_text||null);
+        if(event.key==='Enter') {
+            const mode=this.state.search_text.startsWith('#') ? 'single' : 'search';
+            this.set_mode(mode,this.state.search_text||null);
+        }
     }
 
     do_refresh() {
@@ -81,20 +87,40 @@ class ControlBar extends PureComponent {
         this.set_mode('list',null);
     }
 
+    do_attention() {
+        window.scrollTo(0,0);
+        this.setState({
+            search_text: '',
+        });
+        this.set_mode('attention',null);
+    }
+
     render() {
         return (
-            <div className="control-bar">
-                <a className="refresh-btn" onClick={this.do_refresh_bound}>最新树洞</a>
-                &nbsp;
-                <input value={this.state.search_text} placeholder="搜索 或 #PID"
-                       onChange={this.on_change_bound} onKeyPress={this.on_keypress_bound}
-                />
-                &nbsp;
-                <a onClick={()=>{this.props.show_sidebar(
-                    '关于 P大树洞（非官方） 网页版',
-                    HELP_TEXT
-                )}}>Help</a>
-            </div>
+            <TokenCtx.Consumer>{({value: token})=>(
+                <div className="control-bar">
+                    <a className="control-btn" onClick={this.do_refresh_bound}>
+                        <span className="icon icon-refresh" />
+                    </a>
+                    {!!token &&
+                        <a className="control-btn" onClick={this.do_attention_bound}>
+                            <span className="icon icon-attention" />
+                        </a>
+                    }
+                    <input value={this.state.search_text} placeholder="搜索 或 #PID"
+                           onChange={this.on_change_bound} onKeyPress={this.on_keypress_bound}
+                    />
+                    <a className="control-btn" onClick={()=>{this.props.show_sidebar('登录',<LoginForm />)}}>
+                        <span className={'icon icon-'+(token ? 'login-ok' : 'login')} />
+                    </a>
+                    <a className="control-btn" onClick={()=>{this.props.show_sidebar(
+                        '关于 P大树洞（非官方） 网页版',
+                        HELP_TEXT
+                    )}}>
+                        <span className="icon icon-help" />
+                    </a>
+                </div>
+            )}</TokenCtx.Consumer>
         )
     }
 }

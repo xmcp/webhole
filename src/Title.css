@@ -10,13 +10,9 @@
     margin-bottom: 1em;
 }
 
-.title-bar a {
-    padding: 0 .5em;
-}
-
 .title {
-    font-size: 2em;
-    line-height: 3em;
+    font-size: 1.5em;
+    line-height: 4em;
     text-align: center;
 }
 
@@ -26,13 +22,10 @@
     line-height: 2em;
 }
 
-.control-bar .refresh-btn {
-    flex: 0 0 100px;
-    color: black;
-    background-color: rgba(255,255,255,.5);
-    border-radius: 5px;
+.control-btn {
+    flex: 0 0 2em;
     text-align: center;
-    border: 1px solid black;
+    color: black;
 }
 .control-bar input {
     flex: auto;

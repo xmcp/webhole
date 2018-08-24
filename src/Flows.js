@@ -4,10 +4,11 @@ import {Time, TitleLine, HighlightedText} from './Common.js';
 import './Flows.css';
 import LazyLoad from 'react-lazyload';
 import {AudioWidget} from './AudioWidget.js';
+import {TokenCtx} from './UserAction';
 
 const IMAGE_BASE='http://www.pkuhelper.com/services/pkuhole/images/';
 const AUDIO_BASE='/audio_proxy/';
-const API_BASE=window.location.protocol==='https:' ? '/api_proxy' : 'http://www.pkuhelper.com:10301/services/pkuhole';
+const API_BASE=window.location.protocol==='https:' ? '/api_proxy' : 'http://www.pkuhelper.com/services/pkuhole';
 
 const SEARCH_PAGESIZE=50;
 const CLICKABLE_TAGS={a: true, audio: true};
@@ -21,7 +22,7 @@ function Reply(props) {
             backgroundColor: props.info._display_color,
         } : null}>
             <div className="box-header">
-                <span className="box-id">#{props.info.cid}</span>&nbsp;
+                <code className="box-id">#{props.info.cid}</code>&nbsp;
                 <Time stamp={props.info.timestamp} />
             </div>
             <HighlightedText text={props.info.text} color_picker={props.color_picker} />
@@ -34,9 +35,19 @@ function FlowItem(props) {
         <div className="flow-item box">
             {parseInt(props.info.pid,10)>window.LATEST_POST_ID && <div className="flow-item-dot" /> }
             <div className="box-header">
-                {!!parseInt(props.info.likenum,10) && <span className="box-header-badge">{props.info.likenum}★</span>}
-                {!!parseInt(props.info.reply,10) && <span className="box-header-badge">{props.info.reply}回复</span>}
-                <span className="box-id">#{props.info.pid}</span>&nbsp;
+                {!!parseInt(props.info.likenum,10) &&
+                    <span className="box-header-badge">
+                        {props.info.likenum}&nbsp;
+                        <span className={'icon icon-'+(props.attention ? 'star-ok' : 'star')} />
+                    </span>
+                }
+                {!!parseInt(props.info.reply,10) &&
+                    <span className="box-header-badge">
+                        {props.info.reply}&nbsp;
+                        <span className="icon icon-reply" />
+                    </span>
+                }
+                <code className="box-id">#{props.info.pid}</code>&nbsp;
                 <Time stamp={props.info.timestamp} />
             </div>
             <HighlightedText text={props.info.text} color_picker={props.color_picker} />
@@ -53,6 +64,7 @@ class FlowItemRow extends PureComponent {
             replies: [],
             reply_status: 'done',
             info: props.info,
+            attention: false,
         };
         this.color_picker=new ColorPicker();
     }
@@ -68,11 +80,16 @@ class FlowItemRow extends PureComponent {
         this.setState({
             reply_status: 'loading',
         });
-        fetch(API_BASE+'/api.php?action=getcomment&pid='+this.state.info.pid)
+        const token_param=this.props.token ? '&token='+this.props.token : '';
+        fetch(
+            API_BASE+'/api.php?action=getcomment'+
+            '&pid='+this.state.info.pid+
+            token_param
+        )
             .then((res)=>res.json())
             .then((json)=>{
                 if(json.code!==0)
-                    throw new Error(json.code);
+                    throw new Error(json);
                 const replies=json.data
                     .sort((a,b)=>{
                         return parseInt(a.timestamp,10)-parseInt(b.timestamp,10);
@@ -86,6 +103,7 @@ class FlowItemRow extends PureComponent {
                     info: Object.assign({}, prev.info, {
                         reply: ''+replies.length,
                     }),
+                    attention: !!json.attention,
                     reply_status: 'done',
                 }),callback);
             })
@@ -106,9 +124,9 @@ class FlowItemRow extends PureComponent {
                     <a onClick={()=>{
                         this.props.show_sidebar('帖子详情',<p className="box box-tip">加载中……</p>);
                         this.load_replies(this.show_sidebar);
-                    }}>更新回复</a>
+                    }}>刷新回复</a>
                 </div>
-                <FlowItem info={this.state.info} color_picker={this.color_picker} />
+                <FlowItem info={this.state.info} color_picker={this.color_picker} attention={this.state.attention} />
                 {this.state.replies.map((reply)=>(
                     <LazyLoad offset={500} height="5em" overflow={true} once={true}>
                         <Reply key={reply.cid} info={reply} color_picker={this.color_picker} />
@@ -125,7 +143,7 @@ class FlowItemRow extends PureComponent {
                 if(!CLICKABLE_TAGS[event.target.tagName.toLowerCase()])
                     this.show_sidebar();
             }}>
-                <FlowItem info={this.state.info} color_picker={this.color_picker} />
+                <FlowItem info={this.state.info} color_picker={this.color_picker} attention={this.state.attention} />
                 <div className="flow-reply-row">
                     {this.state.reply_status==='loading' && <div className="box box-tip">加载中</div>}
                     {this.state.reply_status==='failed' &&
@@ -145,14 +163,16 @@ class FlowItemRow extends PureComponent {
 
 function FlowChunk(props) {
     return (
-        <div className="flow-chunk">
-            <TitleLine text={props.title} />
-            {props.list.map((info)=>(
-                <LazyLoad key={info.pid} offset={500} height="15em" once={true} >
-                    <FlowItemRow info={info} show_sidebar={props.show_sidebar} />
-                </LazyLoad>
-            ))}
-        </div>
+        <TokenCtx.Consumer>{({value: token})=>(
+            <div className="flow-chunk">
+                <TitleLine text={props.title} />
+                {props.list.map((info)=>(
+                    <LazyLoad key={info.pid} offset={500} height="15em" once={true} >
+                        <FlowItemRow info={info} show_sidebar={props.show_sidebar} token={token} />
+                    </LazyLoad>
+                ))}
+            </div>
+        )}</TokenCtx.Consumer>
     );
 }
 
@@ -171,16 +191,30 @@ export class Flow extends PureComponent {
     }
 
     load_page(page) {
+        const failed=(err)=>{
+            console.trace(err);
+            this.setState((prev,props)=>({
+                loaded_pages: prev.loaded_pages-1,
+                loading_status: 'failed',
+            }));
+        };
+
+        const token_param=this.props.token ? '&token='+this.props.token : '';
+
         if(page>this.state.loaded_pages+1)
             throw new Error('bad page');
         if(page===this.state.loaded_pages+1) {
             console.log('fetching page',page);
             if(this.state.mode==='list') {
-                fetch(API_BASE+'/api.php?action=getlist&p='+page)
+                fetch(
+                    API_BASE+'/api.php?action=getlist'+
+                    '&p='+page+
+                    token_param
+                )
                     .then((res)=>res.json())
                     .then((json)=>{
                         if(json.code!==0)
-                            throw new Error(json.code);
+                            throw new Error(json);
                         json.data.forEach((x)=>{
                             if(parseInt(x.pid,10)>(parseInt(localStorage['_LATEST_POST_ID'],10)||0))
                                 localStorage['_LATEST_POST_ID']=x.pid;
@@ -196,23 +230,18 @@ export class Flow extends PureComponent {
                             loading_status: 'done',
                         }));
                     })
-                    .catch((err)=>{
-                        console.trace(err);
-                        this.setState((prev,props)=>({
-                            loaded_pages: prev.loaded_pages-1,
-                            loading_status: 'failed',
-                        }));
-                    });
+                    .catch(failed);
             } else if(this.state.mode==='search') {
                 fetch(
                     API_BASE+'/api.php?action=search'+
                     '&pagesize='+SEARCH_PAGESIZE*page+
-                    '&keywords='+encodeURIComponent(this.state.search_param)
+                    '&keywords='+encodeURIComponent(this.state.search_param)+
+                    token_param
                 )
                     .then((res)=>res.json())
                     .then((json)=>{
                         if(json.code!==0)
-                            throw new Error(json.code);
+                            throw new Error(json);
                         const finished=json.data.length<SEARCH_PAGESIZE;
                         this.setState({
                             chunks: [{
@@ -223,23 +252,18 @@ export class Flow extends PureComponent {
                             loading_status: 'done',
                         });
                     })
-                    .catch((err)=>{
-                        console.trace(err);
-                        this.setState((prev,props)=>({
-                            loaded_pages: prev.loaded_pages-1,
-                            loading_status: 'failed',
-                        }));
-                    });
+                    .catch(failed);
             } else if(this.state.mode==='single') {
                 const pid=parseInt(this.state.search_param.substr(1),10);
                 fetch(
                     API_BASE+'/api.php?action=getone'+
-                    '&pid='+pid
+                    '&pid='+pid+
+                    token_param
                 )
                     .then((res)=>res.json())
                     .then((json)=>{
                         if(json.code!==0)
-                            throw new Error(json.code);
+                            throw new Error(json);
                         this.setState({
                             chunks: [{
                                 title: 'PID = '+pid,
@@ -249,13 +273,26 @@ export class Flow extends PureComponent {
                             loading_status: 'done',
                         });
                     })
-                    .catch((err)=>{
-                        console.trace(err);
-                        this.setState((prev,props)=>({
-                            loaded_pages: prev.loaded_pages-1,
-                            loading_status: 'failed',
-                        }));
-                    });
+                    .catch(failed);
+            } else if(this.state.mode==='attention') {
+                fetch(
+                    API_BASE+'/api.php?action=getattention'+
+                    token_param
+                )
+                    .then((res)=>res.json())
+                    .then((json)=>{
+                        if(json.code!==0)
+                            throw new Error(json);
+                        this.setState({
+                            chunks: [{
+                                title: 'Attention List',
+                                data: json.data,
+                            }],
+                            mode: 'attention_finished',
+                            loading_status: 'done',
+                        });
+                    })
+                    .catch(failed);
             } else {
                 console.log('nothing to load');
                 return;

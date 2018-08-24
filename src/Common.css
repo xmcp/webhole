@@ -15,12 +15,12 @@
 }
 
 .centered-line::before {
-    right: 0.5em;
+    right: 1em;
     margin-left: -50%;
 }
 
 .centered-line::after {
-    left: 0.5em;
+    left: 1em;
     margin-right: -50%;
 }
 

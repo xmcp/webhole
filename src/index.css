@@ -31,6 +31,7 @@ input {
     border-radius: 5px;
     border: 1px solid black;
     outline: none;
+    line-height: 2em;
 }
 
 audio {
@@ -40,4 +41,22 @@ audio {
 pre {
     white-space: pre-wrap;
     font-family: '微软雅黑', 'Microsoft YaHei', sans-serif;
+}
+
+button, .button {
+    color: black;
+    background-color: rgba(255,255,255,.5);
+    border-radius: 5px;
+    text-align: center;
+    border: 1px solid black;
+    line-height: 2em;
+    margin: 0 .5em;
+}
+
+button:disabled, .button:disabled {
+    background-color: rgba(128,128,128,.5);
+}
+
+code {
+    font-family: Consolas, Courier, monospace;
 }

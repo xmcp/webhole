@@ -41,10 +41,11 @@
 }
 @media screen and (max-width: 600px) {
     .sidebar {
-        width: calc(100% - 50px);
+        width: calc(100% - 25px);
+        padding: 1em .5em;
     }
     .sidebar-on .sidebar {
-        left: 50px;
+        left: 25px;
     }
 }
 
