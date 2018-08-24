@@ -93,9 +93,6 @@
     cursor: default;
     transition: margin-left 200ms ease-out;
 }
-.left-container .flow-item-row:hover {
-    margin-left: -10px;
-}
 
 .flow-item-row p.img {
     text-align: center;

@@ -116,6 +116,35 @@ class FlowItemRow extends PureComponent {
             });
     }
 
+    toggle_attention(callback) {
+        let data=new URLSearchParams();
+        const next_attention=!this.state.attention;
+        data.append('token', this.props.token);
+        data.append('pid', this.state.info.pid);
+        data.append('switch', next_attention ? '1' : '0');
+        fetch(API_BASE+'/api.php?action=attention', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: data,
+        })
+            .then((res)=>res.json())
+            .then((json)=>{
+                if(json.code!==0 && (!json.msg || json.msg!=='已经关注过辣'))
+                    throw new Error(json);
+
+                this.setState({
+                    attention: next_attention,
+                }, callback);
+            })
+            .catch((e)=>{
+                alert('设置关注失败');
+                console.trace(e);
+                callback();
+            });
+    }
+
     show_sidebar() {
         this.props.show_sidebar(
             '帖子详情',
@@ -123,13 +152,27 @@ class FlowItemRow extends PureComponent {
                 <div className="box box-tip">
                     <a onClick={()=>{
                         this.props.show_sidebar('帖子详情',<p className="box box-tip">加载中……</p>);
-                        this.load_replies(this.show_sidebar);
+                        this.load_replies(this.show_sidebar.bind(this));
                     }}>刷新回复</a>
+                    {this.props.token &&
+                        <span>
+                            &nbsp;/&nbsp;
+                            <a onClick={()=>{
+                                this.props.show_sidebar('帖子详情',<p className="box box-tip">加载中……</p>);
+                                this.toggle_attention(this.show_sidebar.bind(this));
+                            }}>
+                                {this.state.attention ?
+                                    <span><span className="icon icon-star-ok" />已关注</span> :
+                                    <span><span className="icon icon-star" />未关注</span>
+                                }
+                            </a>
+                        </span>
+                    }
                 </div>
                 <FlowItem info={this.state.info} color_picker={this.color_picker} attention={this.state.attention} />
                 {this.state.replies.map((reply)=>(
-                    <LazyLoad offset={500} height="5em" overflow={true} once={true}>
-                        <Reply key={reply.cid} info={reply} color_picker={this.color_picker} />
+                    <LazyLoad key={reply.cid} offset={500} height="5em" overflow={true} once={true}>
+                        <Reply info={reply} color_picker={this.color_picker} />
                     </LazyLoad>
                 ))}
             </div>

@@ -30,6 +30,9 @@ export class LoginForm extends Component {
         data.append('password', this.password_ref.current.value);
         fetch(LOGIN_BASE+'/login.php?platform=hole_xmcp_ml', {
             method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
             body: data,
         })
             .then((res)=>res.json())
