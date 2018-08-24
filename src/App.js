@@ -9,11 +9,12 @@ class App extends Component {
         this.state={
             sidebar_title: null,
             sidebar_content: null,
+            mode: 'list', // list, single, search
             search_text: null,
             flow_render_key: +new Date(),
         };
         this.show_sidebar_bound=this.show_sidebar.bind(this);
-        this.set_search_text_bound=this.set_search_text.bind(this);
+        this.set_mode_bound=this.set_mode.bind(this);
     }
 
     show_sidebar(title,content) {
@@ -23,9 +24,10 @@ class App extends Component {
         });
     }
 
-    set_search_text(text) {
+    set_mode(mode,search_text) {
         this.setState({
-            search_text: text,
+            mode: mode,
+            search_text: search_text,
             flow_render_key: +new Date(),
         });
     }
@@ -36,10 +38,10 @@ class App extends Component {
                 <div className="bg-img" style={{
                     backgroundImage: 'url('+(localStorage['REPLACE_ERIRI_WITH_URL'] || 'static/eriri_bg.jpg')+')'
                 }} />
-                <Title callback={this.show_sidebar_bound} set_search_text={this.set_search_text_bound} />
+                <Title show_sidebar={this.show_sidebar_bound} set_mode={this.set_mode_bound} />
                 <div className="left-container">
-                    <Flow key={this.state.flow_render_key}
-                        callback={this.show_sidebar_bound} search_text={this.state.search_text}
+                    <Flow key={this.state.flow_render_key} show_sidebar={this.show_sidebar_bound}
+                        mode={this.state.mode} search_text={this.state.search_text}
                     />
                     <br />
                 </div>

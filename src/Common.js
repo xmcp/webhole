@@ -38,14 +38,14 @@ export function TitleLine(props) {
 
 export class HighlightedText extends PureComponent {
     render() {
-        let parts=[].concat.apply([], props.text.split(PID_RE).map((p)=>p.split(NICKNAME_RE)));
+        let parts=[].concat.apply([], this.props.text.split(PID_RE).map((p)=>p.split(NICKNAME_RE)));
         return (
             <Linkify properties={{target: '_blank'}}>
                 <pre>
                     {parts.map((p,idx)=>(
                         <span key={idx}>{
                             PID_RE.test(p) ? <a href={'##'+p} target="_blank">{p}</a> :
-                            NICKNAME_RE.test(p) ? <span style={{backgroundColor: props.color_picker.get(p)}}>{p}</span> :
+                            NICKNAME_RE.test(p) ? <span style={{backgroundColor: this.props.color_picker.get(p)}}>{p}</span> :
                             p
                         }</span>
                     ))}

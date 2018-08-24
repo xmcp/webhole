@@ -99,12 +99,12 @@ class FlowItemRow extends PureComponent {
     }
 
     show_sidebar() {
-        this.props.callback(
+        this.props.show_sidebar(
             '帖子详情',
             <div className="flow-item-row sidebar-flow-item">
                 <div className="box box-tip">
                     <a onClick={()=>{
-                        this.props.callback('帖子详情',<p className="box box-tip">加载中……</p>);
+                        this.props.show_sidebar('帖子详情',<p className="box box-tip">加载中……</p>);
                         this.load_replies(this.show_sidebar);
                     }}>更新回复</a>
                 </div>
@@ -149,7 +149,7 @@ function FlowChunk(props) {
             <TitleLine text={props.title} />
             {props.list.map((info)=>(
                 <LazyLoad key={info.pid} offset={500} height="15em" once={true} >
-                    <FlowItemRow info={info} callback={props.callback} />
+                    <FlowItemRow info={info} show_sidebar={props.show_sidebar} />
                 </LazyLoad>
             ))}
         </div>
@@ -160,11 +160,7 @@ export class Flow extends PureComponent {
     constructor(props) {
         super(props);
         this.state={
-            mode: (
-                props.search_text===null ? 'list' :
-                props.search_text.charAt(0)==='#' ? 'single' :
-                'search'
-            ),
+            mode: props.mode,
             search_param: props.search_text,
             loaded_pages: 0,
             chunks: [],
@@ -294,7 +290,7 @@ export class Flow extends PureComponent {
         return (
             <div className="flow-container">
                 {this.state.chunks.map((chunk)=>(
-                    <FlowChunk title={chunk.title} list={chunk.data} key={chunk.title} callback={this.props.callback} />
+                    <FlowChunk title={chunk.title} list={chunk.data} key={chunk.title} show_sidebar={this.props.show_sidebar} />
                 ))}
                 {this.state.loading_status==='failed' &&
                     <div className="box box-tip">

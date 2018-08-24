@@ -45,7 +45,11 @@ class ControlBar extends PureComponent {
         this.state={
             search_text: '',
         };
-        this.set_search_text=props.set_search_text;
+        this.set_mode=props.set_mode;
+
+        this.on_change_bound=this.on_change.bind(this);
+        this.on_keypress_bound=this.on_keypress.bind(this);
+        this.do_refresh_bound=this.do_refresh.bind(this);
     }
 
     componentDidMount() {
@@ -54,7 +58,7 @@ class ControlBar extends PureComponent {
             this.setState({
                 search_text: text,
             });
-            this.set_search_text(text);
+            this.set_mode(text);
         }
     }
 
@@ -66,7 +70,7 @@ class ControlBar extends PureComponent {
 
     on_keypress(event) {
         if(event.key==='Enter')
-            this.set_search_text(this.state.search_text||null);
+            this.set_mode('search',this.state.search_text||null);
     }
 
     do_refresh() {
@@ -74,20 +78,19 @@ class ControlBar extends PureComponent {
         this.setState({
             search_text: '',
         });
-        this.set_search_text(null);
-
+        this.set_mode('list',null);
     }
 
     render() {
         return (
             <div className="control-bar">
-                <a className="refresh-btn" onClick={this.do_refresh.bind(this)}>最新树洞</a>
+                <a className="refresh-btn" onClick={this.do_refresh_bound}>最新树洞</a>
                 &nbsp;
                 <input value={this.state.search_text} placeholder="搜索 或 #PID"
-                       onChange={this.on_change.bind(this)} onKeyPress={this.on_keypress.bind(this)}
+                       onChange={this.on_change_bound} onKeyPress={this.on_keypress_bound}
                 />
                 &nbsp;
-                <a onClick={()=>{this.props.callback(
+                <a onClick={()=>{this.props.show_sidebar(
                     '关于 P大树洞（非官方） 网页版',
                     HELP_TEXT
                 )}}>Help</a>
@@ -101,7 +104,7 @@ export function Title(props) {
         <div className="title-bar">
             <div className="aux-margin">
                 <p className="title centered-line">P大树洞</p>
-                <ControlBar callback={props.callback} set_search_text={props.set_search_text} />
+                <ControlBar show_sidebar={props.show_sidebar} set_mode={props.set_mode} />
             </div>
         </div>
     )
