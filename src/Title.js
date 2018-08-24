@@ -12,6 +12,7 @@ const HELP_TEXT=(
             <li>在列表中点击帖子可以展开全部回复</li>
             <li>在搜索框输入 #472865 等可以查看指定 ID 的树洞</li>
             <li>新的帖子会在左上角显示一个圆点</li>
+            <li>登录后可以关注帖子</li>
             <li>请注意：使用 HTTPS 访问本站可能会<b>大幅减慢</b>加载速度</li>
             <li>自定义背景图片请修改 <code>localStorage['REPLACE_ERIRI_WITH_URL']</code></li>
         </ul>
@@ -61,8 +62,9 @@ class ControlBar extends PureComponent {
             const text=window.location.hash.substr(1);
             this.setState({
                 search_text: text,
+            }, ()=>{
+                this.on_keypress({key: 'Enter'});
             });
-            this.set_mode(text);
         }
     }
 

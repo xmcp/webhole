@@ -22,6 +22,9 @@ export class LoginForm extends Component {
 
     do_login(event,set_token) {
         event.preventDefault();
+        if(this.state.loading_status==='loading')
+            return;
+
         this.setState({
             loading_status: 'loading',
         });
@@ -75,7 +78,7 @@ export class LoginForm extends Component {
                         </p>
                         <p>
                             {this.state.loading_status==='loading' ?
-                                <button disabled="disbled">正在登录……</button> :
+                                <button disabled="disbled">正在登录</button> :
                                 <button type="submit">登录</button>
                             }
                             <button type="button" onClick={()=>{token.set_value(null);}}>退出</button>
@@ -83,8 +86,8 @@ export class LoginForm extends Component {
                     </form>
                     <div className="box">
                         <ul>
-                            <li>我们不会记录您的密码和个人信息。</li>
-                            <li><b>请勿泄露 Token</b>，它代表您的登录状态，与您的账户唯一对应且泄露后无法重置。</li>
+                            <li>我们不会记录您的密码和个人信息</li>
+                            <li><b>请勿泄露 Token</b>，它代表您的登录状态，与您的账户唯一对应且泄露后无法重置</li>
                             <li>如果您不愿输入密码，可以直接修改 <code>localStorage['TOKEN']</code></li>
                         </ul>
                     </div>
