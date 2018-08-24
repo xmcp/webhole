@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "load-script": "^1.0.0",
+    "pressure": "^2.1.2",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-lazyload": "latest",
