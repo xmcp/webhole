@@ -323,7 +323,7 @@ export class PostForm extends Component {
             <form onSubmit={this.on_submit.bind(this)} className="post-form box">
                 <div className="post-form-bar">
                     <label>
-                        图片：
+                        图片
                         <input ref={this.img_ref} type="file" accept="image/*"
                             {...this.state.loading_status!=='done' ? {disabled: true} : {}} />
                     </label>
@@ -338,7 +338,6 @@ export class PostForm extends Component {
                         </button>
                     }
                 </div>
-                <br />
                 <SafeTextarea ref={this.area_ref} id="new_post" on_change={this.on_change_bound} />
             </form>
         )

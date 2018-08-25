@@ -27,6 +27,12 @@
     text-align: center;
     color: black;
 }
+
+.control-btn .icon:before {
+    margin: .5em;
+    display: inline-block;
+}
+
 .control-bar input {
     flex: auto;
     color: black;

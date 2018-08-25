@@ -91,7 +91,22 @@
 
 .left-container .flow-item-row {
     cursor: default;
-    transition: margin-left 200ms ease-out;
+}
+
+.flow-item-row:hover::before {
+    content: '>>';
+    position: absolute;
+    left: 10px;
+    margin-top: 1.5em;
+    color: white;
+    text-shadow: 0 0 5px #000;
+    font-family: 'Consolas', 'Courier', monospace;
+}
+
+@media screen and (max-width: 1200px) {
+    .flow-item-row:hover::before {
+        display: none;
+    }
 }
 
 .flow-item-row p.img {

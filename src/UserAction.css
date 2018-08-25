@@ -11,8 +11,8 @@
 .reply-form textarea {
     resize: vertical;
     flex: 1;
-    min-height: 3em;
-    height: 5em;
+    min-height: 2em;
+    height: 4em;
 }
 .reply-form button {
     flex: 0 0 3em;
@@ -21,9 +21,13 @@
 .post-form-bar {
     line-height: 2em;
     display: flex;
+    margin-bottom: .5em;
 }
 .post-form-bar label {
     flex: 1;
+}
+.post-form-bar input[type=file] {
+    border: 0;
 }
 @media screen and (max-width: 600px) {
     .post-form-bar input[type=file] {
