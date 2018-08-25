@@ -6,3 +6,16 @@
 .login-form button {
     min-width: 100px;
 }
+
+.reply-form {
+    display: flex;
+}
+.reply-form textarea {
+    resize: vertical;
+    flex: 1;
+    min-height: 3em;
+    height: 5em;
+}
+.reply-form button {
+    flex: 0 0 50px;
+}

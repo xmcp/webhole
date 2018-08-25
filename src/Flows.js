@@ -1,14 +1,14 @@
 import React, {Component, PureComponent} from 'react';
 import {ColorPicker} from './color_picker';
-import {Time, TitleLine, HighlightedText} from './Common.js';
+import {Time, TitleLine, HighlightedText} from './Common';
 import './Flows.css';
 import LazyLoad from 'react-lazyload';
-import {AudioWidget} from './AudioWidget.js';
-import {TokenCtx} from './UserAction';
+import {AudioWidget} from './AudioWidget';
+import {TokenCtx, ReplyForm} from './UserAction';
 
+import {API_BASE} from './Common';
 const IMAGE_BASE='http://www.pkuhelper.com/services/pkuhole/images/';
 const AUDIO_BASE='/audio_proxy/';
-const API_BASE=window.location.protocol==='https:' ? '/api_proxy' : 'http://www.pkuhelper.com/services/pkuhole';
 
 const SEARCH_PAGESIZE=50;
 const CLICKABLE_TAGS={a: true, audio: true};
@@ -145,15 +145,17 @@ class FlowItemRow extends PureComponent {
             });
     }
 
+    reload_sidebar() {
+        this.props.show_sidebar('帖子详情',<p className="box box-tip">加载中……</p>);
+        this.load_replies(this.show_sidebar.bind(this));
+    }
+
     show_sidebar() {
         this.props.show_sidebar(
             '帖子详情',
             <div className="flow-item-row sidebar-flow-item">
                 <div className="box box-tip">
-                    <a onClick={()=>{
-                        this.props.show_sidebar('帖子详情',<p className="box box-tip">加载中……</p>);
-                        this.load_replies(this.show_sidebar.bind(this));
-                    }}>刷新回复</a>
+                    <a onClick={this.reload_sidebar.bind(this)}>刷新回复</a>
                     {this.props.token &&
                         <span>
                             &nbsp;/&nbsp;
@@ -175,6 +177,9 @@ class FlowItemRow extends PureComponent {
                         <Reply info={reply} color_picker={this.color_picker} />
                     </LazyLoad>
                 ))}
+                {this.props.token &&
+                    <ReplyForm pid={this.state.info.pid} token={this.props.token} on_complete={this.reload_sidebar.bind(this)} />
+                }
             </div>
         );
     }

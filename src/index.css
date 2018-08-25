@@ -1,13 +1,16 @@
 body {
     margin: 0;
     padding: 0;
-    font-family: '微软雅黑', 'Microsoft YaHei', sans-serif;
     background-size: cover;
     overflow-x: hidden;
 }
 
 body::-webkit-scrollbar {
     display: none;
+}
+
+body, textarea, pre {
+    font-family: '微软雅黑', 'Microsoft YaHei', sans-serif;
 }
 
 * {
@@ -26,11 +29,13 @@ a {
     cursor: pointer;
 }
 
-input {
-    padding: 0 1em;
+input, textarea {
     border-radius: 5px;
     border: 1px solid black;
     outline: none;
+}
+input {
+    padding: 0 1em;
     line-height: 2em;
 }
 
@@ -40,7 +45,6 @@ audio {
 
 pre {
     white-space: pre-wrap;
-    font-family: '微软雅黑', 'Microsoft YaHei', sans-serif;
 }
 
 button, .button {
