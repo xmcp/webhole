@@ -10,7 +10,6 @@ export function Sidebar(props) {
                     <a onClick={props.do_close}>×</a>
                     &nbsp;{props.title}
                 </p>
-                <br />
                 {props.content}
             </div>
         </div>

@@ -1,5 +1,5 @@
 import React, {Component, PureComponent} from 'react';
-import {LoginForm} from './UserAction';
+import {LoginForm, PostForm} from './UserAction';
 import {TokenCtx} from './UserAction';
 
 import './Title.css';
@@ -112,15 +112,30 @@ class ControlBar extends PureComponent {
                     <input value={this.state.search_text} placeholder="搜索 或 #PID"
                            onChange={this.on_change_bound} onKeyPress={this.on_keypress_bound}
                     />
-                    <a className="control-btn" onClick={()=>{this.props.show_sidebar('登录',<LoginForm />)}}>
-                        <span className={'icon icon-'+(token ? 'login-ok' : 'login')} />
+                    <a className="control-btn" onClick={()=>{
+                        this.props.show_sidebar(
+                            'P大树洞（非官方）网页版',
+                            <div>
+                                <LoginForm />
+                                {HELP_TEXT}
+                            </div>
+                        )
+                    }}>
+                        <span className={'icon icon-'+(token ? 'about' : 'login')} />
                     </a>
-                    <a className="control-btn" onClick={()=>{this.props.show_sidebar(
-                        '关于 P大树洞（非官方） 网页版',
-                        HELP_TEXT
-                    )}}>
-                        <span className="icon icon-help" />
-                    </a>
+                    {!!token &&
+                        <a className="control-btn" onClick={()=>{
+                            this.props.show_sidebar(
+                                '发表树洞',
+                                <PostForm token={token} on_complete={()=>{
+                                    this.props.show_sidebar('',null);
+                                    this.do_refresh();
+                                }} />
+                            )
+                        }}>
+                            <span className="icon icon-plus" />
+                        </a>
+                    }
                 </div>
             )}</TokenCtx.Consumer>
         )
@@ -131,7 +146,13 @@ export function Title(props) {
     return (
         <div className="title-bar">
             <div className="aux-margin">
-                <p className="title centered-line">P大树洞</p>
+                <p className="title centered-line">
+                    P大树洞
+                    &nbsp;
+                    <a href="https://github.com/xmcp/ashole" target="_blank">
+                        <span className="icon icon-github" />
+                    </a>
+                </p>
                 <ControlBar show_sidebar={props.show_sidebar} set_mode={props.set_mode} />
             </div>
         </div>

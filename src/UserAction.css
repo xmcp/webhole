@@ -2,11 +2,9 @@
     margin: 1em 0;
     text-align: center;
 }
-
 .login-form button {
     min-width: 100px;
 }
-
 .reply-form {
     display: flex;
 }
@@ -17,5 +15,27 @@
     height: 5em;
 }
 .reply-form button {
-    flex: 0 0 50px;
+    flex: 0 0 3em;
+}
+
+.post-form-bar {
+    line-height: 2em;
+    display: flex;
+}
+.post-form-bar label {
+    flex: 1;
+}
+@media screen and (max-width: 600px) {
+    .post-form-bar input[type=file] {
+        width: 150px;
+    }
+}
+.post-form-bar button {
+    flex: 0 0 8em;
+}
+.post-form textarea {
+    resize: vertical;
+    width: 100%;
+    min-height: 5em;
+    height: 20em;
 }

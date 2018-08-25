@@ -131,8 +131,13 @@ class FlowItemRow extends PureComponent {
         })
             .then((res)=>res.json())
             .then((json)=>{
-                if(json.code!==0 && (!json.msg || json.msg!=='已经关注过辣'))
-                    throw new Error(json);
+                if(json.code!==0) {
+                    if(json.msg && json.msg==='已经关注过辣') {}
+                    else {
+                        if(json.msg) alert(json.msg);
+                        throw new Error(json);
+                    }
+                }
 
                 this.setState({
                     attention: next_attention,
@@ -164,8 +169,8 @@ class FlowItemRow extends PureComponent {
                                 this.toggle_attention(this.show_sidebar.bind(this));
                             }}>
                                 {this.state.attention ?
-                                    <span><span className="icon icon-star-ok" />已关注</span> :
-                                    <span><span className="icon icon-star" />未关注</span>
+                                    <span><span className="icon icon-star-ok" />&nbsp;已关注</span> :
+                                    <span><span className="icon icon-star" />&nbsp;未关注</span>
                                 }
                             </a>
                         </span>
@@ -382,7 +387,11 @@ export class Flow extends PureComponent {
                         <a onClick={()=>{this.load_page(this.state.loaded_pages+1)}}>重新加载</a>
                     </div>
                 }
-                <TitleLine text={this.state.loading_status==='loading' ? 'Loading...' : '© xmcp'} />
+                <TitleLine text={
+                    this.state.loading_status==='loading' ?
+                        <span><span className="icon icon-loading" />&nbsp;Loading...</span> :
+                        '© xmcp'
+                } />
             </div>
         );
     }
