@@ -54,6 +54,29 @@ export const API={
             });
     },
 
+    report: (pid,reason,token)=>{
+        let data=new URLSearchParams();
+        data.append('token',token);
+        data.append('action','report');
+        data.append('pid',pid);
+        data.append('reason',reason);
+        return fetch(API_BASE+'/api.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: data,
+        })
+            .then((res)=>res.json())
+            .then((json)=>{
+                if(json.code!==0) {
+                    if(json.msg) alert(json.msg);
+                    throw new Error(json);
+                }
+                return json;
+            });
+    },
+
     get_list: (page,token)=>{
         return fetch(
             API_BASE+'/api.php?action=getlist'+

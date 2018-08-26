@@ -42,7 +42,7 @@ function load_single_meta(show_sidebar,token) {
                 )
             })
             .catch((e)=>{
-                console.trace(e);
+                console.error(e);
                 show_sidebar(
                     '帖子详情',
                     <div className="box box-tip">
@@ -136,7 +136,7 @@ class FlowSidebar extends PureComponent {
                 });
             })
             .catch((e)=>{
-                console.trace(e);
+                console.error(e);
                 this.setState({
                     replies: [],
                     loading_status: 'done',
@@ -164,8 +164,22 @@ class FlowSidebar extends PureComponent {
                     loading_status: 'done'
                 });
                 alert('设置关注失败');
-                console.trace(e);
+                console.error(e);
             });
+    }
+
+    report() {
+        let reason=prompt(`举报 #${this.state.info.pid} 的理由：`);
+        if(reason!==null) {
+            API.report(this.state.info.pid,reason,this.props.token)
+                .then((json)=>{
+                    alert('举报成功');
+                })
+                .catch((e)=>{
+                    alert('举报失败');
+                    console.error(e);
+                })
+        }
     }
 
     render() {
@@ -174,13 +188,19 @@ class FlowSidebar extends PureComponent {
         return (
             <div className="flow-item-row sidebar-flow-item">
                 <div className="box box-tip">
+                    {this.props.token &&
+                        <span>
+                            <a onClick={this.report.bind(this)}>举报</a>
+                            &nbsp;/&nbsp;
+                        </span>
+                    }
                     <a onClick={this.load_replies.bind(this)}>刷新回复</a>
                     {this.props.token &&
                         <span>
                             &nbsp;/&nbsp;
-                        <a onClick={()=>{
-                            this.toggle_attention();
-                        }}>
+                            <a onClick={()=>{
+                                this.toggle_attention();
+                            }}>
                                 {this.state.attention ?
                                     <span><span className="icon icon-star-ok" />&nbsp;已关注</span> :
                                     <span><span className="icon icon-star" />&nbsp;未关注</span>
@@ -239,7 +259,7 @@ class FlowItemRow extends PureComponent {
                 }),callback);
             })
             .catch((e)=>{
-                console.trace(e);
+                console.error(e);
                 this.setState({
                     replies: [],
                     reply_status: 'failed',
@@ -312,7 +332,7 @@ export class Flow extends PureComponent {
 
     load_page(page) {
         const failed=(err)=>{
-            console.trace(err);
+            console.error(err);
             this.setState((prev,props)=>({
                 loaded_pages: prev.loaded_pages-1,
                 loading_status: 'failed',

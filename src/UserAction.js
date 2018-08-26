@@ -60,7 +60,7 @@ export class LoginForm extends Component {
                 this.setState({
                     loading_status: 'done',
                 });
-                console.trace(e);
+                console.error(e);
             });
     }
 
@@ -162,7 +162,7 @@ export class ReplyForm extends Component {
                 this.props.on_complete();
             })
             .catch((e)=>{
-                console.trace(e);
+                console.error(e);
                 alert('回复失败\n（树洞服务器经常抽风，其实有可能已经回复上了，不妨点“刷新回复”看一看）');
                 this.setState({
                     loading_status: 'done',
@@ -236,7 +236,7 @@ export class PostForm extends Component {
                 this.props.on_complete();
             })
             .catch((e)=>{
-                console.trace(e);
+                console.error(e);
                 alert('发表失败');
                 this.setState({
                     loading_status: 'done',
