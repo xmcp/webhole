@@ -17,6 +17,41 @@ const PREVIEW_REPLY_COUNT=10;
 
 window.LATEST_POST_ID=parseInt(localStorage['_LATEST_POST_ID'],10)||0;
 
+function load_single_meta(show_sidebar,token) {
+    return (pid)=>{
+        const color_picker=new ColorPicker();
+        show_sidebar(
+            '帖子详情',
+            <div className="box box-tip">
+                正在加载 #{pid}
+            </div>
+        );
+        Promise.all([
+            API.get_single(pid,token),
+            API.load_replies(pid,token,color_picker),
+        ])
+            .then((res)=>{
+                const [single,replies]=res;
+                show_sidebar(
+                    '帖子详情',
+                    <FlowSidebar
+                        info={single.data} replies={replies.data} attention={replies.attention}
+                        token={token} show_sidebar={show_sidebar} color_picker={color_picker}
+                    />
+                )
+            })
+            .catch((e)=>{
+                console.trace(e);
+                show_sidebar(
+                    '帖子详情',
+                    <div className="box box-tip">
+                        <a onClick={()=>load_single_meta(show_sidebar,token)}>重新加载</a>
+                    </div>
+                );
+            })
+    };
+}
+
 function Reply(props) {
     return (
         <div className={'flow-reply box'} style={props.info._display_color ? {
@@ -26,7 +61,7 @@ function Reply(props) {
                 <code className="box-id">#{props.info.cid}</code>&nbsp;
                 <Time stamp={props.info.timestamp} />
             </div>
-            <HighlightedText text={props.info.text} color_picker={props.color_picker} />
+            <HighlightedText text={props.info.text} color_picker={props.color_picker} show_pid={props.show_pid} />
         </div>
     );
 }
@@ -51,11 +86,114 @@ function FlowItem(props) {
                 <code className="box-id">#{props.info.pid}</code>&nbsp;
                 <Time stamp={props.info.timestamp} />
             </div>
-            <HighlightedText text={props.info.text} color_picker={props.color_picker} />
+            <HighlightedText text={props.info.text} color_picker={props.color_picker} show_pid={props.show_pid} />
             {props.info.type==='image' ? <p className="img"><img src={IMAGE_BASE+props.info.url} /></p> : null}
             {props.info.type==='audio' ? <AudioWidget src={AUDIO_BASE+props.info.url} /> : null}
         </div>
     );
+}
+
+class FlowSidebar extends PureComponent {
+    constructor(props) {
+        super(props);
+        this.state={
+            attention: props.attention,
+            info: props.info,
+            replies: props.replies,
+            loading_status: 'done',
+        };
+        this.color_picker=props.color_picker;
+        this.show_pid=load_single_meta(this.props.show_sidebar,this.props.token);
+        this.syncState=props.sync_state||(()=>{});
+    }
+
+    load_replies() {
+        this.setState({
+            loading_status: 'loading',
+        });
+        API.load_replies(this.state.info.pid,this.props.token,this.color_picker)
+            .then((json)=>{
+                this.setState((prev,props)=>({
+                    replies: json.data,
+                    info: Object.assign({}, prev.info, {
+                        reply: ''+json.data.length,
+                    }),
+                    attention: !!json.attention,
+                    loading_status: 'done',
+                }), ()=>{
+                    this.syncState({
+                        replies: this.state.replies,
+                        attention: this.state.attention,
+                        info: this.state.info,
+                    });
+                });
+            })
+            .catch((e)=>{
+                console.trace(e);
+                this.setState({
+                    replies: [],
+                    loading_status: 'done',
+                });
+            });
+    }
+
+    toggle_attention() {
+        this.setState({
+            loading_status: 'loading',
+        });
+        const next_attention=!this.state.attention;
+        API.set_attention(this.state.info.pid,next_attention,this.props.token)
+            .then((json)=>{
+                this.setState({
+                    loading_status: 'done',
+                    attention: next_attention,
+                });
+                this.syncState({
+                    attention: next_attention,
+                });
+            })
+            .catch((e)=>{
+                this.setState({
+                    loading_status: 'done'
+                });
+                alert('设置关注失败');
+                console.trace(e);
+            });
+    }
+
+    render() {
+        if(this.state.loading_status==='loading')
+            return (<p className="box box-tip">加载中……</p>);
+        return (
+            <div className="flow-item-row sidebar-flow-item">
+                <div className="box box-tip">
+                    <a onClick={this.load_replies.bind(this)}>刷新回复</a>
+                    {this.props.token &&
+                        <span>
+                            &nbsp;/&nbsp;
+                        <a onClick={()=>{
+                            this.toggle_attention();
+                        }}>
+                                {this.state.attention ?
+                                    <span><span className="icon icon-star-ok" />&nbsp;已关注</span> :
+                                    <span><span className="icon icon-star" />&nbsp;未关注</span>
+                                }
+                            </a>
+                        </span>
+                    }
+                </div>
+                <FlowItem info={this.state.info} color_picker={this.color_picker} attention={this.state.attention} show_pid={this.show_pid} />
+                {this.state.replies.map((reply)=>(
+                    <LazyLoad key={reply.cid} offset={500} height="5em" overflow={true} once={true}>
+                        <Reply info={reply} color_picker={this.color_picker} show_pid={this.show_pid} />
+                    </LazyLoad>
+                ))}
+                {this.props.token &&
+                    <ReplyForm pid={this.state.info.pid} token={this.props.token} on_complete={this.load_replies.bind(this)} />
+                }
+            </div>
+        )
+    }
 }
 
 class FlowItemRow extends PureComponent {
@@ -68,6 +206,7 @@ class FlowItemRow extends PureComponent {
             attention: false,
         };
         this.color_picker=new ColorPicker();
+        this.show_pid=load_single_meta(this.props.show_sidebar,this.props.token);
     }
 
     componentDidMount() {
@@ -81,20 +220,12 @@ class FlowItemRow extends PureComponent {
         this.setState({
             reply_status: 'loading',
         });
-        API.load_replies(this.state.info.pid,this.props.token)
+        API.load_replies(this.state.info.pid,this.props.token,this.color_picker)
             .then((json)=>{
-                const replies=json.data
-                    .sort((a,b)=>{
-                        return parseInt(a.timestamp,10)-parseInt(b.timestamp,10);
-                    })
-                    .map((info)=>{
-                        info._display_color=this.color_picker.get(info.name);
-                        return info;
-                    });
                 this.setState((prev,props)=>({
-                    replies: replies,
+                    replies: json.data,
                     info: Object.assign({}, prev.info, {
-                        reply: ''+replies.length,
+                        reply: ''+json.data.length,
                     }),
                     attention: !!json.attention,
                     reply_status: 'done',
@@ -109,75 +240,30 @@ class FlowItemRow extends PureComponent {
             });
     }
 
-    toggle_attention(callback) {
-        const next_attention=!this.state.attention;
-        API.set_attention(this.state.info.pid,next_attention,this.props.token)
-            .then((json)=>{
-                this.setState({
-                    attention: next_attention,
-                }, callback);
-            })
-            .catch((e)=>{
-                alert('设置关注失败');
-                console.trace(e);
-                callback();
-            });
-    }
-
-    reload_sidebar() {
-        this.props.show_sidebar('帖子详情',<p className="box box-tip">加载中……</p>);
-        this.load_replies(this.show_sidebar.bind(this));
-    }
-
     show_sidebar() {
         this.props.show_sidebar(
             '帖子详情',
-            <div className="flow-item-row sidebar-flow-item">
-                <div className="box box-tip">
-                    <a onClick={this.reload_sidebar.bind(this)}>刷新回复</a>
-                    {this.props.token &&
-                        <span>
-                            &nbsp;/&nbsp;
-                            <a onClick={()=>{
-                                this.props.show_sidebar('帖子详情',<p className="box box-tip">加载中……</p>);
-                                this.toggle_attention(this.show_sidebar.bind(this));
-                            }}>
-                                {this.state.attention ?
-                                    <span><span className="icon icon-star-ok" />&nbsp;已关注</span> :
-                                    <span><span className="icon icon-star" />&nbsp;未关注</span>
-                                }
-                            </a>
-                        </span>
-                    }
-                </div>
-                <FlowItem info={this.state.info} color_picker={this.color_picker} attention={this.state.attention} />
-                {this.state.replies.map((reply)=>(
-                    <LazyLoad key={reply.cid} offset={500} height="5em" overflow={true} once={true}>
-                        <Reply info={reply} color_picker={this.color_picker} />
-                    </LazyLoad>
-                ))}
-                {this.props.token &&
-                    <ReplyForm pid={this.state.info.pid} token={this.props.token} on_complete={this.reload_sidebar.bind(this)} />
-                }
-            </div>
+            <FlowSidebar
+                info={this.state.info} replies={this.state.replies} attention={this.state.attention} sync_state={this.setState.bind(this)}
+                token={this.props.token} show_sidebar={this.props.show_sidebar} color_picker={this.color_picker}
+            />
         );
     }
 
     render() {
-        // props.do_show_details
         return (
             <div className="flow-item-row" onClick={(event)=>{
                 if(!CLICKABLE_TAGS[event.target.tagName.toLowerCase()])
                     this.show_sidebar();
             }}>
-                <FlowItem info={this.state.info} color_picker={this.color_picker} attention={this.state.attention} />
+                <FlowItem info={this.state.info} color_picker={this.color_picker} attention={this.state.attention} show_pid={this.show_pid} />
                 <div className="flow-reply-row">
                     {this.state.reply_status==='loading' && <div className="box box-tip">加载中</div>}
                     {this.state.reply_status==='failed' &&
                         <div className="box box-tip"><a onClick={()=>{this.load_replies()}}>重新加载</a></div>
                     }
                     {this.state.replies.slice(0,PREVIEW_REPLY_COUNT).map((reply)=>(
-                        <Reply key={reply.cid} info={reply} color_picker={this.color_picker} />
+                        <Reply key={reply.cid} info={reply} color_picker={this.color_picker} show_pid={this.show_pid} />
                     ))}
                     {this.state.replies.length>PREVIEW_REPLY_COUNT &&
                         <div className="box box-tip">还有 {this.state.replies.length-PREVIEW_REPLY_COUNT} 条</div>

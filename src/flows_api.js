@@ -5,7 +5,7 @@ function token_param(token) {
 }
 
 export const API={
-    load_replies: (pid,token)=>{
+    load_replies: (pid,token,color_picker)=>{
         return fetch(
             API_BASE+'/api.php?action=getcomment'+
             '&pid='+pid+
@@ -15,6 +15,16 @@ export const API={
             .then((json)=>{
                 if(json.code!==0)
                     throw new Error(json);
+
+                json.data=json.data
+                    .sort((a,b)=>{
+                        return parseInt(a.timestamp,10)-parseInt(b.timestamp,10);
+                    })
+                    .map((info)=>{
+                        info._display_color=color_picker.get(info.name);
+                        return info;
+                    });
+
                 return json;
             });
     },
