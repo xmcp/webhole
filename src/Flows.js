@@ -94,8 +94,15 @@ function FlowItem(props) {
                 <Time stamp={props.info.timestamp} />
             </div>
             <HighlightedText text={props.info.text} color_picker={props.color_picker} show_pid={props.show_pid} />
-            {props.info.type==='image' ? <p className="img"><img src={IMAGE_BASE+props.info.url} /></p> : null}
-            {props.info.type==='audio' ? <AudioWidget src={AUDIO_BASE+props.info.url} /> : null}
+            {props.info.type==='image' &&
+                <p className="img">
+                    {props.img_clickable ?
+                        <a href={IMAGE_BASE+props.info.url} target="_blank"><img src={IMAGE_BASE+props.info.url} /></a> :
+                        <img src={IMAGE_BASE+props.info.url} />
+                    }
+                </p>
+            }
+            {props.info.type==='audio' && <AudioWidget src={AUDIO_BASE+props.info.url} />}
         </div>
     );
 }
@@ -209,7 +216,8 @@ class FlowSidebar extends PureComponent {
                         </span>
                     }
                 </div>
-                <FlowItem info={this.state.info} color_picker={this.color_picker} attention={this.state.attention} show_pid={this.show_pid} />
+                <FlowItem info={this.state.info} attention={this.state.attention} img_clickable={true}
+                    color_picker={this.color_picker} show_pid={this.show_pid} />
                 {this.state.replies.map((reply)=>(
                     <LazyLoad key={reply.cid} offset={500} height="5em" overflow={true} once={true}>
                         <Reply info={reply} color_picker={this.color_picker} show_pid={this.show_pid} />
@@ -283,7 +291,8 @@ class FlowItemRow extends PureComponent {
                 if(!CLICKABLE_TAGS[event.target.tagName.toLowerCase()])
                     this.show_sidebar();
             }}>
-                <FlowItem info={this.state.info} color_picker={this.color_picker} attention={this.state.attention} show_pid={this.show_pid} />
+                <FlowItem info={this.state.info} attention={this.state.attention} img_clickable={false}
+                    color_picker={this.color_picker} show_pid={this.show_pid} />
                 <div className="flow-reply-row">
                     {this.state.reply_status==='loading' && <div className="box box-tip">加载中</div>}
                     {this.state.reply_status==='failed' &&

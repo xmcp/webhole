@@ -100,8 +100,10 @@ export const API={
         )
             .then((res)=>res.json())
             .then((json)=>{
-                if(json.code!==0)
+                if(json.code!==0) {
+                    if(json.msg) alert(json.msg);
                     throw new Error(json);
+                }
                 return json;
             });
     },
@@ -114,8 +116,10 @@ export const API={
         )
             .then((res)=>res.json())
             .then((json)=>{
-                if(json.code!==0)
+                if(json.code!==0) {
+                    if(json.msg) alert(json.msg);
                     throw new Error(json);
+                }
                 return json;
             });
     },
@@ -127,8 +131,10 @@ export const API={
         )
             .then((res)=>res.json())
             .then((json)=>{
-                if(json.code!==0)
+                if(json.code!==0) {
+                    if(json.msg) alert(json.msg);
                     throw new Error(json);
+                }
                 return json;
             });
     }

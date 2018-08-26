@@ -46,7 +46,7 @@ export class HighlightedText extends PureComponent {
                 <pre>
                     {parts.map((p,idx)=>(
                         <span key={idx}>{
-                            PID_RE.test(p) ? <a onClick={()=>{this.props.show_pid(p)}}>{p}</a> :
+                            PID_RE.test(p) ? <a href={'##'+p} onClick={(e)=>{e.preventDefault(); this.props.show_pid(p);}}>{p}</a> :
                             NICKNAME_RE.test(p) ? <span style={{backgroundColor: this.props.color_picker.get(p)}}>{p}</span> :
                             p
                         }</span>

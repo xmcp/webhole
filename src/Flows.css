@@ -23,7 +23,7 @@
     align-items: flex-start;
     width: calc(100% - 625px);
     margin-left: -25px;
-    padding-left: 20px;
+    padding-left: 18px;
     overflow-x: auto;
 }
 
@@ -63,7 +63,7 @@
 .left-container .flow-reply {
     flex: 0 0 300px;
     max-height: 15em;
-    margin-right: -5px;
+    margin-right: -7px;
     overflow-y: hidden;
 }
 
