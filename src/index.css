@@ -3,6 +3,7 @@ body {
     padding: 0;
     background-size: cover;
     overflow-x: hidden;
+    user-select: none;
 }
 
 body::-webkit-scrollbar {

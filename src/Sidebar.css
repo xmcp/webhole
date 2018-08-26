@@ -16,6 +16,7 @@
 }
 
 .sidebar {
+    user-select: text;
     transition: left 150ms ease-out;
     position: fixed;
     left: 100%;

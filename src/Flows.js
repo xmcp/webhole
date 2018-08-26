@@ -1,4 +1,5 @@
 import React, {Component, PureComponent} from 'react';
+import copy from 'copy-to-clipboard';
 import {ColorPicker} from './color_picker';
 import {Time, TitleLine, HighlightedText} from './Common';
 import './Flows.css';
@@ -67,6 +68,11 @@ function Reply(props) {
 }
 
 function FlowItem(props) {
+    function copy_link(event) {
+        event.preventDefault();
+        copy(event.target.href);
+    }
+
     return (
         <div className="flow-item box">
             {parseInt(props.info.pid,10)>window.LATEST_POST_ID && <div className="flow-item-dot" /> }
@@ -83,7 +89,8 @@ function FlowItem(props) {
                         <span className="icon icon-reply" />
                     </span>
                 }
-                <code className="box-id">#{props.info.pid}</code>&nbsp;
+                <code className="box-id"><a href={'##'+props.info.pid} onClick={copy_link}>#{props.info.pid}</a></code>
+                &nbsp;
                 <Time stamp={props.info.timestamp} />
             </div>
             <HighlightedText text={props.info.text} color_picker={props.color_picker} show_pid={props.show_pid} />
