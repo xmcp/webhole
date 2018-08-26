@@ -1,6 +1,8 @@
 # AsHole
 React版P大树洞，[hole.xmcp.ml](http://hole.xmcp.ml)
 
+
+
 与 PKU Helper 客户端比较，本项目……
 
 **支持** PKU Helper 树洞**支持**的以下功能：
@@ -20,15 +22,16 @@ React版P大树洞，[hole.xmcp.ml](http://hole.xmcp.ml)
 
 **支持** PKU Helper 树洞**不支持**的以下功能：
 
+- 在其他操作系统中使用
 - 显示超过100条搜索结果
 - 按编号搜索树洞
 - 智能调整上传图片的质量
 - 用颜色区分不同人的回复
 - 突出显示未读树洞
-- 显示精确发帖时间
+- 精确显示发帖时间
 - 复制树洞链接
 - 3D Touch 支持
-- 自定义背景图片（没有提供相关UI，请自行修改 `localStorage['REPLACE_ERIRI_WITH_URL']`）
+- 自定义背景图片（没有提供相关 UI，请自行修改 `localStorage['REPLACE_ERIRI_WITH_URL']`）
 
 **不支持** PKU Helper 树洞**支持**的以下功能：
 
