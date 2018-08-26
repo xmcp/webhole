@@ -101,7 +101,6 @@ export class LoginForm extends Component {
                         <ul>
                             <li>我们不会记录您的密码和个人信息</li>
                             <li><b>请勿泄露 Token</b>，它代表您的登录状态，与您的账户唯一对应且泄露后无法重置</li>
-                            <li>如果您不愿输入密码，可以直接修改 <code>localStorage['TOKEN']</code></li>
                         </ul>
                     </form>
                 </div>

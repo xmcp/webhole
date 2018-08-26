@@ -9,12 +9,10 @@ const HELP_TEXT=(
         <p>使用提示：</p>
         <ul>
             <li>为保证使用体验，请使用 Chrome 或 Mobile Safari 浏览器最新版</li>
-            <li>在列表中点击帖子可以展开全部回复</li>
             <li>在搜索框输入 #472865 等可以查看指定 ID 的树洞</li>
             <li>新的帖子会在左上角显示一个圆点</li>
             <li>本网站支持 3D Touch，重压屏幕可以快速返回 / 刷新树洞</li>
             <li>请注意：使用 HTTPS 访问本站可能会<b>大幅减慢</b>加载速度</li>
-            <li>自定义背景图片请修改 <code>localStorage['REPLACE_ERIRI_WITH_URL']</code></li>
         </ul>
         <p>使用本网站时，您需要了解并同意：</p>
         <ul>
