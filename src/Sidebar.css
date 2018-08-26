@@ -2,7 +2,7 @@
     opacity: 0;
     background-color: black;
     pointer-events: none;
-    transition: opacity 200ms ease-out;
+    transition: opacity 150ms ease-out;
     position: fixed;
     left: 0;
     top: 0;
@@ -16,7 +16,7 @@
 }
 
 .sidebar {
-    transition: left 200ms ease-out;
+    transition: left 150ms ease-out;
     position: fixed;
     left: 100%;
     top: 0;

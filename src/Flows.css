@@ -93,7 +93,7 @@
     cursor: default;
 }
 
-.flow-item-row:hover::before {
+.left-container .flow-item-row:hover::before {
     content: '>>';
     position: absolute;
     left: 10px;

@@ -6,7 +6,8 @@ import LazyLoad from 'react-lazyload';
 import {AudioWidget} from './AudioWidget';
 import {TokenCtx, ReplyForm} from './UserAction';
 
-import {API_BASE} from './Common';
+import {API} from './flows_api';
+
 const IMAGE_BASE='http://www.pkuhelper.com/services/pkuhole/images/';
 const AUDIO_BASE='/audio_proxy/';
 
@@ -80,16 +81,8 @@ class FlowItemRow extends PureComponent {
         this.setState({
             reply_status: 'loading',
         });
-        const token_param=this.props.token ? '&token='+this.props.token : '';
-        fetch(
-            API_BASE+'/api.php?action=getcomment'+
-            '&pid='+this.state.info.pid+
-            token_param
-        )
-            .then((res)=>res.json())
+        API.load_replies(this.state.info.pid,this.props.token)
             .then((json)=>{
-                if(json.code!==0)
-                    throw new Error(json);
                 const replies=json.data
                     .sort((a,b)=>{
                         return parseInt(a.timestamp,10)-parseInt(b.timestamp,10);
@@ -117,28 +110,9 @@ class FlowItemRow extends PureComponent {
     }
 
     toggle_attention(callback) {
-        let data=new URLSearchParams();
         const next_attention=!this.state.attention;
-        data.append('token', this.props.token);
-        data.append('pid', this.state.info.pid);
-        data.append('switch', next_attention ? '1' : '0');
-        fetch(API_BASE+'/api.php?action=attention', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: data,
-        })
-            .then((res)=>res.json())
+        API.set_attention(this.state.info.pid,next_attention,this.props.token)
             .then((json)=>{
-                if(json.code!==0) {
-                    if(json.msg && json.msg==='已经关注过辣') {}
-                    else {
-                        if(json.msg) alert(json.msg);
-                        throw new Error(json);
-                    }
-                }
-
                 this.setState({
                     attention: next_attention,
                 }, callback);
@@ -252,22 +226,13 @@ export class Flow extends PureComponent {
             }));
         };
 
-        const token_param=this.props.token ? '&token='+this.props.token : '';
-
         if(page>this.state.loaded_pages+1)
             throw new Error('bad page');
         if(page===this.state.loaded_pages+1) {
             console.log('fetching page',page);
             if(this.state.mode==='list') {
-                fetch(
-                    API_BASE+'/api.php?action=getlist'+
-                    '&p='+page+
-                    token_param
-                )
-                    .then((res)=>res.json())
+                API.get_list(page,this.props.token)
                     .then((json)=>{
-                        if(json.code!==0)
-                            throw new Error(json);
                         json.data.forEach((x)=>{
                             if(parseInt(x.pid,10)>(parseInt(localStorage['_LATEST_POST_ID'],10)||0))
                                 localStorage['_LATEST_POST_ID']=x.pid;
@@ -285,16 +250,8 @@ export class Flow extends PureComponent {
                     })
                     .catch(failed);
             } else if(this.state.mode==='search') {
-                fetch(
-                    API_BASE+'/api.php?action=search'+
-                    '&pagesize='+SEARCH_PAGESIZE*page+
-                    '&keywords='+encodeURIComponent(this.state.search_param)+
-                    token_param
-                )
-                    .then((res)=>res.json())
+                API.get_search(SEARCH_PAGESIZE*page,this.state.search_param,this.props.token)
                     .then((json)=>{
-                        if(json.code!==0)
-                            throw new Error(json);
                         const finished=json.data.length<SEARCH_PAGESIZE;
                         this.setState({
                             chunks: [{
@@ -308,15 +265,8 @@ export class Flow extends PureComponent {
                     .catch(failed);
             } else if(this.state.mode==='single') {
                 const pid=parseInt(this.state.search_param.substr(1),10);
-                fetch(
-                    API_BASE+'/api.php?action=getone'+
-                    '&pid='+pid+
-                    token_param
-                )
-                    .then((res)=>res.json())
+                API.get_single(pid,this.props.token)
                     .then((json)=>{
-                        if(json.code!==0)
-                            throw new Error(json);
                         this.setState({
                             chunks: [{
                                 title: 'PID = '+pid,
@@ -328,14 +278,8 @@ export class Flow extends PureComponent {
                     })
                     .catch(failed);
             } else if(this.state.mode==='attention') {
-                fetch(
-                    API_BASE+'/api.php?action=getattention'+
-                    token_param
-                )
-                    .then((res)=>res.json())
+                API.get_attention(this.props.token)
                     .then((json)=>{
-                        if(json.code!==0)
-                            throw new Error(json);
                         this.setState({
                             chunks: [{
                                 title: 'Attention List',
