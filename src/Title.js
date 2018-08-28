@@ -1,6 +1,7 @@
 import React, {Component, PureComponent} from 'react';
 import {LoginForm, PostForm} from './UserAction';
 import {TokenCtx} from './UserAction';
+import {PromotionBar} from './Common';
 
 import './Title.css';
 
@@ -114,6 +115,7 @@ class ControlBar extends PureComponent {
                         this.props.show_sidebar(
                             'P大树洞（非官方）网页版',
                             <div>
+                                <PromotionBar />
                                 <LoginForm />
                                 {HELP_TEXT}
                             </div>

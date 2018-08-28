@@ -95,3 +95,14 @@ export class SafeTextarea extends Component {
         )
     }
 }
+
+export function PromotionBar(props) {
+    const is_ios=/iPhone|iPad|iPod/i.test(window.navigator.userAgent);
+    // noinspection JSConstructorReturnsPrimitive
+    return is_ios ? (
+        <div className="box promotion-bar">
+            <span className="icon icon-about" />&nbsp;
+            在 Safari 中将本网站 <b>添加到主屏幕</b> 更好用哦
+        </div>
+    ) : null;
+}
