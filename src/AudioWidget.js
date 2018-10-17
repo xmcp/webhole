@@ -22,13 +22,9 @@ export class AudioWidget extends Component {
         super(props);
         this.state={
             url: this.props.src,
-            state: 'loading',
+            state: 'waiting',
             data: null,
         };
-    }
-
-    componentDidMount() {
-        this.load();
     }
 
     load() {
@@ -41,6 +37,9 @@ export class AudioWidget extends Component {
         }
 
         console.log('fetching audio',this.state.url);
+        this.setState({
+            state: 'loading',
+        });
         Promise.all([
             fetch(this.state.url),
             load_amrnb(),
@@ -80,10 +79,12 @@ export class AudioWidget extends Component {
     }
 
     render() {
+        if(this.state.state==='waiting')
+            return (<p><a onClick={this.load.bind(this)}>加载音频</a></p>);
         if(this.state.state==='loading')
-            return (<p><audio controls />&nbsp;正在下载……</p>);
+            return (<p>正在下载……</p>);
         else if(this.state.state==='decoding')
-            return (<p><audio controls />&nbsp;正在解码……</p>);
+            return (<p>正在解码……</p>);
         else if(this.state.state==='loaded')
             return (<p><audio src={this.state.data} controls /></p>);
     }
