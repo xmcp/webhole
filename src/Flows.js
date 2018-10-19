@@ -189,12 +189,36 @@ class FlowSidebar extends PureComponent {
         }
     }
 
+    star_brush() {
+        let count=prompt('Count:');
+        if(count) {
+            let reqs=[];
+            for(let i=parseInt(count);i;i--)
+                reqs.push(API.set_attention(this.state.info.pid,false,this.props.token));
+            Promise.all(reqs)
+                .then(()=>{
+                    alert('Completed!')
+                })
+                .catch((e)=>{
+                    alert('Failed!\n\n'+e);
+                })
+        }
+    }
+
     render() {
+        const star_brush=localStorage['STAR_BRUSH']==='on';
+
         if(this.state.loading_status==='loading')
             return (<p className="box box-tip">加载中……</p>);
         return (
             <div className="flow-item-row sidebar-flow-item">
                 <div className="box box-tip">
+                    {star_brush &&
+                        <span>
+                            <a onClick={this.star_brush.bind(this)}>-</a>
+                            &nbsp;/&nbsp;
+                        </span>
+                    }
                     {this.props.token &&
                         <span>
                             <a onClick={this.report.bind(this)}>举报</a>
@@ -314,9 +338,16 @@ function FlowChunk(props) {
     return (
         <TokenCtx.Consumer>{({value: token})=>(
             <div className="flow-chunk">
-                <TitleLine text={props.title} />
-                {props.list.map((info)=>(
+                {!!props.title && <TitleLine text={props.title} />}
+                {props.list.map((info,ind)=>(
                     <LazyLoad key={info.pid} offset={500} height="15em" once={true} >
+                        {!!(props.deletion_detect && props.mode==='list' && ind && props.list[ind-1].pid-info.pid>1) &&
+                            <div className="flow-item-row">
+                                <div className="box box-tip flow-item box-danger">
+                                    {props.list[ind-1].pid-info.pid-1} 条被删除
+                                </div>
+                            </div>
+                        }
                         <FlowItemRow info={info} show_sidebar={props.show_sidebar} token={token} />
                     </LazyLoad>
                 ))}
@@ -332,7 +363,10 @@ export class Flow extends PureComponent {
             mode: props.mode,
             search_param: props.search_text,
             loaded_pages: 0,
-            chunks: [],
+            chunks: {
+                title: '',
+                data: [],
+            },
             loading_status: 'done',
         };
         this.on_scroll_bound=this.on_scroll.bind(this);
@@ -360,13 +394,13 @@ export class Flow extends PureComponent {
                                 localStorage['_LATEST_POST_ID']=x.pid;
                         });
                         this.setState((prev,props)=>({
-                            chunks: prev.chunks.concat([{
-                                title: 'Page '+page,
-                                data: json.data.filter((x)=>(
-                                    prev.chunks.length===0 ||
-                                    !(prev.chunks[prev.chunks.length-1].data.some((p)=>p.pid===x.pid))
-                                )),
-                            }]),
+                            chunks: {
+                                title: 'News Feed',
+                                data: prev.chunks.data.concat(json.data.filter((x)=>(
+                                    prev.chunks.data.length===0 ||
+                                    !(prev.chunks.data.slice(-100).some((p)=>p.pid===x.pid))
+                                ))),
+                            },
                             loading_status: 'done',
                         }));
                     })
@@ -376,10 +410,10 @@ export class Flow extends PureComponent {
                     .then((json)=>{
                         const finished=json.data.length<SEARCH_PAGESIZE;
                         this.setState({
-                            chunks: [{
+                            chunks: {
                                 title: 'Result for "'+this.state.search_param+'"',
                                 data: json.data,
-                            }],
+                            },
                             mode: finished ? 'search_finished' : 'search',
                             loading_status: 'done',
                         });
@@ -390,10 +424,10 @@ export class Flow extends PureComponent {
                 API.get_single(pid,this.props.token)
                     .then((json)=>{
                         this.setState({
-                            chunks: [{
+                            chunks: {
                                 title: 'PID = '+pid,
                                 data: [json.data],
-                            }],
+                            },
                             mode: 'single_finished',
                             loading_status: 'done',
                         });
@@ -403,10 +437,10 @@ export class Flow extends PureComponent {
                 API.get_attention(this.props.token)
                     .then((json)=>{
                         this.setState({
-                            chunks: [{
+                            chunks: {
                                 title: 'Attention List',
                                 data: json.data,
-                            }],
+                            },
                             mode: 'attention_finished',
                             loading_status: 'done',
                         });
@@ -443,11 +477,13 @@ export class Flow extends PureComponent {
     }
 
     render() {
+        const should_deletion_detect=localStorage['DELETION_DETECT']==='on';
         return (
             <div className="flow-container">
-                {this.state.chunks.map((chunk)=>(
-                    <FlowChunk title={chunk.title} list={chunk.data} key={chunk.title} show_sidebar={this.props.show_sidebar} />
-                ))}
+                <FlowChunk
+                    title={this.state.chunks.title} list={this.state.chunks.data}
+                    show_sidebar={this.props.show_sidebar} mode={this.state.mode} deletion_detect={should_deletion_detect}
+                />
                 {this.state.loading_status==='failed' &&
                     <div className="box box-tip">
                         <a onClick={()=>{this.load_page(this.state.loaded_pages+1)}}>重新加载</a>

@@ -5,6 +5,8 @@ import {PromotionBar} from './Common';
 
 import './Title.css';
 
+const flag_re=/^\/\/setflag ([a-zA-Z0-9_]+)=(.+)$/;
+
 const HELP_TEXT=(
     <div className="box">
         <p>使用提示：</p>
@@ -59,7 +61,8 @@ class ControlBar extends PureComponent {
     componentDidMount() {
         if(window.location.hash) {
             let text=window.location.hash.substr(1);
-            text=text.substr(0,text.lastIndexOf('?')); // fuck wechat '#param?nsukey=...'
+            if(text.lastIndexOf('?')!==-1)
+                text=text.substr(0,text.lastIndexOf('?')); // fuck wechat '#param?nsukey=...'
             this.setState({
                 search_text: text,
             }, ()=>{
@@ -76,6 +79,13 @@ class ControlBar extends PureComponent {
 
     on_keypress(event) {
         if(event.key==='Enter') {
+            let flag_res=flag_re.exec(this.state.search_text);
+            if(flag_res) {
+                localStorage[flag_res[1]]=flag_res[2];
+                alert('Set Flag '+flag_res[1]+'='+flag_res[2]);
+                return;
+            }
+
             const mode=this.state.search_text.startsWith('#') ? 'single' : 'search';
             this.set_mode(mode,this.state.search_text||null);
         }

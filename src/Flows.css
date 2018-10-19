@@ -12,6 +12,10 @@
     text-align: center;
 }
 
+.box-danger {
+    background-color: #faa;
+}
+
 .left-container .flow-item {
     display: inline-block;
     width: 600px;

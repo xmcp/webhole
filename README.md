@@ -1,7 +1,5 @@
 # AsHole
-React版P大树洞，[hole.xmcp.ml](http://hole.xmcp.ml)
-
-
+React 版 P大树洞，[hole.xmcp.ml](http://hole.xmcp.ml)
 
 与 PKU Helper 客户端比较，本项目……
 
@@ -31,10 +29,15 @@ React版P大树洞，[hole.xmcp.ml](http://hole.xmcp.ml)
 - 精确显示发帖时间
 - 复制树洞链接
 - 3D Touch 支持
-- 自定义背景图片（没有提供相关 UI，请自行修改 `localStorage['REPLACE_ERIRI_WITH_URL']`）
+- 自定义背景图片（请修改 Flag `REPLACE_ERIRI_WITH_URL=http://...`）
+- 检测被删除的树洞（请修改 Flag `DELETION_DETECT=on`）
+- 刷树洞负关注数（请修改 Flag `STAR_BRUSH=on`）
+- 用 Token 登录（请修改 Flag `TOKEN=...`）
 
 **不支持** PKU Helper 树洞**支持**的以下功能：
 
 - 搜索时筛选有图片、语音的树洞
 - 发表语音树洞
 - 关注的树洞有回复时推送提醒
+
+*注：设置 Flag 请在搜索框输入 `//setflag KEY=value`*
