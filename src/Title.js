@@ -60,7 +60,7 @@ class ControlBar extends PureComponent {
 
     componentDidMount() {
         if(window.location.hash) {
-            let text=window.location.hash.substr(1);
+            let text=decodeURIComponent(window.location.hash).substr(1);
             if(text.lastIndexOf('?')!==-1)
                 text=text.substr(0,text.lastIndexOf('?')); // fuck wechat '#param?nsukey=...'
             this.setState({
