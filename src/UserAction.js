@@ -74,7 +74,7 @@ export class LoginForm extends Component {
                                 <b>您已登录。</b>Token: <code>{token.value||'(null)'}</code> <br />
                                 请勿泄露 Token，它代表您的登录状态，与您的账户唯一对应且泄露后无法重置
                             </p> :
-                            <p>'登录后可以使用关注、回复等功能'</p>
+                            <p>登录后可以使用关注、回复等功能</p>
                         }
                         <p>
                             <label>
