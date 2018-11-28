@@ -3,12 +3,12 @@
   "name": "P大树洞（非官方）",
   "icons": [
     {
-      "src": "static/favicon/256.png",
+      "src": "/static/favicon/256.png",
       "sizes": "256x256",
       "type": "image/png"
     },
     {
-      "src": "static/favicon/192.png",
+      "src": "/static/favicon/192.png",
       "sizes": "192x192",
       "type": "image/png"
     }

@@ -69,10 +69,13 @@ export class LoginForm extends Component {
             <TokenCtx.Consumer>{(token)=>
                 <div className="login-form box">
                     <form onSubmit={(e)=>this.do_login(e,token.set_value)}>
-                        <p>{token.value ?
-                            <span><b>您已登录。</b>Token: <code>{token.value||'(null)'}</code></span> :
-                            '登录后可以使用关注、回复等功能'
-                        }</p>
+                        {token.value ?
+                            <p>
+                                <b>您已登录。</b>Token: <code>{token.value||'(null)'}</code> <br />
+                                请勿泄露 Token，它代表您的登录状态，与您的账户唯一对应且泄露后无法重置
+                            </p> :
+                            <p>'登录后可以使用关注、回复等功能'</p>
+                        }
                         <p>
                             <label>
                                 学号：
@@ -98,10 +101,10 @@ export class LoginForm extends Component {
                             }
                             <button type="button" onClick={()=>{token.set_value(null);}}>退出</button>
                         </p>
-                        <ul>
-                            <li>我们不会记录您的密码和个人信息</li>
-                            <li><b>请勿泄露 Token</b>，它代表您的登录状态，与您的账户唯一对应且泄露后无法重置</li>
-                        </ul>
+                        <p>
+                            您的密码会被发送到 PKU Helper 服务器 <br />
+                            我们不会记录您的密码和个人信息
+                        </p>
                     </form>
                 </div>
             }</TokenCtx.Consumer>

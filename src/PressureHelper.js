@@ -32,31 +32,33 @@ export class PressureHelper extends  Component {
     }
 
     componentDidMount() {
-        Pressure.set(document.body, {
-            change: (force)=>{
-                if(!this.state.fired) {
+        if(localStorage['DISABLE_PRESSURE']!=='on') {            
+            Pressure.set(document.body, {
+                change: (force)=>{
+                    if(!this.state.fired) {
+                        this.setState({
+                            level: force,
+                        });
+                        if(force===1)
+                            this.do_fire();
+                    }
+                },
+                end: ()=>{
                     this.setState({
-                        level: force,
+                        level: 0,
+                        fired: false,
                     });
-                    if(force===1)
-                        this.do_fire();
-                }
-            },
-            end: ()=>{
-                this.setState({
-                    level: 0,
-                    fired: false,
-                });
-            },
-        }, {
-            polyfill: false,
-            only: 'touch',
-            preventSelect: false,
-        });
-        document.body.addEventListener('selectstart',(event)=>{
-            if(this.state.level>THRESHOLD)
-                event.preventDefault();
-        });
+                },
+            }, {
+                polyfill: false,
+                only: 'touch',
+                preventSelect: false,
+            });
+            document.body.addEventListener('selectstart',(event)=>{
+                if(this.state.level>THRESHOLD)
+                    event.preventDefault();
+            });
+        }
     }
 
     render() {

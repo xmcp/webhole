@@ -28,7 +28,7 @@ React 版 P大树洞，[hole.xmcp.ml](http://hole.xmcp.ml)
 - 突出显示未读树洞
 - 精确显示发帖时间
 - 复制树洞链接
-- 3D Touch 支持
+- 3D Touch 支持（可通过修改 Flag `DISABLE_PRESSURE=on` 来关闭）
 - 自定义背景图片（请修改 Flag `REPLACE_ERIRI_WITH_URL=http://...`）
 - 检测被删除的树洞（请修改 Flag `DELETION_DETECT=on`）
 - 刷树洞负关注数（请修改 Flag `STAR_BRUSH=on`）
