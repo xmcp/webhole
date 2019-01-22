@@ -341,14 +341,16 @@ function FlowChunk(props) {
                 {!!props.title && <TitleLine text={props.title} />}
                 {props.list.map((info,ind)=>(
                     <LazyLoad key={info.pid} offset={500} height="15em" once={true} >
-                        {!!(props.deletion_detect && props.mode==='list' && ind && props.list[ind-1].pid-info.pid>1) &&
-                            <div className="flow-item-row">
-                                <div className="box box-tip flow-item box-danger">
-                                    {props.list[ind-1].pid-info.pid-1} 条被删除
+                        <div>
+                            {!!(props.deletion_detect && props.mode==='list' && ind && props.list[ind-1].pid-info.pid>1) &&
+                                <div className="flow-item-row">
+                                    <div className="box box-tip flow-item box-danger">
+                                        {props.list[ind-1].pid-info.pid-1} 条被删除
+                                    </div>
                                 </div>
-                            </div>
-                        }
-                        <FlowItemRow info={info} show_sidebar={props.show_sidebar} token={token} />
+                            }
+                            <FlowItemRow info={info} show_sidebar={props.show_sidebar} token={token} />
+                        </div>
                     </LazyLoad>
                 ))}
             </div>

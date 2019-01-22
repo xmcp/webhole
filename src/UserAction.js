@@ -1,5 +1,6 @@
 import React, {Component, PureComponent} from 'react';
 import {SafeTextarea} from './Common';
+import md5 from 'md5';
 
 import './UserAction.css';
 
@@ -7,6 +8,10 @@ import {API_BASE} from './Common';
 const LOGIN_BASE=window.location.protocol==='https:' ? '/login_proxy' : 'http://www.pkuhelper.com/services/login';
 const MAX_IMG_PX=2000;
 const MAX_IMG_FILESIZE=256000;
+
+const ISOP_APPKEY='0feb3a8a831e11e8933a0050568508a5';
+const ISOP_APPCODE='0fec960a831e11e8933a0050568508a5';
+const ISOP_SVCID='PERSON_BASE_INFO,STUDENT_SCORE,STUDENT_COURSE_TABLE,STUDENT_COURSE_TABLE_ROOM,CARD_BALANCE';
 
 export const TokenCtx=React.createContext({
     value: null,
@@ -24,8 +29,25 @@ export class LoginForm extends Component {
         this.password_ref=React.createRef();
     }
 
-    do_login(event,set_token) {
-        event.preventDefault();
+    do_sendcode() {
+        if(this.state.loading_status==='loading')
+            return;
+
+        let param=
+            'user='+this.username_ref.current.value+
+            '&svcId='+ISOP_SVCID+
+            '&appKey='+ISOP_APPKEY+
+            '&timestamp='+(+new Date());
+
+        fetch(
+            'https://isop.pku.edu.cn/svcpub/svc/oauth/validcode?'+param+
+            '&msg='+md5(param+ISOP_APPCODE),
+            {mode: 'no-cors'}
+        );
+        alert('短信验证码应该会发到您的手机上，请注意查收！');
+    }
+
+    do_login(set_token) {
         if(this.state.loading_status==='loading')
             return;
 
@@ -33,8 +55,9 @@ export class LoginForm extends Component {
             loading_status: 'loading',
         });
         let data=new URLSearchParams();
-        data.append('uid', this.username_ref.current.value);
-        data.append('password', this.password_ref.current.value);
+        data.append('username', this.username_ref.current.value);
+        data.append('valid_code', this.password_ref.current.value);
+        data.append('isnewloginflow', 'true');
         fetch(LOGIN_BASE+'/login.php?platform=hole_xmcp_ml', {
             method: 'POST',
             headers: {
@@ -68,44 +91,43 @@ export class LoginForm extends Component {
         return (
             <TokenCtx.Consumer>{(token)=>
                 <div className="login-form box">
-                    <form onSubmit={(e)=>this.do_login(e,token.set_value)}>
-                        {token.value ?
+                    {token.value ?
+                        <div>
                             <p>
-                                <b>您已登录。</b>Token: <code>{token.value||'(null)'}</code> <br />
+                                <b>您已登录。</b>
+                                <button type="button" onClick={()=>{token.set_value(null);}}>注销</button>
+                            </p>
+                            <p>
+                                Token: <code>{token.value||'(null)'}</code> <br />
                                 请勿泄露 Token，它代表您的登录状态，与您的账户唯一对应且泄露后无法重置
-                            </p> :
-                            <p>登录后可以使用关注、回复等功能</p>
-                        }
-                        <p>
-                            <label>
-                                学号：
-                                <input ref={this.username_ref} type="tel" />
-                            </label>
-                        </p>
-                        <p>
-                            <label>
-                                密码：
-                                <input ref={this.password_ref} type="password" />
-                            </label>
-                        </p>
-                        <p>
-                            {this.state.loading_status==='loading' ?
-                                <button disabled="disbled">
-                                    <span className="icon icon-loading" />
-                                    &nbsp;正在登录
-                                </button> :
-                                <button type="submit">
-                                    <span className="icon icon-login" />
-                                    &nbsp;登录
-                                </button>
-                            }
-                            <button type="button" onClick={()=>{token.set_value(null);}}>退出</button>
-                        </p>
-                        <p>
-                            您的密码会被发送到 PKU Helper 服务器 <br />
-                            我们不会记录您的密码和个人信息
-                        </p>
-                    </form>
+                            </p>
+                        </div> :
+                        <p>登录后可以使用关注、回复等功能</p>
+                    }
+                    <p>
+                        <label>
+                            　学号&nbsp;
+                            <input ref={this.username_ref} type="tel" />
+                        </label>
+                        <button type="button" disabled={this.state.loading_status==='loading'}
+                                onClick={(e)=>this.do_sendcode()}>
+                            发送验证码
+                        </button>
+                    </p>
+                    <p>
+                        <label>
+                            验证码&nbsp;
+                            <input ref={this.password_ref} type="tel" />
+                        </label>
+                        <button type="button" disabled={this.state.loading_status==='loading'}
+                                onClick={(e)=>this.do_login(token.set_value)}>
+                            登录
+                        </button>
+                    </p>
+                    <p>
+                        登录请求会被发送到北大统一验证接口和 PKU Helper 服务器 <br />
+                        我们不会记录或使用您的登录信息
+                    </p>
                 </div>
             }</TokenCtx.Consumer>
         )

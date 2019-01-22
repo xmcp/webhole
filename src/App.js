@@ -5,6 +5,20 @@ import {Sidebar} from './Sidebar';
 import {PressureHelper} from './PressureHelper';
 import {TokenCtx} from './UserAction';
 
+function TokenDeprecatedAlert(props) {
+    if(!props.token || props.token.startsWith('isop_')) // noinspection JSConstructorReturnsPrimitive
+            return null;
+    else
+        return (
+            <div className="flow-item-row">
+                <div className="box box-tip flow-item box-danger">
+                    <p>树洞已更换登录方式，您原来的登录状态已失效。</p>
+                    <p>请按右上角的按钮，点“注销”，然后重新登录。</p>
+                </div>
+            </div>
+        );
+}
+
 class App extends Component {
     constructor(props) {
         super(props);
@@ -62,14 +76,15 @@ class App extends Component {
                     backgroundImage: 'url('+(localStorage['REPLACE_ERIRI_WITH_URL'] || 'static/eriri_bg.jpg')+')'
                 }} />
                 <Title show_sidebar={this.show_sidebar_bound} set_mode={this.set_mode_bound} />
-                <div className="left-container">
-                    <TokenCtx.Consumer>{(token)=>(
+                <TokenCtx.Consumer>{(token)=>(
+                    <div className="left-container">
+                        <TokenDeprecatedAlert token={token.value} />
                         <Flow key={this.state.flow_render_key} show_sidebar={this.show_sidebar_bound}
                               mode={this.state.mode} search_text={this.state.search_text} token={token.value}
                         />
-                    )}</TokenCtx.Consumer>
-                    <br />
-                </div>
+                        <br />
+                    </div>
+                )}</TokenCtx.Consumer>
                 <Sidebar do_close={()=>{
                     this.setState({
                         sidebar_content: null,
