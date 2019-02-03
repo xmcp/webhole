@@ -75,7 +75,7 @@ function FlowItem(props) {
         event.preventDefault();
         copy(
             `${event.target.href}\n`+
-            `（${format_time(new Date(props.info.timestamp*1000))} ${props.info.likenum}赞 ${props.info.reply}回复）\n`+
+            `（${format_time(new Date(props.info.timestamp*1000))} ${props.info.likenum}关注 ${props.info.reply}回复）\n`+
             `${props.info.text}${props.info.type==='image'?' [图片]':props.info.type==='audio'?' [语音]':''}\n`+
             props.replies.map((r)=>(r.text)).join('\n')
         );
