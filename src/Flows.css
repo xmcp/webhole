@@ -119,6 +119,7 @@
 
 .flow-item-row p.img {
     text-align: center;
+    margin-top: .5em;
 }
 .flow-item-row p.img img {
     max-width: 100%;
@@ -147,4 +148,8 @@
 
 .box-content {
     margin: .5em 0;
+}
+
+.box-id {
+    color: #666666;
 }

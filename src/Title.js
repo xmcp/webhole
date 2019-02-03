@@ -118,7 +118,7 @@ class ControlBar extends PureComponent {
                             <span className="icon icon-attention" />
                         </a>
                     }
-                    <input value={this.state.search_text} placeholder="搜索 或 #PID"
+                    <input className="control-search" value={this.state.search_text} placeholder="搜索 或 #PID"
                            onChange={this.on_change_bound} onKeyPress={this.on_keypress_bound}
                     />
                     <a className="control-btn" onClick={()=>{

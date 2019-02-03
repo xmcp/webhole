@@ -32,6 +32,11 @@
     left: 700px;
 }
 
+.sidebar-title {
+    text-shadow: 0 0 3px white;
+    font-weight: bold;
+}
+
 @media screen and (max-width: 1200px) {
     .sidebar {
         width: 550px;

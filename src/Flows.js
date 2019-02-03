@@ -131,7 +131,7 @@ class FlowSidebar extends PureComponent {
         this.syncState=props.sync_state||(()=>{});
     }
 
-    load_replies() {
+    load_replies(update_count=true) {
         this.setState({
             loading_status: 'loading',
         });
@@ -139,6 +139,9 @@ class FlowSidebar extends PureComponent {
             .then((json)=>{
                 this.setState((prev,props)=>({
                     replies: json.data,
+                    info: update_count ? Object.assign({}, prev.info, {
+                        reply: ''+json.data.length,
+                    }) : prev.info,
                     attention: !!json.attention,
                     loading_status: 'done',
                 }), ()=>{
@@ -249,7 +252,7 @@ class FlowSidebar extends PureComponent {
                 </div>
                 <FlowItem info={this.state.info} attention={this.state.attention} img_clickable={true}
                     color_picker={this.color_picker} show_pid={this.show_pid} replies={this.state.replies} />
-                {(this.props.deletion_detect && parseInt(this.state.info.reply)!==this.state.replies.length) &&
+                {(this.props.deletion_detect && parseInt(this.state.info.reply)>this.state.replies.length) &&
                     <div className="box box-tip flow-item box-danger">
                         {parseInt(this.state.info.reply)-this.state.replies.length} 条回复被删除
                     </div>
@@ -283,11 +286,11 @@ class FlowItemRow extends PureComponent {
 
     componentDidMount() {
         if(parseInt(this.state.info.reply,10)) {
-            this.load_replies();
+            this.load_replies(null,/*update_count=*/false);
         }
     }
 
-    load_replies(callback) {
+    load_replies(callback,update_count=true) {
         console.log('fetching reply',this.state.info.pid);
         this.setState({
             reply_status: 'loading',
@@ -296,6 +299,9 @@ class FlowItemRow extends PureComponent {
             .then((json)=>{
                 this.setState((prev,props)=>({
                     replies: json.data,
+                    info: update_count ? Object.assign({}, prev.info, {
+                        reply: ''+json.data.length,
+                    }) : prev.info,
                     attention: !!json.attention,
                     reply_status: 'done',
                 }),callback);

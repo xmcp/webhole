@@ -44,7 +44,7 @@ export class LoginForm extends Component {
             '&msg='+md5(param+ISOP_APPCODE),
             {mode: 'no-cors'}
         );
-        alert('短信验证码应该会发到您的手机上，请注意查收！');
+        alert('如果学号存在，短信验证码将会发到您的手机上，请注意查收！');
     }
 
     do_login(set_token) {
