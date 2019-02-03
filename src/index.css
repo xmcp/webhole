@@ -20,7 +20,7 @@ body, textarea, pre {
     -webkit-overflow-scrolling: touch;
 }
 
-p {
+p, pre {
     margin: 0;
 }
 

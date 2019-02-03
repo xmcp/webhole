@@ -102,32 +102,34 @@ export class LoginForm extends Component {
                                 请勿泄露 Token，它代表您的登录状态，与您的账户唯一对应且泄露后无法重置
                             </p>
                         </div> :
-                        <p>登录后可以使用关注、回复等功能</p>
+                        <div>
+                            <p>登录后可以使用关注、回复等功能</p>
+                            <p>
+                                <label>
+                                    　学号&nbsp;
+                                    <input ref={this.username_ref} type="tel" />
+                                </label>
+                                <button type="button" disabled={this.state.loading_status==='loading'}
+                                        onClick={(e)=>this.do_sendcode()}>
+                                    发送验证码
+                                </button>
+                            </p>
+                            <p>
+                                <label>
+                                    验证码&nbsp;
+                                    <input ref={this.password_ref} type="tel" />
+                                </label>
+                                <button type="button" disabled={this.state.loading_status==='loading'}
+                                        onClick={(e)=>this.do_login(token.set_value)}>
+                                    登录
+                                </button>
+                            </p>
+                            <p>
+                                登录请求会被发送到北大统一验证接口和 PKU Helper 服务器 <br />
+                                我们不会记录或使用您的登录信息
+                            </p>
+                        </div>
                     }
-                    <p>
-                        <label>
-                            　学号&nbsp;
-                            <input ref={this.username_ref} type="tel" />
-                        </label>
-                        <button type="button" disabled={this.state.loading_status==='loading'}
-                                onClick={(e)=>this.do_sendcode()}>
-                            发送验证码
-                        </button>
-                    </p>
-                    <p>
-                        <label>
-                            验证码&nbsp;
-                            <input ref={this.password_ref} type="tel" />
-                        </label>
-                        <button type="button" disabled={this.state.loading_status==='loading'}
-                                onClick={(e)=>this.do_login(token.set_value)}>
-                            登录
-                        </button>
-                    </p>
-                    <p>
-                        登录请求会被发送到北大统一验证接口和 PKU Helper 服务器 <br />
-                        我们不会记录或使用您的登录信息
-                    </p>
                 </div>
             }</TokenCtx.Consumer>
         )

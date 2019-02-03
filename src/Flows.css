@@ -113,6 +113,10 @@
     }
 }
 
+.box-header {
+    font-size: small;
+}
+
 .flow-item-row p.img {
     text-align: center;
 }
@@ -129,10 +133,6 @@
     margin: 0 .5em;
 }
 
-.box-id {
-    opacity: .6;
-}
-
 .flow-item-dot {
     position: relative;
     top: calc(-.5em - 5px);
@@ -143,4 +143,8 @@
     border-radius: 50%;
     background-color: orange;
     box-shadow: 0 0 5px rgba(0,0,0,.4);
+}
+
+.box-content {
+    margin: .5em 0;
 }
