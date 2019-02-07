@@ -37,18 +37,18 @@
     font-weight: bold;
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1300px) {
     .sidebar {
         width: 550px;
+        padding: 1em .5em;
     }
     .sidebar-on .sidebar {
         left: calc(100% - 550px);
     }
 }
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 570px) {
     .sidebar {
         width: calc(100% - 20px);
-        padding: 1em .5em;
     }
     .sidebar-on .sidebar {
         left: 20px;
