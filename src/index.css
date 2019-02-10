@@ -11,7 +11,7 @@ body::-webkit-scrollbar {
 }
 
 body, textarea, pre {
-    font-family: '微软雅黑', 'Microsoft YaHei', sans-serif;
+    font-family: 'Segoe UI', '微软雅黑', 'Microsoft YaHei', sans-serif;
 }
 
 * {
