@@ -1,3 +1,3 @@
-/api_proxy/*  http://www.pkuhelper.com/services/pkuhole/:splat  200
-/audio_proxy/*  http://www.pkuhelper.com/services/pkuhole/audios/:splat  200
-/login_proxy/*  http://www.pkuhelper.com/services/login/:splat  200
+/api_proxy/*  http://www.pkuhelper.com:10301/services/pkuhole/:splat  200
+/audio_proxy/*  http://www.pkuhelper.com:10301/services/pkuhole/audios/:splat  200
+/login_proxy/*  http://www.pkuhelper.com:10301/services/login/:splat  200
