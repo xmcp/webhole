@@ -33,6 +33,7 @@ function load_single_meta(show_sidebar,token) {
         ])
             .then((res)=>{
                 const [single,replies]=res;
+                single.data.variant={};
                 show_sidebar(
                     '帖子详情',
                     <FlowSidebar
