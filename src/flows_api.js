@@ -22,6 +22,7 @@ export const API={
                     })
                     .map((info)=>{
                         info._display_color=color_picker.get(info.name);
+                        info.variant={};
                         return info;
                     });
 

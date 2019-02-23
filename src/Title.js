@@ -156,13 +156,18 @@ export function Title(props) {
     return (
         <div className="title-bar">
             <div className="aux-margin">
-                <p className="title centered-line">
-                    P大树洞
-                    &nbsp;
-                    <a href="https://github.com/xmcp/ashole" target="_blank">
-                        <span className="icon icon-github" />
-                    </a>
-                </p>
+                <div className="title">
+                    <p className="centered-line">
+                        P大树洞
+                        &nbsp;
+                        <a href="https://github.com/xmcp/ashole" target="_blank">
+                            <span className="icon icon-github" />
+                        </a>
+                    </p>
+                    <p className="title-small">
+                        非官方网页版 by @xmcp
+                    </p>
+                </div>
                 <ControlBar show_sidebar={props.show_sidebar} set_mode={props.set_mode} />
             </div>
         </div>

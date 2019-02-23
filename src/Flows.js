@@ -54,67 +54,80 @@ function load_single_meta(show_sidebar,token) {
     };
 }
 
-function Reply(props) {
-    return (
-        <div className={'flow-reply box'} style={props.info._display_color ? {
-            backgroundColor: props.info._display_color,
-        } : null}>
-            <div className="box-header">
-                <code className="box-id">#{props.info.cid}</code>&nbsp;
-                <Time stamp={props.info.timestamp} />
+class Reply extends PureComponent {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <div className={'flow-reply box'} style={this.props.info._display_color ? {
+                backgroundColor: this.props.info._display_color,
+            } : null}>
+                <div className="box-header">
+                    <code className="box-id">#{this.props.info.cid}</code>&nbsp;
+                    <Time stamp={this.props.info.timestamp} />
+                </div>
+                <div className="box-content">
+                    <HighlightedText text={this.props.info.text} color_picker={this.props.color_picker} show_pid={this.props.show_pid} />
+                </div>
             </div>
-            <div className="box-content">
-                <HighlightedText text={props.info.text} color_picker={props.color_picker} show_pid={props.show_pid} />
-            </div>
-        </div>
-    );
+        );
+    }
 }
 
-function FlowItem(props) {
-    function copy_link(event) {
+class FlowItem extends PureComponent {
+    constructor(props) {
+        super(props);
+    }
+
+    copy_link(event) {
         event.preventDefault();
         copy(
             `${event.target.href}\n`+
-            `${props.info.text}${props.info.type==='image'?' [图片]':props.info.type==='audio'?' [语音]':''}\n`+
-            `（${format_time(new Date(props.info.timestamp*1000))} ${props.info.likenum}关注 ${props.info.reply}回复）\n`+
-            props.replies.map((r)=>(r.text)).join('\n')
+            `${this.props.info.text}${this.props.info.type==='image'?' [图片]':this.props.info.type==='audio'?' [语音]':''}\n`+
+            `（${format_time(new Date(this.props.info.timestamp*1000))} ${this.props.info.likenum}关注 ${this.props.info.reply}回复）\n`+
+            this.props.replies.map((r)=>(r.text)).join('\n')
         );
     }
 
-    return (
-        <div className="flow-item box">
-            {parseInt(props.info.pid,10)>window.LATEST_POST_ID && <div className="flow-item-dot" /> }
-            <div className="box-header">
-                {!!parseInt(props.info.likenum,10) &&
-                    <span className="box-header-badge">
-                        {props.info.likenum}&nbsp;
-                        <span className={'icon icon-'+(props.attention ? 'star-ok' : 'star')} />
-                    </span>
-                }
-                {!!parseInt(props.info.reply,10) &&
-                    <span className="box-header-badge">
-                        {props.info.reply}&nbsp;
-                        <span className="icon icon-reply" />
-                    </span>
-                }
-                <code className="box-id"><a href={'##'+props.info.pid} onClick={copy_link}>#{props.info.pid}</a></code>
-                &nbsp;
-                <Time stamp={props.info.timestamp} />
+    render() {
+        let props=this.props;
+        return (
+            <div className="flow-item box">
+                {parseInt(props.info.pid,10)>window.LATEST_POST_ID && <div className="flow-item-dot" /> }
+                <div className="box-header">
+                    {!!parseInt(props.info.likenum,10) &&
+                        <span className="box-header-badge">
+                            {props.info.likenum}&nbsp;
+                            <span className={'icon icon-'+(props.attention ? 'star-ok' : 'star')} />
+                        </span>
+                    }
+                    {!!parseInt(props.info.reply,10) &&
+                        <span className="box-header-badge">
+                            {props.info.reply}&nbsp;
+                            <span className="icon icon-reply" />
+                        </span>
+                    }
+                    <code className="box-id"><a href={'##'+props.info.pid} onClick={this.copy_link}>#{props.info.pid}</a></code>
+                    &nbsp;
+                    <Time stamp={props.info.timestamp} />
+                </div>
+                <div className="box-content">
+                    <HighlightedText text={props.info.text} color_picker={props.color_picker} show_pid={props.show_pid} />
+                    {props.info.type==='image' &&
+                        <p className="img">
+                            {props.img_clickable ?
+                                <a href={IMAGE_BASE+props.info.url} target="_blank"><img src={IMAGE_BASE+props.info.url} /></a> :
+                                <img src={IMAGE_BASE+props.info.url} />
+                            }
+                        </p>
+                    }
+                    {props.info.type==='audio' && <AudioWidget src={AUDIO_BASE+props.info.url} />}
+                </div>
             </div>
-            <div className="box-content">
-                <HighlightedText text={props.info.text} color_picker={props.color_picker} show_pid={props.show_pid} />
-                {props.info.type==='image' &&
-                    <p className="img">
-                        {props.img_clickable ?
-                            <a href={IMAGE_BASE+props.info.url} target="_blank"><img src={IMAGE_BASE+props.info.url} /></a> :
-                            <img src={IMAGE_BASE+props.info.url} />
-                        }
-                    </p>
-                }
-                {props.info.type==='audio' && <AudioWidget src={AUDIO_BASE+props.info.url} />}
-            </div>
-        </div>
-    );
+        );
+    }
 }
 
 class FlowSidebar extends PureComponent {
@@ -129,6 +142,29 @@ class FlowSidebar extends PureComponent {
         this.color_picker=props.color_picker;
         this.show_pid=load_single_meta(this.props.show_sidebar,this.props.token);
         this.syncState=props.sync_state||(()=>{});
+    }
+
+    set_variant(cid,variant) {
+        this.setState((prev)=>{
+            if(cid)
+                return {
+                    replies: prev.replies.map((reply)=>{
+                        if(reply.cid===cid)
+                            return Object.assign({},reply,{variant: variant});
+                        else
+                            return reply;
+                    }),
+                };
+            else
+                return {
+                    info: Object.assign({},prev.info,{variant: variant}),
+                }
+        },function() {
+            this.syncState({
+                info: this.state.info,
+                replies: this.state.replies,
+            });
+        });
     }
 
     load_replies(update_count=true) {
@@ -251,7 +287,9 @@ class FlowSidebar extends PureComponent {
                     }
                 </div>
                 <FlowItem info={this.state.info} attention={this.state.attention} img_clickable={true}
-                    color_picker={this.color_picker} show_pid={this.show_pid} replies={this.state.replies} />
+                    color_picker={this.color_picker} show_pid={this.show_pid} replies={this.state.replies}
+                    set_variant={(variant)=>{this.set_variant(null,variant);}}
+                />
                 {(this.props.deletion_detect && parseInt(this.state.info.reply)>this.state.replies.length) &&
                     <div className="box box-tip flow-item box-danger">
                         {parseInt(this.state.info.reply)-this.state.replies.length} 条回复被删除
@@ -259,7 +297,10 @@ class FlowSidebar extends PureComponent {
                 }
                 {this.state.replies.map((reply)=>(
                     <LazyLoad key={reply.cid} offset={500} height="5em" overflow={true} once={true}>
-                        <Reply info={reply} color_picker={this.color_picker} show_pid={this.show_pid} />
+                        <Reply
+                            info={reply} color_picker={this.color_picker} show_pid={this.show_pid}
+                            set_variant={(variant)=>{this.set_variant(reply.cid,variant);}}
+                        />
                     </LazyLoad>
                 ))}
                 {!!this.props.token ?
@@ -280,6 +321,7 @@ class FlowItemRow extends PureComponent {
             info: props.info,
             attention: false,
         };
+        this.state.info.variant={};
         this.color_picker=new ColorPicker();
         this.show_pid=load_single_meta(this.props.show_sidebar,this.props.token);
     }
