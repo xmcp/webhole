@@ -109,7 +109,7 @@ class FlowItem extends PureComponent {
                             <span className="icon icon-reply" />
                         </span>
                     }
-                    <code className="box-id"><a href={'##'+props.info.pid} onClick={this.copy_link}>#{props.info.pid}</a></code>
+                    <code className="box-id"><a href={'##'+props.info.pid} onClick={this.copy_link.bind(this)}>#{props.info.pid}</a></code>
                     &nbsp;
                     <Time stamp={props.info.timestamp} />
                 </div>
