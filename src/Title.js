@@ -154,7 +154,7 @@ class ControlBar extends PureComponent {
 
 export function Title(props) {
     let date=new Date();
-    let is_eriri_birthday=date.getMonth()===3 && date.getDate()===20;
+    let is_eriri_birthday=(1+date.getMonth())===3 && date.getDate()===20;
 
     return (
         <div className="title-bar">
