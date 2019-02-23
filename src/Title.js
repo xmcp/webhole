@@ -153,6 +153,9 @@ class ControlBar extends PureComponent {
 }
 
 export function Title(props) {
+    let date=new Date();
+    let is_eriri_birthday=date.getMonth()===3 && date.getDate()===20;
+
     return (
         <div className="title-bar">
             <div className="aux-margin">
@@ -165,7 +168,10 @@ export function Title(props) {
                         </a>
                     </p>
                     <p className="title-small">
-                        非官方网页版 by @xmcp
+                        { is_eriri_birthday ?
+                            <span style={{backgroundColor: 'yellow'}}>3月20日是看板娘<a href="https://zh.moegirl.org/%E6%B3%BD%E6%9D%91%C2%B7%E6%96%AF%E5%AE%BE%E5%A1%9E%C2%B7%E8%8B%B1%E6%A2%A8%E6%A2%A8" target="_blank">英梨梨</a>的生日</span> :
+                            "非官方网页版 by @xmcp"
+                        }
                     </p>
                 </div>
                 <ControlBar show_sidebar={props.show_sidebar} set_mode={props.set_mode} />
