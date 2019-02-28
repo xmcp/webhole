@@ -6,14 +6,15 @@ import {PressureHelper} from './PressureHelper';
 import {TokenCtx} from './UserAction';
 
 function TokenDeprecatedAlert(props) {
-    if(!props.token || props.token.startsWith('isop_')) // noinspection JSConstructorReturnsPrimitive
+    if(!props.token || !props.token.startsWith('isop_')) // noinspection JSConstructorReturnsPrimitive
             return null;
     else
         return (
             <div className="flow-item-row">
-                <div className="box box-tip flow-item box-danger">
-                    <p>树洞已更换登录方式，您原来的登录状态已失效。</p>
+                <div className="box box-tip box-danger aux-margin">
+                    <p>树洞于2019年3月更新登录方式，原先登录已失效。</p>
                     <p>请按右上角的按钮，点“注销”，然后重新登录。</p>
+                    <p><b>好消息：更新后支持客户端和网页同时使用了！</b></p>
                 </div>
             </div>
         );
