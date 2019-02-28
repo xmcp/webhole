@@ -1,7 +1,9 @@
 import {API_BASE} from './Common';
 
+export const API_VERSION_PARAM='&PKUHelperAPI=3.0';
+
 function token_param(token) {
-    return token ? ('&token='+token) : '';
+    return API_VERSION_PARAM + (token ? ('&user_token='+token) : '');
 }
 
 export const API={
@@ -32,10 +34,10 @@ export const API={
 
     set_attention: (pid,attention,token)=>{
         let data=new URLSearchParams();
-        data.append('token',token);
+        data.append('user_token',token);
         data.append('pid',pid);
         data.append('switch',attention ? '1' : '0');
-        return fetch(API_BASE+'/api.php?action=attention', {
+        return fetch(API_BASE+'/api.php?action=attention'+API_VERSION_PARAM, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -57,11 +59,10 @@ export const API={
 
     report: (pid,reason,token)=>{
         let data=new URLSearchParams();
-        data.append('token',token);
-        data.append('action','report');
+        data.append('user_token',token);
         data.append('pid',pid);
         data.append('reason',reason);
-        return fetch(API_BASE+'/api.php', {
+        return fetch(API_BASE+'/api.php?action=report'+API_VERSION_PARAM, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',

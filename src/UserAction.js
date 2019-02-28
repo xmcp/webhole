@@ -1,5 +1,6 @@
 import React, {Component, PureComponent} from 'react';
 import {SafeTextarea} from './Common';
+import {API_VERSION_PARAM} from './flows_api'
 import md5 from 'md5';
 
 import './UserAction.css';
@@ -58,7 +59,7 @@ export class LoginForm extends Component {
         data.append('username', this.username_ref.current.value);
         data.append('valid_code', this.password_ref.current.value);
         data.append('isnewloginflow', 'true');
-        fetch(LOGIN_BASE+'/login.php?platform=hole_xmcp_ml', {
+        fetch(LOGIN_BASE+'/login.php?platform=webhole', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -72,7 +73,7 @@ export class LoginForm extends Component {
                     throw new Error(json);
                 }
 
-                set_token(json.token);
+                set_token(json.user_token);
                 alert(`成功以 ${json.name} 的身份登录`);
                 this.setState({
                     loading_status: 'done',
@@ -98,8 +99,8 @@ export class LoginForm extends Component {
                                 <button type="button" onClick={()=>{token.set_value(null);}}>注销</button>
                             </p>
                             <p>
-                                Token: <code>{token.value||'(null)'}</code> <br />
-                                请勿泄露 Token，它代表您的登录状态，与您的账户唯一对应且泄露后无法重置
+                                User Token: <code>{token.value||'(null)'}</code> <br />
+                                请勿泄露 User Token，它代表您的登录状态，与您的账户唯一对应且泄露后无法重置
                             </p>
                         </div> :
                         <div>
@@ -162,11 +163,10 @@ export class ReplyForm extends Component {
         });
 
         let data=new URLSearchParams();
-        data.append('action','docomment');
         data.append('pid',this.props.pid);
         data.append('text',this.state.text);
-        data.append('token',this.props.token);
-        fetch(API_BASE+'/api.php', {
+        data.append('user_token',this.props.token);
+        fetch(API_BASE+'/api.php?action=docomment'+API_VERSION_PARAM, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -233,14 +233,13 @@ export class PostForm extends Component {
 
     do_post(text,img) {
         let data=new URLSearchParams();
-        data.append('action','dopost');
         data.append('text',this.state.text);
         data.append('type',img ? 'image' : 'text');
-        data.append('token',this.props.token);
+        data.append('user_token',this.props.token);
         if(img)
             data.append('data',img);
 
-        fetch(API_BASE+'/api.php', {
+        fetch(API_BASE+'/api.php?action=dopost'+API_VERSION_PARAM, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',

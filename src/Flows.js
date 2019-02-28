@@ -548,7 +548,7 @@ export class Flow extends PureComponent {
                     show_sidebar={this.props.show_sidebar} mode={this.state.mode} deletion_detect={should_deletion_detect}
                 />
                 {this.state.loading_status==='failed' &&
-                    <div className="box box-tip">
+                    <div className="box box-tip aux-margin">
                         <a onClick={()=>{this.load_page(this.state.loaded_pages+1)}}>重新加载</a>
                     </div>
                 }
