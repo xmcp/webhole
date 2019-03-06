@@ -86,7 +86,7 @@ class ControlBar extends PureComponent {
             }
 
             const mode=this.state.search_text.startsWith('#') ? 'single' : 'search';
-            this.set_mode(mode,this.state.search_text||null);
+            this.set_mode(mode,this.state.search_text||'');
         }
     }
 

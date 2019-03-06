@@ -1,6 +1,6 @@
 import React, {Component, PureComponent} from 'react';
 import {SafeTextarea} from './Common';
-import {API_VERSION_PARAM} from './flows_api'
+import {API_VERSION_PARAM,API} from './flows_api'
 import md5 from 'md5';
 
 import './UserAction.css';
@@ -28,6 +28,7 @@ export class LoginForm extends Component {
 
         this.username_ref=React.createRef();
         this.password_ref=React.createRef();
+        this.input_token_ref=React.createRef();
     }
 
     do_sendcode() {
@@ -54,38 +55,64 @@ export class LoginForm extends Component {
 
         this.setState({
             loading_status: 'loading',
-        });
-        let data=new URLSearchParams();
-        data.append('username', this.username_ref.current.value);
-        data.append('valid_code', this.password_ref.current.value);
-        data.append('isnewloginflow', 'true');
-        fetch(LOGIN_BASE+'/login.php?platform=webhole', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: data,
-        })
-            .then((res)=>res.json())
-            .then((json)=>{
-                if(json.code!==0) {
-                    if(json.msg) alert(json.msg);
-                    throw new Error(json);
-                }
-
-                set_token(json.user_token);
-                alert(`成功以 ${json.name} 的身份登录`);
-                this.setState({
-                    loading_status: 'done',
-                });
+        },()=>{
+            let data=new URLSearchParams();
+            data.append('username', this.username_ref.current.value);
+            data.append('valid_code', this.password_ref.current.value);
+            data.append('isnewloginflow', 'true');
+            fetch(LOGIN_BASE+'/login.php?platform=webhole', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: data,
             })
-            .catch((e)=>{
-                alert('登录失败');
-                this.setState({
-                    loading_status: 'done',
+                .then((res)=>res.json())
+                .then((json)=>{
+                    if(json.code!==0) {
+                        if(json.msg) alert(json.msg);
+                        throw new Error(json);
+                    }
+
+                    set_token(json.user_token);
+                    alert(`成功以 ${json.name} 的身份登录`);
+                    this.setState({
+                        loading_status: 'done',
+                    });
+                })
+                .catch((e)=>{
+                    alert('登录失败');
+                    this.setState({
+                        loading_status: 'done',
+                    });
+                    console.error(e);
                 });
-                console.error(e);
-            });
+        });
+    }
+
+    do_input_token(set_token) {
+        if(this.state.loading_status==='loading')
+            return;
+
+        let token=this.input_token_ref.current.value;
+        this.setState({
+            loading_status: 'loading',
+        },()=>{
+            API.get_attention(token)
+                .then((_)=>{
+                    this.setState({
+                        loading_status: 'done',
+                    });
+                    set_token(token);
+                })
+                .catch((e)=>{
+                    alert('Token检验失败');
+                    this.setState({
+                        loading_status: 'done',
+                    });
+                    console.error(e);
+                });
+        });
     }
 
     render() {
@@ -128,6 +155,15 @@ export class LoginForm extends Component {
                             <p>
                                 登录请求会被发送到北大统一验证接口和 PKU Helper 服务器 <br />
                                 我们不会记录或使用您的登录信息
+                            </p>
+                            <hr />
+                            <p>从其他设备导入登录状态</p>
+                            <p>
+                                <input ref={this.input_token_ref} placeholder="User Token" />
+                                <button type="button" disabled={this.state.loading_status==='loading'}
+                                        onClick={(e)=>this.do_input_token(token.set_value)}>
+                                    导入
+                                </button>
                             </p>
                         </div>
                     }
@@ -269,7 +305,7 @@ export class PostForm extends Component {
             });
     }
 
-    proc_img(file) { // http://pkuhole.chenpong.com/
+    proc_img(file) {
         return new Promise((resolve,reject)=>{
             function return_url(url) {
                 const idx=url.indexOf(';base64,');
