@@ -1,7 +1,6 @@
 // https://martin.ankerl.com/2009/12/09/how-to-create-random-colors-programmatically/
 
-//const golden_ratio_conjugate=0.618033988749895;
-const golden_ratio_conjugate=0.61;
+const golden_ratio_conjugate=0.618033988749895;
 
 export class ColorPicker {
     constructor() {
