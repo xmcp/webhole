@@ -9,22 +9,22 @@ const flag_re=/^\/\/setflag ([a-zA-Z0-9_]+)=(.+)$/;
 
 const HELP_TEXT=(
     <div className="box">
-        <p>使用提示：</p>
+        <p className="centered-line">使用提示</p>
         <ul>
             <li>为保证使用体验，请使用 Chrome 或 Mobile Safari 浏览器最新版</li>
-            <li>在搜索框输入 #472865 等可以查看指定 ID 的树洞</li>
-            <li>新的帖子会在左上角显示一个圆点</li>
+            <li>在列表中左右滑动可以预览回复，点击展开侧边栏进行操作</li>
+            <li>新出现的帖子会在左上角显示一个圆点</li>
+            <li>点击树洞编号可以复制分享链接和树洞全文（包括回复）</li>
             <li>本网站支持 3D Touch，重压屏幕可以快速返回 / 刷新树洞</li>
         </ul>
-        <p>使用本网站时，您需要了解并同意：</p>
-        <ul>
-            <li>所有数据来自 PKU Helper，本站不对其内容负责</li>
-            <li>
-                不接受关于 UI 的建议，
-                功能建议请在 <a href="https://github.com/xmcp/ashole" target="_blank">GitHub</a> 提出
-            </li>
-            <li>英梨梨是我的，你们都不要抢</li>
-        </ul>
+        <p>
+            在&nbsp;
+            <a href="https://github.com/xmcp/ashole" target="_blank">
+                <span className="icon icon-github" /> GitHub
+            </a>
+            &nbsp;开源，如有反馈请提交 Issue
+        </p>
+        <br />
         <p>By @xmcp</p>
         <br />
         <p>
@@ -123,7 +123,7 @@ class ControlBar extends PureComponent {
                     />
                     <a className="control-btn" onClick={()=>{
                         this.props.show_sidebar(
-                            'P大树洞（非官方）网页版',
+                            'P大树洞 网页版',
                             <div>
                                 <PromotionBar />
                                 <LoginForm />
@@ -162,15 +162,11 @@ export function Title(props) {
                 <div className="title">
                     <p className="centered-line">
                         P大树洞
-                        &nbsp;
-                        <a href="https://github.com/xmcp/ashole" target="_blank">
-                            <span className="icon icon-github" />
-                        </a>
                     </p>
                     <p className="title-small">
                         { is_eriri_birthday ?
                             <span style={{backgroundColor: 'yellow'}}>3月20日是看板娘<a href="https://zh.moegirl.org/%E6%B3%BD%E6%9D%91%C2%B7%E6%96%AF%E5%AE%BE%E5%A1%9E%C2%B7%E8%8B%B1%E6%A2%A8%E6%A2%A8" target="_blank">英梨梨</a>的生日</span> :
-                            "非官方网页版 by @xmcp"
+                            "官方网页版"
                         }
                     </p>
                 </div>
