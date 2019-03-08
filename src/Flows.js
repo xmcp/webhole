@@ -10,7 +10,7 @@ import {TokenCtx, ReplyForm} from './UserAction';
 import {API} from './flows_api';
 
 const IMAGE_BASE='http://www.pkuhelper.com:10301/services/pkuhole/images/';
-const AUDIO_BASE='/audio_proxy/';
+const AUDIO_BASE='http://www.pkuhelper.com:10301/services/pkuhole/audios/';
 
 const SEARCH_PAGESIZE=50;
 const CLICKABLE_TAGS={a: true, audio: true};
@@ -256,7 +256,8 @@ class FlowSidebar extends PureComponent {
     do_reply(name,event) {
         if(event.target.tagName.toLowerCase()!=='a') {
             let text=this.reply_ref.current.get();
-            this.reply_ref.current.set_and_focus('Re '+name+': ');
+            if(/^\s*(Re (洞主|\b[A-Z][a-z]+){0,2}:)?\s*$/.test(text)) // text is nearly empty so we can replace it
+                this.reply_ref.current.set_and_focus('Re '+name+': ');
         }
     }
 

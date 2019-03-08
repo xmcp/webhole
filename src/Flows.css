@@ -155,3 +155,18 @@
 .box-id {
     color: #666666;
 }
+.box-id a:hover::before {
+    content: "复制全文";
+    position: relative;
+    width: 5em;
+    height: 1.3em;
+    line-height: 1.3em;
+    margin-bottom: -1.3em;
+    border-radius: 3px;
+    text-align: center;
+    top: -1.5em;
+    display: block;
+    color: white;
+    background-color: rgba(0,0,0,.6);
+    pointer-events: none;
+}
