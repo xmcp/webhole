@@ -72,6 +72,7 @@ export class SafeTextarea extends Component {
         this.clear=this.clear.bind(this);
         this.area_ref=React.createRef();
         this.change_callback=props.on_change;
+        this.change_callback(this.state.text);
     }
 
     componentWillUnmount() {
@@ -90,6 +91,17 @@ export class SafeTextarea extends Component {
         this.setState({
             text: '',
         });
+    }
+    set_and_focus(text) {
+        this.change_callback(text);
+        this.setState({
+            text: text,
+        },()=>{
+            this.area_ref.current.focus();
+        });
+    }
+    get() {
+        return this.state.text;
     }
 
     render() {

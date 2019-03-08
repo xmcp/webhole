@@ -8,6 +8,11 @@
 .reply-form {
     display: flex;
 }
+.reply-sticky {
+    position: sticky;
+    bottom: 0;
+}
+
 .reply-form textarea {
     resize: vertical;
     flex: 1;

@@ -181,7 +181,7 @@ export class ReplyForm extends Component {
             loading_status: 'done',
         };
         this.on_change_bound=this.on_change.bind(this);
-        this.area_ref=React.createRef();
+        this.area_ref=this.props.area_ref||React.createRef();
     }
 
     on_change(value) {
@@ -234,7 +234,7 @@ export class ReplyForm extends Component {
 
     render() {
         return (
-            <form onSubmit={this.on_submit.bind(this)} className="reply-form box">
+            <form onSubmit={this.on_submit.bind(this)} className={'reply-form box'+(this.state.text?' reply-sticky':'')}>
                 <SafeTextarea ref={this.area_ref} id={this.props.pid} on_change={this.on_change_bound} />
                 {this.state.loading_status==='loading' ?
                     <button disabled="disabled">

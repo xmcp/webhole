@@ -143,6 +143,7 @@ class FlowSidebar extends PureComponent {
         this.color_picker=props.color_picker;
         this.show_pid=load_single_meta(this.props.show_sidebar,this.props.token);
         this.syncState=props.sync_state||(()=>{});
+        this.reply_ref=React.createRef();
     }
 
     set_variant(cid,variant) {
@@ -252,6 +253,13 @@ class FlowSidebar extends PureComponent {
         }
     }
 
+    do_reply(name,event) {
+        if(event.target.tagName.toLowerCase()!=='a') {
+            let text=this.reply_ref.current.get();
+            this.reply_ref.current.set_and_focus('Re '+name+': ');
+        }
+    }
+
     render() {
         const star_brush=localStorage['STAR_BRUSH']==='on';
 
@@ -287,25 +295,30 @@ class FlowSidebar extends PureComponent {
                         </span>
                     }
                 </div>
-                <FlowItem info={this.state.info} attention={this.state.attention} img_clickable={true}
-                    color_picker={this.color_picker} show_pid={this.show_pid} replies={this.state.replies}
-                    set_variant={(variant)=>{this.set_variant(null,variant);}}
-                />
+                <div onClick={(e)=>{this.do_reply('',e);}}>
+                    <FlowItem info={this.state.info} attention={this.state.attention} img_clickable={true}
+                        color_picker={this.color_picker} show_pid={this.show_pid} replies={this.state.replies}
+                        set_variant={(variant)=>{this.set_variant(null,variant);}}
+                    />
+                </div>
                 {(this.props.deletion_detect && parseInt(this.state.info.reply)>this.state.replies.length) &&
                     <div className="box box-tip flow-item box-danger">
                         {parseInt(this.state.info.reply)-this.state.replies.length} 条回复被删除
                     </div>
                 }
                 {this.state.replies.map((reply)=>(
-                    <LazyLoad key={reply.cid} offset={500} height="5em" overflow={true} once={true}>
-                        <Reply
-                            info={reply} color_picker={this.color_picker} show_pid={this.show_pid}
-                            set_variant={(variant)=>{this.set_variant(reply.cid,variant);}}
-                        />
+                    <LazyLoad key={reply.cid} offset={1500} height="5em" overflow={true} once={true}>
+                        <div onClick={(e)=>{this.do_reply(reply.name,e);}}>
+                            <Reply
+                                info={reply} color_picker={this.color_picker} show_pid={this.show_pid}
+                                set_variant={(variant)=>{this.set_variant(reply.cid,variant);}}
+                            />
+                        </div>
                     </LazyLoad>
                 ))}
                 {!!this.props.token ?
-                    <ReplyForm pid={this.state.info.pid} token={this.props.token} on_complete={this.load_replies.bind(this)} /> :
+                    <ReplyForm pid={this.state.info.pid} token={this.props.token}
+                               area_ref={this.reply_ref} on_complete={this.load_replies.bind(this)} /> :
                     <div className="box box-tip flow-item">登录后可以回复树洞</div>
                 }
             </div>
