@@ -1,12 +1,12 @@
 import React, {Component, PureComponent} from 'react';
 import {SafeTextarea} from './Common';
-import {API_VERSION_PARAM,API} from './flows_api'
+import {API_VERSION_PARAM,PKUHELPER_ROOT,API} from './flows_api'
 import md5 from 'md5';
 
 import './UserAction.css';
 
 import {API_BASE} from './Common';
-const LOGIN_BASE=window.location.protocol==='https:' ? '/login_proxy' : 'http://www.pkuhelper.com:10301/services/login';
+const LOGIN_BASE=PKUHELPER_ROOT+'services/login';
 const MAX_IMG_PX=2000;
 const MAX_IMG_FILESIZE=256000;
 

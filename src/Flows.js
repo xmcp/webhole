@@ -7,10 +7,10 @@ import LazyLoad from 'react-lazyload';
 import {AudioWidget} from './AudioWidget';
 import {TokenCtx, ReplyForm} from './UserAction';
 
-import {API} from './flows_api';
+import {API, PKUHELPER_ROOT} from './flows_api';
 
-const IMAGE_BASE='http://www.pkuhelper.com:10301/services/pkuhole/images/';
-const AUDIO_BASE='http://www.pkuhelper.com:10301/services/pkuhole/audios/';
+const IMAGE_BASE=PKUHELPER_ROOT+'services/pkuhole/images/';
+const AUDIO_BASE=PKUHELPER_ROOT+'services/pkuhole/audios/';
 
 const SEARCH_PAGESIZE=50;
 const CLICKABLE_TAGS={a: true, audio: true};
@@ -253,11 +253,11 @@ class FlowSidebar extends PureComponent {
         }
     }
 
-    do_reply(name,event) {
+    show_reply_bar(name,event) {
         if(event.target.tagName.toLowerCase()!=='a') {
             let text=this.reply_ref.current.get();
             if(/^\s*(Re (洞主|\b[A-Z][a-z]+){0,2}:)?\s*$/.test(text)) // text is nearly empty so we can replace it
-                this.reply_ref.current.set_and_focus('Re '+name+': ');
+                this.reply_ref.current.set('Re '+name+': ');
         }
     }
 
@@ -296,7 +296,7 @@ class FlowSidebar extends PureComponent {
                         </span>
                     }
                 </div>
-                <div onClick={(e)=>{this.do_reply('',e);}}>
+                <div onClick={(e)=>{this.show_reply_bar('',e);}}>
                     <FlowItem info={this.state.info} attention={this.state.attention} img_clickable={true}
                         color_picker={this.color_picker} show_pid={this.show_pid} replies={this.state.replies}
                         set_variant={(variant)=>{this.set_variant(null,variant);}}
@@ -309,7 +309,7 @@ class FlowSidebar extends PureComponent {
                 }
                 {this.state.replies.map((reply)=>(
                     <LazyLoad key={reply.cid} offset={1500} height="5em" overflow={true} once={true}>
-                        <div onClick={(e)=>{this.do_reply(reply.name,e);}}>
+                        <div onClick={(e)=>{this.show_reply_bar(reply.name,e);}}>
                             <Reply
                                 info={reply} color_picker={this.color_picker} show_pid={this.show_pid}
                                 set_variant={(variant)=>{this.set_variant(reply.cid,variant);}}

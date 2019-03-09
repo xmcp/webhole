@@ -5,10 +5,23 @@ import {Sidebar} from './Sidebar';
 import {PressureHelper} from './PressureHelper';
 import {TokenCtx} from './UserAction';
 
-function TokenDeprecatedAlert(props) {
-    if(!props.token || !props.token.startsWith('isop_')) // noinspection JSConstructorReturnsPrimitive
-            return null;
-    else
+function DeprecatedAlert(props) {
+    if(['pkuhelper.com','www.pkuhelper.com','webhole.xmcp.ml','127.0.0.1','localhost'].indexOf(document.domain)===-1)
+        return (
+            <div className="flow-item-row">
+                <div className="box box-tip aux-margin">
+                    <p><b>官宣了！</b></p>
+                    <br />
+                    <p>请访问官方树洞网页版</p>
+                    <p><a href="http://pkuhelper.com/hole">http://pkuhelper.com/hole</a></p>
+                    <p>加载三倍速，访问不卡顿</p>
+                    <br />
+                    <p>当前域名将停止维护。</p>
+                    <p>@xmcp</p>
+                </div>
+            </div>
+        );
+    if(props.token && props.token.startsWith('isop_'))
         return (
             <div className="flow-item-row">
                 <div className="box box-tip box-danger aux-margin">
@@ -18,6 +31,7 @@ function TokenDeprecatedAlert(props) {
                 </div>
             </div>
         );
+    return null;
 }
 
 class App extends Component {
@@ -79,7 +93,7 @@ class App extends Component {
                 <Title show_sidebar={this.show_sidebar_bound} set_mode={this.set_mode_bound} />
                 <TokenCtx.Consumer>{(token)=>(
                     <div className="left-container">
-                        <TokenDeprecatedAlert token={token.value} />
+                        <DeprecatedAlert token={token.value} />
                         <Flow key={this.state.flow_render_key} show_sidebar={this.show_sidebar_bound}
                               mode={this.state.mode} search_text={this.state.search_text} token={token.value}
                         />
