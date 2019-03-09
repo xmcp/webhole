@@ -153,8 +153,7 @@ export class LoginForm extends Component {
                                 </button>
                             </p>
                             <p>
-                                登录请求会被发送到北大统一验证接口和 PKU Helper 服务器 <br />
-                                我们不会记录或使用您的登录信息
+                                登录请求会被发送到北大统一验证接口和 PKU Helper 服务器
                             </p>
                             <hr />
                             <p>从其他设备导入登录状态</p>
