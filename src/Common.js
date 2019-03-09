@@ -120,3 +120,40 @@ export function PromotionBar(props) {
         </div>
     ) : null;
 }
+
+export class ClickHandler extends PureComponent {
+    constructor(props) {
+        super(props);
+        this.state={
+            moved: false,
+        };
+        this.on_begin_bound=this.on_begin.bind(this);
+        this.on_move_bound=this.on_move.bind(this);
+        this.on_end_bound=this.on_end.bind(this);
+    }
+
+    on_begin() {
+        this.setState({
+            moved: false,
+        });
+    }
+    on_move() {
+        this.setState({
+            moved: true,
+        });
+    }
+    on_end(event) {
+        if(!this.state.moved)
+            this.props.callback(event);
+    }
+
+    render() {
+        return (
+            <div onTouchStart={this.on_begin_bound} onMouseDown={this.on_begin_bound}
+                 onTouchMove={this.on_move_bound} onMouseMove={this.on_move_bound}
+                 onTouchEnd={this.on_end_bound} onMouseUp={this.on_end_bound} >
+                {this.props.children}
+            </div>
+        )
+    }
+}

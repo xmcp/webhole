@@ -1,7 +1,7 @@
 import React, {Component, PureComponent} from 'react';
 import copy from 'copy-to-clipboard';
 import {ColorPicker} from './color_picker';
-import {format_time, Time, TitleLine, HighlightedText} from './Common';
+import {format_time, Time, TitleLine, HighlightedText, ClickHandler} from './Common';
 import './Flows.css';
 import LazyLoad from 'react-lazyload';
 import {AudioWidget} from './AudioWidget';
@@ -254,7 +254,7 @@ class FlowSidebar extends PureComponent {
     }
 
     show_reply_bar(name,event) {
-        if(event.target.tagName.toLowerCase()!=='a') {
+        if(this.reply_ref.current && event.target.tagName.toLowerCase()!=='a') {
             let text=this.reply_ref.current.get();
             if(/^\s*(Re (洞主|\b[A-Z][a-z]+){0,2}:)?\s*$/.test(text)) // text is nearly empty so we can replace it
                 this.reply_ref.current.set('Re '+name+': ');
@@ -296,12 +296,12 @@ class FlowSidebar extends PureComponent {
                         </span>
                     }
                 </div>
-                <div onClick={(e)=>{this.show_reply_bar('',e);}}>
+                <ClickHandler callback={(e)=>{this.show_reply_bar('',e);}}>
                     <FlowItem info={this.state.info} attention={this.state.attention} img_clickable={true}
                         color_picker={this.color_picker} show_pid={this.show_pid} replies={this.state.replies}
                         set_variant={(variant)=>{this.set_variant(null,variant);}}
                     />
-                </div>
+                </ClickHandler>
                 {(this.props.deletion_detect && parseInt(this.state.info.reply)>this.state.replies.length) &&
                     <div className="box box-tip flow-item box-danger">
                         {parseInt(this.state.info.reply)-this.state.replies.length} 条回复被删除
@@ -309,12 +309,12 @@ class FlowSidebar extends PureComponent {
                 }
                 {this.state.replies.map((reply)=>(
                     <LazyLoad key={reply.cid} offset={1500} height="5em" overflow={true} once={true}>
-                        <div onClick={(e)=>{this.show_reply_bar(reply.name,e);}}>
+                        <ClickHandler callback={(e)=>{this.show_reply_bar(reply.name,e);}}>
                             <Reply
                                 info={reply} color_picker={this.color_picker} show_pid={this.show_pid}
                                 set_variant={(variant)=>{this.set_variant(reply.cid,variant);}}
                             />
-                        </div>
+                        </ClickHandler>
                     </LazyLoad>
                 ))}
                 {!!this.props.token ?
@@ -322,6 +322,7 @@ class FlowSidebar extends PureComponent {
                                area_ref={this.reply_ref} on_complete={this.load_replies.bind(this)} /> :
                     <div className="box box-tip flow-item">登录后可以回复树洞</div>
                 }
+                <br />
             </div>
         )
     }
