@@ -5,7 +5,7 @@ import {PromotionBar} from './Common';
 
 import './Title.css';
 
-const flag_re=/^\/\/setflag ([a-zA-Z0-9_]+)=(.+)$/;
+const flag_re=/^\/\/setflag ([a-zA-Z0-9_]+)=(.*)$/;
 
 const HELP_TEXT=(
     <div className="box">
@@ -80,8 +80,13 @@ class ControlBar extends PureComponent {
         if(event.key==='Enter') {
             let flag_res=flag_re.exec(this.state.search_text);
             if(flag_res) {
-                localStorage[flag_res[1]]=flag_res[2];
-                alert('Set Flag '+flag_res[1]+'='+flag_res[2]);
+                if(flag_res[2]) {
+                    localStorage[flag_res[1]]=flag_res[2];
+                    alert('Set Flag '+flag_res[1]+'='+flag_res[2]+'\nYou may need to refresh this webpage.');
+                } else {
+                    delete localStorage[flag_res[1]];
+                    alert('Clear Flag '+flag_res[1]+'\nYou may need to refresh this webpage.');
+                }
                 return;
             }
 

@@ -183,6 +183,17 @@ export class ReplyForm extends Component {
         this.area_ref=this.props.area_ref||React.createRef();
     }
 
+    componentDidMount() {
+        document.addEventListener('keypress',(e)=>{
+            if(e.code==='Enter' && !e.ctrlKey && !e.altKey && ['input','textarea'].indexOf(e.target.tagName.toLowerCase())===-1) {
+                if(this.area_ref.current) {
+                    e.preventDefault();
+                    this.area_ref.current.focus();
+                }
+            }
+        });
+    }
+
     on_change(value) {
         this.setState({
             text: value,
@@ -190,7 +201,7 @@ export class ReplyForm extends Component {
     }
 
     on_submit(event) {
-        event.preventDefault();
+        if(event) event.preventDefault();
         if(this.state.loading_status==='loading')
             return;
         this.setState({
@@ -234,7 +245,7 @@ export class ReplyForm extends Component {
     render() {
         return (
             <form onSubmit={this.on_submit.bind(this)} className={'reply-form box'+(this.state.text?' reply-sticky':'')}>
-                <SafeTextarea ref={this.area_ref} id={this.props.pid} on_change={this.on_change_bound} />
+                <SafeTextarea ref={this.area_ref} id={this.props.pid} on_change={this.on_change_bound} on_submit={this.on_submit.bind(this)} />
                 {this.state.loading_status==='loading' ?
                     <button disabled="disabled">
                         <span className="icon icon-loading" />
@@ -258,6 +269,11 @@ export class PostForm extends Component {
         this.img_ref=React.createRef();
         this.area_ref=React.createRef();
         this.on_change_bound=this.on_change.bind(this);
+    }
+
+    componentDidMount() {
+        if(this.area_ref.current)
+            this.area_ref.current.focus();
     }
 
     on_change(value) {
@@ -356,7 +372,7 @@ export class PostForm extends Component {
     }
 
     on_submit(event) {
-        event.preventDefault();
+        if(event) event.preventDefault();
         if(this.state.loading_status==='loading')
             return;
         if(this.img_ref.current.files.length) {
@@ -398,7 +414,7 @@ export class PostForm extends Component {
                         </button>
                     }
                 </div>
-                <SafeTextarea ref={this.area_ref} id="new_post" on_change={this.on_change_bound} />
+                <SafeTextarea ref={this.area_ref} id="new_post" on_change={this.on_change_bound} on_submit={this.on_submit.bind(this)} />
             </form>
         )
     }

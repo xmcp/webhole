@@ -70,10 +70,12 @@ export class SafeTextarea extends Component {
             text: window.TEXTAREA_BACKUP[props.id]||'',
         };
         this.on_change_bound=this.on_change.bind(this);
+        this.on_keydown_bound=this.on_keydown.bind(this);
         this.clear=this.clear.bind(this);
         this.area_ref=React.createRef();
-        this.change_callback=props.on_change;
+        this.change_callback=props.on_change||(()=>{});
         this.change_callback(this.state.text);
+        this.submit_callback=props.on_submit||(()=>{});
     }
 
     componentWillUnmount() {
@@ -86,6 +88,12 @@ export class SafeTextarea extends Component {
             text: event.target.value,
         });
         this.change_callback(event.target.value);
+    }
+    on_keydown(event) {
+        if(event.key==='Enter' && event.ctrlKey && !event.altKey) {
+            event.preventDefault();
+            this.submit_callback();
+        }
     }
 
     clear() {
@@ -102,10 +110,13 @@ export class SafeTextarea extends Component {
     get() {
         return this.state.text;
     }
+    focus() {
+        this.area_ref.current.focus();
+    }
 
     render() {
         return (
-            <textarea ref={this.area_ref} onChange={this.on_change_bound} value={this.state.text} />
+            <textarea ref={this.area_ref} onChange={this.on_change_bound} value={this.state.text} onKeyDown={this.on_keydown_bound} />
         )
     }
 }
