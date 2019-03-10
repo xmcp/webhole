@@ -235,7 +235,7 @@ export class ReplyForm extends Component {
             })
             .catch((e)=>{
                 console.error(e);
-                alert('回复失败\n（树洞服务器经常抽风，其实有可能已经回复上了，不妨点“刷新回复”看一看）');
+                alert('回复失败');
                 this.setState({
                     loading_status: 'done',
                 });

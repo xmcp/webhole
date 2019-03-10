@@ -1,8 +1,8 @@
 import React, {Component, PureComponent} from 'react';
 import {PKUHELPER_ROOT} from './flows_api';
+import {split_text,NICKNAME_RE,PID_RE,URL_RE} from './text_splitter'
 
 import TimeAgo from 'react-timeago';
-import Linkify from 'react-linkify';
 import chineseStrings from 'react-timeago/lib/language-strings/zh-CN';
 import buildFormatter from 'react-timeago/lib/formatters/buildFormatter';
 
@@ -11,9 +11,6 @@ import './Common.css';
 const chinese_format=buildFormatter(chineseStrings);
 
 export const API_BASE=PKUHELPER_ROOT+'services/pkuhole';
-
-const PID_RE=/(^|[^\d])([1-9]\d{4,5})(?!\d)/g;
-const NICKNAME_RE=/(^|[^A-Za-z])((?:(?:Angry|Baby|Crazy|Diligent|Excited|Fat|Greedy|Hungry|Interesting|Japanese|Kind|Little|Magic|Naïve|Old|Powerful|Quiet|Rich|Superman|THU|Undefined|Valuable|Wifeless|Xiangbuchulai|Young|Zombie)\s)?(?:Alice|Bob|Carol|Dave|Eve|Francis|Grace|Hans|Isabella|Jason|Kate|Louis|Margaret|Nathan|Olivia|Paul|Queen|Richard|Susan|Thomas|Uma|Vivian|Winnie|Xander|Yasmine|Zach)|You Win(?: \d+)?|洞主)(?![A-Za-z])/gi;
 
 function pad2(x) {
     return x<10 ? '0'+x : ''+x;
@@ -44,19 +41,28 @@ export function TitleLine(props) {
 
 export class HighlightedText extends PureComponent {
     render() {
-        let parts=[].concat.apply([], this.props.text.split(PID_RE).map((p)=>p.split(NICKNAME_RE)));
+        let parts=split_text(this.props.text,[
+            ['url',URL_RE],
+            ['pid',PID_RE],
+            ['nickname',NICKNAME_RE],
+        ]);
+        function normalize_url(url) {
+            return /^https?:\/\//.test(url) ? url : 'http://'+url;
+        }
         return (
-            <Linkify properties={{target: '_blank'}}>
-                <pre>
-                    {parts.map((p,idx)=>(
+            <pre>
+                {parts.map((part,idx)=>{
+                    let [rule,p]=part;
+                    return (
                         <span key={idx}>{
-                            PID_RE.test(p) ? <a href={'##'+p} onClick={(e)=>{e.preventDefault(); this.props.show_pid(p);}}>{p}</a> :
-                            NICKNAME_RE.test(p) ? <span style={{backgroundColor: this.props.color_picker.get(p)}}>{p}</span> :
+                            rule==='url' ? <a href={normalize_url(p)} target="_blank" rel="noopener">{p}</a> :
+                            rule==='pid' ? <a href={'##'+p} onClick={(e)=>{e.preventDefault(); this.props.show_pid(p);}}>{p}</a> :
+                            rule==='nickname' ? <span style={{backgroundColor: this.props.color_picker.get(p)}}>{p}</span> :
                             p
                         }</span>
-                    ))}
-                </pre>
-            </Linkify>
+                    );
+                })}
+            </pre>
         )
     }
 }
