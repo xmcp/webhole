@@ -48,6 +48,9 @@ class App extends Component {
         this.show_sidebar_bound=this.show_sidebar.bind(this);
         this.set_mode_bound=this.set_mode.bind(this);
         this.on_pressure_bound=this.on_pressure.bind(this);
+        // a silly self-deceptive approach to ban guests, enough to fool those muggles
+        //                     document             cookie                    'pku_ip_flag=yes'
+        this.inpku_flag=window[atob('ZG9jdW1lbnQ')][atob('Y29va2ll')].indexOf(atob('cGt1X2lwX2ZsYWc9eWVz'))!==-1;
     }
 
     on_pressure() {
@@ -94,9 +97,17 @@ class App extends Component {
                 <TokenCtx.Consumer>{(token)=>(
                     <div className="left-container">
                         <DeprecatedAlert token={token.value} />
-                        <Flow key={this.state.flow_render_key} show_sidebar={this.show_sidebar_bound}
-                              mode={this.state.mode} search_text={this.state.search_text} token={token.value}
-                        />
+                        {this.inpku_flag||token.value ?
+                            <Flow key={this.state.flow_render_key} show_sidebar={this.show_sidebar_bound}
+                                  mode={this.state.mode} search_text={this.state.search_text} token={token.value}
+                            /> :
+                            <div className="flow-item-row">
+                                <div className="box box-tip aux-margin">
+                                    <p>本网站仅限校内用户使用</p>
+                                    <p>请点击右上角的 <span className="icon icon-login" /> 按钮登录</p>
+                                </div>
+                            </div>
+                        }
                         <br />
                     </div>
                 )}</TokenCtx.Consumer>

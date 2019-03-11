@@ -159,7 +159,7 @@ class ControlBar extends PureComponent {
 
 export function Title(props) {
     let date=new Date();
-    let is_eriri_birthday=(1+date.getMonth())===3 && date.getDate()===20;
+    let eriri_easteregg=(1+date.getMonth())===3 && date.getDate()===20 && !localStorage['REPLACE_ERIRI_WITH_URL'];
 
     return (
         <div className="title-bar">
@@ -169,7 +169,7 @@ export function Title(props) {
                         P大树洞
                     </p>
                     <p className="title-small">
-                        { is_eriri_birthday ?
+                        { eriri_easteregg ?
                             <span style={{backgroundColor: 'yellow'}}>3月20日是看板娘<a href="https://zh.moegirl.org/%E6%B3%BD%E6%9D%91%C2%B7%E6%96%AF%E5%AE%BE%E5%A1%9E%C2%B7%E8%8B%B1%E6%A2%A8%E6%A2%A8" target="_blank">英梨梨</a>的生日</span> :
                             "官方网页版"
                         }
