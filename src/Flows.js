@@ -237,22 +237,6 @@ class FlowSidebar extends PureComponent {
         }
     }
 
-    star_brush() {
-        let count=prompt('Count:');
-        if(count) {
-            let reqs=[];
-            for(let i=parseInt(count);i;i--)
-                reqs.push(API.set_attention(this.state.info.pid,false,this.props.token));
-            Promise.all(reqs)
-                .then(()=>{
-                    alert('Completed!')
-                })
-                .catch((e)=>{
-                    alert('Failed!\n\n'+e);
-                })
-        }
-    }
-
     show_reply_bar(name,event) {
         if(this.reply_ref.current && event.target.tagName.toLowerCase()!=='a') {
             let text=this.reply_ref.current.get();
@@ -262,19 +246,11 @@ class FlowSidebar extends PureComponent {
     }
 
     render() {
-        const star_brush=localStorage['STAR_BRUSH']==='on';
-
         if(this.state.loading_status==='loading')
             return (<p className="box box-tip">加载中……</p>);
         return (
             <div className="flow-item-row sidebar-flow-item">
                 <div className="box box-tip">
-                    {(star_brush && !!this.props.token) &&
-                        <span>
-                            <a onClick={this.star_brush.bind(this)}>-</a>
-                            &nbsp;/&nbsp;
-                        </span>
-                    }
                     {!!this.props.token &&
                         <span>
                             <a onClick={this.report.bind(this)}>举报</a>

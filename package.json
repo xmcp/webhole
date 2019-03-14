@@ -10,7 +10,6 @@
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-lazyload": "latest",
-    "react-linkify": "^0.2.2",
     "react-scripts": "1.1.4",
     "react-timeago": "^4.1.9"
   },
