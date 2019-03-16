@@ -51,12 +51,16 @@ pre {
 
 button, .button {
     color: black;
-    background-color: rgba(255,255,255,.5);
+    background-color: rgba(235,235,235,.5);
     border-radius: 5px;
     text-align: center;
     border: 1px solid black;
     line-height: 2em;
     margin: 0 .5em;
+}
+
+button:hover, .button:hover {
+    background-color: rgba(255,255,255,.7);
 }
 
 button:disabled, .button:disabled {
