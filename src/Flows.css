@@ -3,7 +3,7 @@
     border-radius: 5px;
     margin: 1em 0;
     padding: .5em;
-    box-shadow: 0 5px 20px rgba(0,0,0,.5);
+    box-shadow: 0 5px 10px rgba(0,0,0,.4);
 }
 
 .box-tip {
@@ -111,7 +111,7 @@
     left: 10px;
     margin-top: 1.5em;
     color: white;
-    text-shadow: 0 0 5px #000;
+    text-shadow: 0 0 2px #000;
     font-family: 'Consolas', 'Courier', monospace;
 }
 
