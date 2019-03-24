@@ -7,8 +7,8 @@ import './UserAction.css';
 
 import {API_BASE} from './Common';
 const LOGIN_BASE=PKUHELPER_ROOT+'services/login';
-const MAX_IMG_PX=2000;
-const MAX_IMG_FILESIZE=256000;
+const MAX_IMG_PX=2500;
+const MAX_IMG_FILESIZE=300000;
 
 const ISOP_APPKEY='0feb3a8a831e11e8933a0050568508a5';
 const ISOP_APPCODE='0fec960a831e11e8933a0050568508a5';
@@ -265,10 +265,12 @@ export class PostForm extends Component {
         this.state={
             text: '',
             loading_status: 'done',
+            img_tip: null,
         };
         this.img_ref=React.createRef();
         this.area_ref=React.createRef();
         this.on_change_bound=this.on_change.bind(this);
+        this.on_img_change_bound=this.on_img_change.bind(this);
     }
 
     componentDidMount() {
@@ -327,7 +329,7 @@ export class PostForm extends Component {
                 if(idx===-1)
                     throw new Error('img not base64 encoded');
 
-                resolve(url.substr(idx+8));
+                return url.substr(idx+8);
             }
 
             let reader=new FileReader();
@@ -339,13 +341,16 @@ export class PostForm extends Component {
                 image.onload=(()=>{
                     let width=image.width;
                     let height=image.height;
+                    let compressed=false;
                     if(width>MAX_IMG_PX) {
                         height=height*MAX_IMG_PX/width;
                         width=MAX_IMG_PX;
+                        compressed=true;
                     }
                     if(height>MAX_IMG_PX) {
                         width=width*MAX_IMG_PX/height;
                         height=MAX_IMG_PX;
+                        compressed=true;
                     }
 
                     let canvas=document.createElement('canvas');
@@ -354,21 +359,56 @@ export class PostForm extends Component {
                     canvas.height=height;
                     ctx.drawImage(image,0,0,width,height);
 
-                    for(let quality=.9;quality>0;quality-=0.1) {
-                        const url=canvas.toDataURL('image/jpeg',quality);
-                        console.log('quality',quality,'size',url.length);
-                        if(url.length<=MAX_IMG_FILESIZE) {
-                            console.log('chosen img quality',quality);
-                            return return_url(url);
-                        }
+                    let quality_l=.1,quality_r=.9,quality,new_url;
+                    while(quality_r-quality_l>=.06) {
+                        quality=(quality_r+quality_l)/2;
+                        new_url=canvas.toDataURL('image/jpeg',quality);
+                        console.log(quality_l,quality_r,'trying quality',quality,'size',new_url.length);
+                        if(new_url.length<=MAX_IMG_FILESIZE)
+                            quality_l=quality;
+                        else
+                            quality_r=quality;
                     }
-                    // else
-                    alert('图片过大，无法上传');
-                    reject('img too large');
+                    if(quality_l>=.101) {
+                        console.log('chosen img quality',quality);
+                        resolve({
+                            img: return_url(new_url),
+                            quality: quality,
+                            width: Math.round(width),
+                            height: Math.round(height),
+                            compressed: compressed,
+                        });
+                    } else {
+                        reject('图片过大，无法上传');
+                    }
                 });
             });
             reader.readAsDataURL(file);
         });
+    }
+
+    on_img_change() {
+        if(this.img_ref.current && this.img_ref.current.files.length)
+            this.setState({
+                img_tip: '（正在处理图片……）'
+            },()=>{
+                this.proc_img(this.img_ref.current.files[0])
+                    .then((d)=>{
+                        this.setState({
+                            img_tip: `（${d.compressed?'压缩到':'尺寸'} ${d.width}*${d.height} / `+
+                                `质量 ${Math.floor(d.quality*100)}% / ${Math.floor(d.img.length/1000)}KB）`,
+                        });
+                    })
+                    .catch((e)=>{
+                        this.setState({
+                            img_tip: `图片无效：${e}`,
+                        });
+                    });
+            });
+        else
+            this.setState({
+                img_tip: null,
+            });
     }
 
     on_submit(event) {
@@ -380,12 +420,15 @@ export class PostForm extends Component {
                 loading_status: 'processing',
             });
             this.proc_img(this.img_ref.current.files[0])
-                .then((img)=>{
+                .then((d)=>{
                     this.setState({
                         loading_status: 'loading',
                     });
-                    this.do_post(this.state.text,img);
+                    this.do_post(this.state.text,d.img);
                 })
+                .catch((e)=>{
+                    alert(e);
+                });
         } else {
             this.setState({
                 loading_status: 'loading',
@@ -400,8 +443,9 @@ export class PostForm extends Component {
                 <div className="post-form-bar">
                     <label>
                         图片
-                        <input ref={this.img_ref} type="file" accept="image/*"
-                            {...this.state.loading_status!=='done' ? {disabled: true} : {}} />
+                        <input ref={this.img_ref} type="file" accept="image/*" disabled={this.state.loading_status!=='done'}
+                               onChange={this.on_img_change_bound}
+                        />
                     </label>
                     {this.state.loading_status!=='done' ?
                         <button disabled="disabled">
@@ -414,6 +458,12 @@ export class PostForm extends Component {
                         </button>
                     }
                 </div>
+                {!!this.state.img_tip &&
+                    <p className="post-form-img-tip">
+                        <a onClick={()=>{this.img_ref.current.value=""; this.on_img_change();}}>删除图片</a>
+                        {this.state.img_tip}
+                    </p>
+                }
                 <SafeTextarea ref={this.area_ref} id="new_post" on_change={this.on_change_bound} on_submit={this.on_submit.bind(this)} />
             </form>
         )

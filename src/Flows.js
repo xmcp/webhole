@@ -48,7 +48,8 @@ function load_single_meta(show_sidebar,token) {
                 show_sidebar(
                     '帖子详情',
                     <div className="box box-tip">
-                        <a onClick={()=>load_single_meta(show_sidebar,token)}>重新加载</a>
+                        <p><a onClick={()=>load_single_meta(show_sidebar,token)()}>重新加载</a></p>
+                        <p>{''+e}</p>
                     </div>
                 );
             })
@@ -139,6 +140,7 @@ class FlowSidebar extends PureComponent {
             info: props.info,
             replies: props.replies,
             loading_status: 'done',
+            error_msg: null,
         };
         this.color_picker=props.color_picker;
         this.show_pid=load_single_meta(this.props.show_sidebar,this.props.token);
@@ -172,6 +174,7 @@ class FlowSidebar extends PureComponent {
     load_replies(update_count=true) {
         this.setState({
             loading_status: 'loading',
+            error_msg: null,
         });
         API.load_replies(this.state.info.pid,this.props.token,this.color_picker)
             .then((json)=>{
@@ -182,6 +185,7 @@ class FlowSidebar extends PureComponent {
                     }) : prev.info,
                     attention: !!json.attention,
                     loading_status: 'done',
+                    error_msg: null,
                 }), ()=>{
                     this.syncState({
                         replies: this.state.replies,
@@ -195,6 +199,7 @@ class FlowSidebar extends PureComponent {
                 this.setState({
                     replies: [],
                     loading_status: 'done',
+                    error_msg: ''+e,
                 });
             });
     }
@@ -240,8 +245,13 @@ class FlowSidebar extends PureComponent {
     show_reply_bar(name,event) {
         if(this.reply_ref.current && event.target.tagName.toLowerCase()!=='a') {
             let text=this.reply_ref.current.get();
-            if(/^\s*(Re (洞主|\b[A-Z][a-z]+){0,2}:)?\s*$/.test(text)) // text is nearly empty so we can replace it
-                this.reply_ref.current.set('Re '+name+': ');
+            if(/^\s*(Re (洞主|\b[A-Z][a-z]+){0,2}:)?\s*$/.test(text)) {// text is nearly empty so we can replace it
+                let should_text='Re '+name+': ';
+                if(should_text===this.reply_ref.current.get())
+                    this.reply_ref.current.set('');
+                else
+                    this.reply_ref.current.set(should_text);
+            }
         }
     }
 
@@ -278,7 +288,13 @@ class FlowSidebar extends PureComponent {
                         set_variant={(variant)=>{this.set_variant(null,variant);}}
                     />
                 </ClickHandler>
-                {(this.props.deletion_detect && parseInt(this.state.info.reply)>this.state.replies.length) &&
+                {!!this.state.error_msg &&
+                    <div className="box box-tip flow-item box-danger">
+                        <p>回复加载失败</p>
+                        <p>{this.state.error_msg}</p>
+                    </div>
+                }
+                {(this.props.deletion_detect && parseInt(this.state.info.reply)>this.state.replies.length) && !!this.state.replies.length &&
                     <div className="box box-tip flow-item box-danger">
                         {parseInt(this.state.info.reply)-this.state.replies.length} 条回复被删除
                     </div>
@@ -422,6 +438,7 @@ export class Flow extends PureComponent {
                 data: [],
             },
             loading_status: 'done',
+            error_msg: null,
         };
         this.on_scroll_bound=this.on_scroll.bind(this);
         window.LATEST_POST_ID=parseInt(localStorage['_LATEST_POST_ID'],10)||0;
@@ -433,6 +450,7 @@ export class Flow extends PureComponent {
             this.setState((prev,props)=>({
                 loaded_pages: prev.loaded_pages-1,
                 loading_status: 'failed',
+                error_msg: ''+err,
             }));
         };
 
@@ -508,6 +526,7 @@ export class Flow extends PureComponent {
             this.setState((prev,props)=>({
                 loaded_pages: prev.loaded_pages+1,
                 loading_status: 'loading',
+                error_msg: null,
             }));
         }
     }
@@ -540,7 +559,8 @@ export class Flow extends PureComponent {
                 />
                 {this.state.loading_status==='failed' &&
                     <div className="box box-tip aux-margin">
-                        <a onClick={()=>{this.load_page(this.state.loaded_pages+1)}}>重新加载</a>
+                        <p><a onClick={()=>{this.load_page(this.state.loaded_pages+1)}}>重新加载</a></p>
+                        <p>{this.state.error_msg}</p>
                     </div>
                 }
                 <TitleLine text={

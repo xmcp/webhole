@@ -17,8 +17,10 @@ export const API={
         )
             .then((res)=>res.json())
             .then((json)=>{
-                if(json.code!==0)
-                    throw new Error(json);
+                if(json.code!==0) {
+                    if(json.msg) throw new Error(json.msg);
+                    else throw new Error(json);
+                }
 
                 json.data=json.data
                     .sort((a,b)=>{
@@ -121,8 +123,8 @@ export const API={
             .then((res)=>res.json())
             .then((json)=>{
                 if(json.code!==0) {
-                    if(json.msg) alert(json.msg);
-                    throw new Error(json);
+                    if(json.msg) throw new Error(json.msg);
+                    else throw new Error(json);
                 }
                 return json;
             });

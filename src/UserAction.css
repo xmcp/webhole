@@ -42,6 +42,11 @@
 .post-form-bar button {
     flex: 0 0 8em;
 }
+.post-form-img-tip {
+    font-size: small;
+    margin-top: -.5em;
+    margin-bottom: .5em;
+}
 .post-form textarea {
     resize: vertical;
     width: 100%;
