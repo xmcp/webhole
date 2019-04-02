@@ -5,6 +5,8 @@ import {Sidebar} from './Sidebar';
 import {PressureHelper} from './PressureHelper';
 import {TokenCtx} from './UserAction';
 
+import ImasuguApp from './imasugu/src/App';
+
 function DeprecatedAlert(props) {
     if(['pkuhelper.com','www.pkuhelper.com','webhole.xmcp.ml','127.0.0.1','localhost'].indexOf(document.domain)===-1)
         return (
@@ -79,6 +81,13 @@ class App extends Component {
     }
 
     render() {
+        if(window.location.search.match(/[?&]imasugu($|&)/)) {
+            document.body.style.backgroundColor='white';
+            return (
+                <ImasuguApp />
+            );
+        }
+
         return (
             <TokenCtx.Provider value={{
                 value: this.state.token,
