@@ -1,6 +1,6 @@
-export const PID_RE=/(^|[^\d])([1-9]\d{4,5})(?!\d|\u20e3)/g;
+export const PID_RE=/(^|[^\d])([1-9]\d{4,5})(?!\d|\u20e3|\ufe0e|\ufe0f)/g;
 export const NICKNAME_RE=/(^|[^A-Za-z])((?:(?:Angry|Baby|Crazy|Diligent|Excited|Fat|Greedy|Hungry|Interesting|Japanese|Kind|Little|Magic|Naïve|Old|Powerful|Quiet|Rich|Superman|THU|Undefined|Valuable|Wifeless|Xiangbuchulai|Young|Zombie)\s)?(?:Alice|Bob|Carol|Dave|Eve|Francis|Grace|Hans|Isabella|Jason|Kate|Louis|Margaret|Nathan|Olivia|Paul|Queen|Richard|Susan|Thomas|Uma|Vivian|Winnie|Xander|Yasmine|Zach)|You Win(?: \d+)?|洞主)(?![A-Za-z])/gi;
-export const URL_RE=/(?:^|\b)((?:https?:\/\/)?(?:[\w-]+\.)+[a-zA-Z]{2,3}(?::\d{1,5})?(?:\/[\w~!@#$%^&*()-_=+[\];,./?]*)?)/gi;
+export const URL_RE=/(?:^|\b)((?:https?:\/\/)?(?:(?:[\w-]+\.)+[a-zA-Z]{2,3}|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(?::\d{1,5})?(?:\/[\w~!@#$%^&*()-_=+[\];,./?]*)?)(?![a-zA-Z0-9])/gi;
 
 export function split_text(txt,rules) {
     // rules: [['name',/regex/],...]
