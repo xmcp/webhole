@@ -3,7 +3,7 @@ import {Flow} from './Flows';
 import {Title} from './Title';
 import {Sidebar} from './Sidebar';
 import {PressureHelper} from './PressureHelper';
-import {TokenCtx} from './UserAction';
+import {TokenCtx,ISOP_APPKEY} from './UserAction';
 
 import ImasuguApp from './imasugu/src/App';
 
@@ -84,7 +84,7 @@ class App extends Component {
         if(window.location.search.match(/[?&]imasugu($|&)/)) {
             document.body.style.backgroundColor='white';
             return (
-                <ImasuguApp />
+                <ImasuguApp api_base={`proxy_building?appKey=${ISOP_APPKEY}&buildingName={building}`} />
             );
         }
 
