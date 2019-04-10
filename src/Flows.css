@@ -115,7 +115,7 @@
     font-family: 'Consolas', 'Courier', monospace;
 }
 
-.box-header {
+.box-header, .box-footer {
     font-size: small;
 }
 

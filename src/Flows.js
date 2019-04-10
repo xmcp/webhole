@@ -127,6 +127,9 @@ class FlowItem extends PureComponent {
                     }
                     {props.info.type==='audio' && <AudioWidget src={AUDIO_BASE+props.info.url} />}
                 </div>
+                {!!(props.attention && props.info.variant.latest_reply) &&
+                    <p className="box-footer">最新回复 <Time stamp={props.info.variant.latest_reply} /></p>
+                }
             </div>
         );
     }
@@ -154,14 +157,14 @@ class FlowSidebar extends PureComponent {
                 return {
                     replies: prev.replies.map((reply)=>{
                         if(reply.cid===cid)
-                            return Object.assign({},reply,{variant: variant});
+                            return Object.assign({},reply,{variant: Object.assign({},reply.variant,variant)});
                         else
                             return reply;
                     }),
                 };
             else
                 return {
-                    info: Object.assign({},prev.info,{variant: variant}),
+                    info: Object.assign({},prev.info,{variant: Object.assign({},prev.info.variant,variant)}),
                 }
         },function() {
             this.syncState({
@@ -192,6 +195,8 @@ class FlowSidebar extends PureComponent {
                         attention: this.state.attention,
                         info: this.state.info,
                     });
+                    if(this.state.replies.length)
+                        this.set_variant(null,{latest_reply: Math.max.apply(null,this.state.replies.map((r)=>parseInt(r.timestamp)))});
                 });
             })
             .catch((e)=>{
@@ -349,9 +354,12 @@ class FlowItemRow extends PureComponent {
             .then((json)=>{
                 this.setState((prev,props)=>({
                     replies: json.data,
-                    info: update_count ? Object.assign({}, prev.info, {
-                        reply: ''+json.data.length,
-                    }) : prev.info,
+                    info: Object.assign({}, prev.info, {
+                        reply: update_count ? ''+json.data.length : prev.info.reply,
+                        variant: json.data.length ? {
+                            latest_reply: Math.max.apply(null,json.data.map((r)=>parseInt(r.timestamp))),
+                        } : {},
+                    }),
                     attention: !!json.attention,
                     reply_status: 'done',
                 }),callback);
