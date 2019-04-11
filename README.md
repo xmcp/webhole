@@ -1,4 +1,4 @@
-React 版 P大树洞，[pkuhelper.com/hole](http://pkuhelper.com/hole/)
+React 版 P大树洞，[pkuhelper.pku.edu.cn/hole](https://pkuhelper.pku.edu.cn/hole/)
 
 与 PKU Helper 客户端的树洞模块比较，本项目……
 

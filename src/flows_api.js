@@ -2,7 +2,7 @@ import {API_BASE} from './Common';
 
 export const API_VERSION_PARAM='&PKUHelperAPI=3.0';
 export const PKUHELPER_ROOT= // don't use :10301 if we are already in the same domain
-    (document.domain==='pkuhelper.com'||document.domain==='www.pkuhelper.com') ? '/' : '//pkuhelper.com/';
+    document.domain==='pkuhelper.pku.edu.cn' ? '/' : '//pkuhelper.pku.edu.cn/';
 
 function token_param(token) {
     return API_VERSION_PARAM + (token ? ('&user_token='+token) : '');

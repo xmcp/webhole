@@ -8,18 +8,26 @@ import {TokenCtx,ISOP_APPKEY} from './UserAction';
 import ImasuguApp from './imasugu/src/App';
 
 function DeprecatedAlert(props) {
-    if(['pkuhelper.com','www.pkuhelper.com','webhole.xmcp.ml','127.0.0.1','localhost'].indexOf(document.domain)===-1)
+    if(['pkuhelper.pku.edu.cn','127.0.0.1','localhostx'].indexOf(document.domain)===-1)
         return (
             <div className="flow-item-row">
                 <div className="box box-tip aux-margin">
-                    <p><b>官宣了！</b></p>
+                    <p><b>树洞又㕛叒换域名了！</b></p>
                     <br />
-                    <p>请访问官方树洞网页版</p>
-                    <p><a href="http://pkuhelper.com/hole">http://pkuhelper.com/hole</a></p>
-                    <p>加载三倍速，访问不卡顿</p>
+                    <p>请记住新网址：</p>
+                    <p><a href="https://pkuhelper.pku.edu.cn/hole">pkuhelper.pku.edu.cn/hole</a></p>
                     <br />
-                    <p>当前域名将停止维护。</p>
-                    <p>@xmcp</p>
+                    <p>当前域名我也不清楚什么时候停止维护。</p>
+                    <p>另外我们终于支持 HTTPS 和 HTTP/2 了。</p>
+                    <br />
+                    <TokenCtx.Consumer>{(token)=>(
+                        !!token.value && <div>
+                            <p>*Tips: </p>
+                            <p>点击右上角的 <span className="icon icon-about" /> ，复制 User Token，在新网址的登录页面输入，就不用重发验证码了。</p>
+                            <br />
+                        </div>
+                    )}</TokenCtx.Consumer>
+                    <p>@xmcp from PKUHelper Team</p>
                 </div>
             </div>
         );
