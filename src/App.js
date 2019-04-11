@@ -14,11 +14,11 @@ function DeprecatedAlert(props) {
                 <div className="box box-tip aux-margin">
                     <p><b>树洞又㕛叒换域名了！</b></p>
                     <br />
-                    <p>请记住新网址：</p>
+                    <p>记住树洞网页版新网址</p>
                     <p><a href="https://pkuhelper.pku.edu.cn/hole">pkuhelper.pku.edu.cn/hole</a></p>
                     <br />
-                    <p>当前域名我也不清楚什么时候停止维护。</p>
-                    <p>另外我们终于支持 HTTPS 和 HTTP/2 了。</p>
+                    <p><small>当前域名我也不清楚什么时候停止维护。</small></p>
+                    <p><small>另外我们终于支持了 HTTPS 和 HTTP/2。</small></p>
                     <br />
                     <TokenCtx.Consumer>{(token)=>(
                         !!token.value && <div>

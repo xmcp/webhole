@@ -1,4 +1,5 @@
 import React, {Component, PureComponent} from 'react';
+import copy from 'copy-to-clipboard';
 import {SafeTextarea} from './Common';
 import {API_VERSION_PARAM,PKUHELPER_ROOT,API} from './flows_api'
 import md5 from 'md5';
@@ -115,6 +116,11 @@ export class LoginForm extends Component {
         });
     }
 
+    copy_token(token) {
+        if(copy(token))
+            alert('复制成功！\n请一定不要泄露哦');
+    }
+
     render() {
         return (
             <TokenCtx.Consumer>{(token)=>
@@ -126,8 +132,8 @@ export class LoginForm extends Component {
                                 <button type="button" onClick={()=>{token.set_value(null);}}>注销</button>
                             </p>
                             <p>
-                                User Token: <code>{token.value||'(null)'}</code> <br />
-                                请勿泄露 User Token，它代表您的登录状态，与您的账户唯一对应且泄露后无法重置
+                                User Token：<a onClick={this.copy_token.bind(this,token.value)}>复制</a><br />
+                                User Token 可用于迁移登录状态，请勿泄露，因为它与您的账户唯一对应且泄露后无法重置
                             </p>
                         </div> :
                         <div>
