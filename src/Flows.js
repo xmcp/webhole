@@ -1,7 +1,8 @@
 import React, {Component, PureComponent} from 'react';
 import copy from 'copy-to-clipboard';
 import {ColorPicker} from './color_picker';
-import {format_time, Time, TitleLine, HighlightedText, ClickHandler} from './Common';
+import {split_text,NICKNAME_RE,PID_RE,URL_RE} from './text_splitter';
+import {format_time, build_highlight_re, Time, TitleLine, HighlightedText, ClickHandler} from './Common';
 import './Flows.css';
 import LazyLoad from 'react-lazyload';
 import {AudioWidget} from './AudioWidget';
@@ -62,6 +63,11 @@ class Reply extends PureComponent {
     }
 
     render() {
+        let parts=split_text(this.props.info.text,[
+            ['url',URL_RE],
+            ['pid',PID_RE],
+            ['nickname',NICKNAME_RE],
+        ]);
         return (
             <div className={'flow-reply box'} style={this.props.info._display_color ? {
                 backgroundColor: this.props.info._display_color,
@@ -71,7 +77,7 @@ class Reply extends PureComponent {
                     <Time stamp={this.props.info.timestamp} />
                 </div>
                 <div className="box-content">
-                    <HighlightedText text={this.props.info.text} color_picker={this.props.color_picker} show_pid={this.props.show_pid} />
+                    <HighlightedText parts={parts} color_picker={this.props.color_picker} show_pid={this.props.show_pid} />
                 </div>
             </div>
         );
@@ -95,41 +101,54 @@ class FlowItem extends PureComponent {
 
     render() {
         let props=this.props;
+        let parts=props.parts||split_text(props.info.text,[
+            ['url',URL_RE],
+            ['pid',PID_RE],
+            ['nickname',NICKNAME_RE],
+        ]);
         return (
-            <div className="flow-item box">
-                {parseInt(props.info.pid,10)>window.LATEST_POST_ID && <div className="flow-item-dot" /> }
-                <div className="box-header">
-                    {!!parseInt(props.info.likenum,10) &&
-                        <span className="box-header-badge">
-                            {props.info.likenum}&nbsp;
-                            <span className={'icon icon-'+(props.attention ? 'star-ok' : 'star')} />
-                        </span>
-                    }
-                    {!!parseInt(props.info.reply,10) &&
-                        <span className="box-header-badge">
-                            {props.info.reply}&nbsp;
-                            <span className="icon icon-reply" />
-                        </span>
-                    }
-                    <code className="box-id"><a href={'##'+props.info.pid} onClick={this.copy_link.bind(this)}>#{props.info.pid}</a></code>
-                    &nbsp;
-                    <Time stamp={props.info.timestamp} />
-                </div>
-                <div className="box-content">
-                    <HighlightedText text={props.info.text} color_picker={props.color_picker} show_pid={props.show_pid} />
-                    {props.info.type==='image' &&
-                        <p className="img">
-                            {props.img_clickable ?
-                                <a href={IMAGE_BASE+props.info.url} target="_blank"><img src={IMAGE_BASE+props.info.url} /></a> :
-                                <img src={IMAGE_BASE+props.info.url} />
-                            }
-                        </p>
-                    }
-                    {props.info.type==='audio' && <AudioWidget src={AUDIO_BASE+props.info.url} />}
-                </div>
-                {!!(props.attention && props.info.variant.latest_reply) &&
-                    <p className="box-footer">最新回复 <Time stamp={props.info.variant.latest_reply} /></p>
+            <div className={'flow-item'+(props.is_quote ? ' flow-item-quote' : '')}>
+                {!!props.is_quote &&
+                    <div className="quote-tip black-outline">
+                        <div><span className="icon icon-quote" /></div>
+                        <div><small>提到</small></div>
+                    </div>
                 }
+                <div className="box">
+                    {parseInt(props.info.pid,10)>window.LATEST_POST_ID && <div className="flow-item-dot" /> }
+                    <div className="box-header">
+                        {!!parseInt(props.info.likenum,10) &&
+                            <span className="box-header-badge">
+                                {props.info.likenum}&nbsp;
+                                <span className={'icon icon-'+(props.attention ? 'star-ok' : 'star')} />
+                            </span>
+                        }
+                        {!!parseInt(props.info.reply,10) &&
+                            <span className="box-header-badge">
+                                {props.info.reply}&nbsp;
+                                <span className="icon icon-reply" />
+                            </span>
+                        }
+                        <code className="box-id"><a href={'##'+props.info.pid} onClick={this.copy_link.bind(this)}>#{props.info.pid}</a></code>
+                        &nbsp;
+                        <Time stamp={props.info.timestamp} />
+                    </div>
+                    <div className="box-content">
+                        <HighlightedText parts={parts} color_picker={props.color_picker} show_pid={props.show_pid} />
+                        {props.info.type==='image' &&
+                            <p className="img">
+                                {props.img_clickable ?
+                                    <a href={IMAGE_BASE+props.info.url} target="_blank"><img src={IMAGE_BASE+props.info.url} /></a> :
+                                    <img src={IMAGE_BASE+props.info.url} />
+                                }
+                            </p>
+                        }
+                        {props.info.type==='audio' && <AudioWidget src={AUDIO_BASE+props.info.url} />}
+                    </div>
+                    {!!(props.attention && props.info.variant.latest_reply) &&
+                        <p className="box-footer">最新回复 <Time stamp={props.info.variant.latest_reply} /></p>
+                    }
+                </div>
             </div>
         );
     }
@@ -331,10 +350,9 @@ class FlowItemRow extends PureComponent {
         this.state={
             replies: [],
             reply_status: 'done',
-            info: props.info,
+            info: Object.assign({},props.info,{variant: {}}),
             attention: false,
         };
-        this.state.info.variant={};
         this.color_picker=new ColorPicker();
         this.show_pid=load_single_meta(this.props.show_sidebar,this.props.token);
     }
@@ -385,12 +403,32 @@ class FlowItemRow extends PureComponent {
     }
 
     render() {
-        return (
-            <div className="flow-item-row" onClick={(event)=>{
+        let hl_rules=[
+            ['url',URL_RE],
+            ['pid',PID_RE],
+            ['nickname',NICKNAME_RE],
+        ];
+        if(this.props.search_param)
+            hl_rules.push(['search',build_highlight_re(this.props.search_param,' ')]);
+        let parts=split_text(this.state.info.text,hl_rules);
+
+        let quote_id=null;
+        if(!this.props.is_quote && localStorage['DISABLE_QUOTE']!=='on')
+            for(let [mode,content] of parts)
+                if(mode==='pid')
+                    if(quote_id===null)
+                        quote_id=parseInt(content);
+                    else {
+                        quote_id=null;
+                        break;
+                    }
+
+        let res=(
+            <div className={'flow-item-row'+(this.props.is_quote ? ' flow-item-row-quote' : '')} onClick={(event)=>{
                 if(!CLICKABLE_TAGS[event.target.tagName.toLowerCase()])
                     this.show_sidebar();
             }}>
-                <FlowItem info={this.state.info} attention={this.state.attention} img_clickable={false}
+                <FlowItem parts={parts} info={this.state.info} attention={this.state.attention} img_clickable={false} is_quote={this.props.is_quote}
                     color_picker={this.color_picker} show_pid={this.show_pid} replies={this.state.replies} />
                 <div className="flow-reply-row">
                     {this.state.reply_status==='loading' && <div className="box box-tip">加载中</div>}
@@ -406,6 +444,78 @@ class FlowItemRow extends PureComponent {
                 </div>
             </div>
         );
+
+        return quote_id ? (
+            <div>
+                {res}
+                <FlowItemQuote pid={quote_id} show_sidebar={this.props.show_sidebar} token={this.props.token}
+                    deletion_detect={this.props.deletion_detect} />
+            </div>
+        ) : res;
+    }
+}
+
+class FlowItemQuote extends PureComponent {
+    constructor(props) {
+        super(props);
+        this.state={
+            loading_status: 'empty',
+            error_msg: null,
+            info: null,
+        };
+    }
+
+    componentDidMount() {
+        this.load();
+    }
+
+    load() {
+        this.setState({
+            loading_status: 'loading',
+        },()=>{
+            API.get_single(this.props.pid,this.props.token)
+                .then((json)=>{
+                    this.setState({
+                        loading_status: 'done',
+                        info: json.data,
+                    });
+                })
+                .catch((err)=>{
+                    if((''+err).indexOf('没有这条树洞')!==-1)
+                        this.setState({
+                            loading_status: 'empty',
+                        });
+                    else
+                        this.setState({
+                            loading_status: 'error',
+                            error_msg: ''+err,
+                        });
+                });
+        });
+    }
+
+    render() {
+        if(this.state.loading_status==='empty')
+            return null;
+        else if(this.state.loading_status==='loading')
+            return (
+                <div className="box box-tip aux-margin">
+                    <span className="icon icon-loading" />
+                    提到了 #{this.props.pid}
+                </div>
+            );
+        else if(this.state.loading_status==='error')
+            return (
+                <div className="box box-tip aux-margin">
+                    <p><a onClick={this.load.bind(this)}>重新加载</a></p>
+                    <p>{this.state.error_msg}</p>
+                </div>
+            );
+        else // 'done'
+            return (
+                <FlowItemRow info={this.state.info} show_sidebar={this.props.show_sidebar} token={this.props.token}
+                    is_quote={true} deletion_detect={this.props.deletion_detect} />
+            );
     }
 }
 
@@ -425,7 +535,7 @@ function FlowChunk(props) {
                                 </div>
                             }
                             <FlowItemRow info={info} show_sidebar={props.show_sidebar} token={token}
-                                    deletion_detect={props.deletion_detect} />
+                                    deletion_detect={props.deletion_detect} search_param={props.search_param} />
                         </div>
                     </LazyLoad>
                 ))}
@@ -562,8 +672,9 @@ export class Flow extends PureComponent {
         return (
             <div className="flow-container">
                 <FlowChunk
-                    title={this.state.chunks.title} list={this.state.chunks.data}
-                    show_sidebar={this.props.show_sidebar} mode={this.state.mode} deletion_detect={should_deletion_detect}
+                    title={this.state.chunks.title} list={this.state.chunks.data} mode={this.state.mode}
+                    search_param={this.state.search_param||null}
+                    show_sidebar={this.props.show_sidebar} deletion_detect={should_deletion_detect}
                 />
                 {this.state.loading_status==='failed' &&
                     <div className="box box-tip aux-margin">

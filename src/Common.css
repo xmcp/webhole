@@ -54,3 +54,8 @@
         0 1px 0 #000,
         1px 1px 0 #000;
 }
+
+.search-query-highlight {
+    border-bottom: 1px solid black;
+    font-weight: bold;
+}

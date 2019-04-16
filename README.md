@@ -47,3 +47,4 @@ React 版 P大树洞，[pkuhelper.pku.edu.cn/hole](http://pkuhelper.pku.edu.cn/h
 - 检测瀑布流中被删除的树洞和树洞被删除的评论（`//setflag DELETION_DETECT=on`）
 - 自定义背景图片（`//setflag REPLACE_ERIRI_WITH_URL=http://...`）
 - 禁用 3D Touch 功能（`//setflag DISABLE_PRESSURE=on`）
+- 禁用自动显示引用树洞功能（`//setflag DISABLE_QUOTE=on`）

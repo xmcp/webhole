@@ -1,6 +1,5 @@
 import React, {Component, PureComponent} from 'react';
 import {PKUHELPER_ROOT} from './flows_api';
-import {split_text,NICKNAME_RE,PID_RE,URL_RE} from './text_splitter'
 
 import TimeAgo from 'react-timeago';
 import chineseStrings from 'react-timeago/lib/language-strings/zh-CN';
@@ -14,6 +13,15 @@ export const API_BASE=PKUHELPER_ROOT+'services/pkuhole';
 
 function pad2(x) {
     return x<10 ? '0'+x : ''+x;
+}
+
+// https://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
+function escape_regex(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+}
+
+export function build_highlight_re(txt,split) {
+    return txt ? new RegExp(`(${txt.split(split).filter((x)=>!!x).map(escape_regex).join('|')})`,'g') : /^$/g;
 }
 
 export function format_time(time) {
@@ -41,23 +49,19 @@ export function TitleLine(props) {
 
 export class HighlightedText extends PureComponent {
     render() {
-        let parts=split_text(this.props.text,[
-            ['url',URL_RE],
-            ['pid',PID_RE],
-            ['nickname',NICKNAME_RE],
-        ]);
         function normalize_url(url) {
             return /^https?:\/\//.test(url) ? url : 'http://'+url;
         }
         return (
             <pre>
-                {parts.map((part,idx)=>{
+                {this.props.parts.map((part,idx)=>{
                     let [rule,p]=part;
                     return (
                         <span key={idx}>{
                             rule==='url' ? <a href={normalize_url(p)} target="_blank" rel="noopener">{p}</a> :
                             rule==='pid' ? <a href={'##'+p} onClick={(e)=>{e.preventDefault(); this.props.show_pid(p);}}>{p}</a> :
                             rule==='nickname' ? <span style={{backgroundColor: this.props.color_picker.get(p)}}>{p}</span> :
+                            rule==='search' ? <span className="search-query-highlight">{p}</span> :
                             p
                         }</span>
                     );

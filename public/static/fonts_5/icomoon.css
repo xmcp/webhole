@@ -1,9 +1,9 @@
 @font-face {
   font-family: 'icomoon';
   src:
-    url('icomoon.ttf?y01gys') format('truetype'),
-    url('icomoon.woff?y01gys') format('woff'),
-    url('icomoon.svg?y01gys#icomoon') format('svg');
+          url('icomoon.ttf?gqzyp6') format('truetype'),
+          url('icomoon.woff?gqzyp6') format('woff'),
+          url('icomoon.svg?gqzyp6#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -27,14 +27,27 @@
 .icon-send:before {
   content: "\e900";
 }
+.icon-history:before {
+  content: "\e94d";
+}
 .icon-reply:before {
   content: "\e96b";
+}
+.icon-quote:before {
+  content: "\e977";
 }
 .icon-loading:before {
   content: "\e979";
 }
 .icon-login:before {
   content: "\e98d";
+}
+.icon-stats:before {
+  content: "\e99b";
+}
+.icon-upload:before {
+  content: "\e9c3";
+  font-size: 1.2em;
 }
 .icon-attention:before {
   content: "\e9d3";
@@ -53,6 +66,9 @@
 }
 .icon-refresh:before {
   content: "\ea2e";
+}
+.icon-back:before {
+  content: "\ea44";
 }
 .icon-github:before {
   content: "\eab0";

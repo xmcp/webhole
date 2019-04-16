@@ -170,3 +170,25 @@
     background-color: rgba(0,0,0,.6);
     pointer-events: none;
 }
+
+.flow-item-row-quote {
+    opacity: .8;
+    filter: brightness(90%);
+}
+
+.flow-item-quote>.box {
+    margin-left: 2.5em;
+    max-height: 15em;
+    overflow-y: hidden;
+}
+
+.quote-tip {
+    margin-top: .5em;
+    margin-bottom: -10em; /* so that it will not block reply bar */
+    float: left;
+    display: flex;
+    flex-direction: column;
+    width: 2.5em;
+    text-align: center;
+    color: white;
+}
