@@ -16,6 +16,7 @@ const AUDIO_BASE=PKUHELPER_ROOT+'services/pkuhole/audios/';
 const SEARCH_PAGESIZE=50;
 const CLICKABLE_TAGS={a: true, audio: true};
 const PREVIEW_REPLY_COUNT=10;
+const QUOTE_BLACKLIST=['23333','233333','66666','666666','10086','10000','100000','99999','999999'];
 
 window.LATEST_POST_ID=parseInt(localStorage['_LATEST_POST_ID'],10)||0;
 
@@ -439,7 +440,7 @@ class FlowItemRow extends PureComponent {
         let quote_id=null;
         if(!this.props.is_quote && localStorage['DISABLE_QUOTE']!=='on')
             for(let [mode,content] of parts)
-                if(mode==='pid')
+                if(mode==='pid' && QUOTE_BLACKLIST.indexOf(content)===-1)
                     if(quote_id===null)
                         quote_id=parseInt(content);
                     else {
