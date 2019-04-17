@@ -15,9 +15,14 @@ export class PressureHelper extends  Component {
             fired: false,
         };
         this.callback=props.callback;
+        this.esc_interval=null;
     }
 
     do_fire() {
+        if(this.esc_interval) {
+            clearInterval(this.esc_interval);
+            this.esc_interval=null;
+        }
         this.setState({
             level: 1,
             fired: true,
@@ -36,11 +41,12 @@ export class PressureHelper extends  Component {
             Pressure.set(document.body, {
                 change: (force)=>{
                     if(!this.state.fired) {
-                        this.setState({
-                            level: force,
-                        });
-                        if(force===1)
+                        if(force>=.999)
                             this.do_fire();
+                        else
+                            this.setState({
+                                level: force,
+                            });
                     }
                 },
                 end: ()=>{
@@ -58,11 +64,42 @@ export class PressureHelper extends  Component {
                 if(this.state.level>THRESHOLD)
                     event.preventDefault();
             });
+
+            document.addEventListener('keydown',(e)=>{
+                if(!e.repeat && e.key==='Escape') {
+                    if(this.esc_interval)
+                        clearInterval(this.esc_interval);
+                    this.setState({
+                        level: THRESHOLD,
+                    },()=>{
+                        this.esc_interval=setInterval(()=>{
+                            let new_level=this.state.level+.1;
+                            if(new_level>=.999)
+                                this.do_fire();
+                            else
+                                this.setState({
+                                    level: new_level,
+                                });
+                        },50);
+                    });
+                }
+            });
+            document.addEventListener('keyup',(e)=>{
+                if(e.key==='Escape') {
+                    if(this.esc_interval) {
+                        clearInterval(this.esc_interval);
+                        this.esc_interval=null;
+                    }
+                    this.setState({
+                        level: 0,
+                    });
+                }
+            });
         }
     }
 
     render() {
-        const pad=MULTIPLIER*(this.state.level-THRESHOLD)-BORDER_WIDTH;
+        const pad=this.state.level===0 ? -BORDER_WIDTH-500 : MULTIPLIER*(this.state.level-THRESHOLD)-BORDER_WIDTH;
         return (
             <div className={'pressure-box '+(this.state.fired ? 'pressure-box-fired' : '')} style={{
                 left: pad,
