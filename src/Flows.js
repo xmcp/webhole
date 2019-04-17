@@ -19,11 +19,12 @@ const PREVIEW_REPLY_COUNT=10;
 
 window.LATEST_POST_ID=parseInt(localStorage['_LATEST_POST_ID'],10)||0;
 
-function load_single_meta(show_sidebar,token) {
+function load_single_meta(show_sidebar,token,parents) {
     return (pid)=>{
+        let title_elem=<FlowSidebarTitle pid={pid} parents={parents} show_sidebar={show_sidebar} token={token} />;
         const color_picker=new ColorPicker();
         show_sidebar(
-            '帖子详情',
+            title_elem,
             <div className="box box-tip">
                 正在加载 #{pid}
             </div>
@@ -36,20 +37,20 @@ function load_single_meta(show_sidebar,token) {
                 const [single,replies]=res;
                 single.data.variant={};
                 show_sidebar(
-                    '帖子详情',
+                    title_elem,
                     <FlowSidebar
                         info={single.data} replies={replies.data} attention={replies.attention}
                         token={token} show_sidebar={show_sidebar} color_picker={color_picker}
-                        deletion_detect={localStorage['DELETION_DETECT']==='on'}
+                        deletion_detect={localStorage['DELETION_DETECT']==='on'} parents={parents}
                     />
                 )
             })
             .catch((e)=>{
                 console.error(e);
                 show_sidebar(
-                    '帖子详情',
+                    title_elem,
                     <div className="box box-tip">
-                        <p><a onClick={()=>load_single_meta(show_sidebar,token)()}>重新加载</a></p>
+                        <p><a onClick={()=>load_single_meta(show_sidebar,token,parents)(pid)}>重新加载</a></p>
                         <p>{''+e}</p>
                     </div>
                 );
@@ -115,7 +116,9 @@ class FlowItem extends PureComponent {
                     </div>
                 }
                 <div className="box">
-                    {parseInt(props.info.pid,10)>window.LATEST_POST_ID && <div className="flow-item-dot" /> }
+                    {!!window.LATEST_POST_ID && parseInt(props.info.pid,10)>window.LATEST_POST_ID &&
+                        <div className="flow-item-dot" />
+                    }
                     <div className="box-header">
                         {!!parseInt(props.info.likenum,10) &&
                             <span className="box-header-badge">
@@ -165,7 +168,6 @@ class FlowSidebar extends PureComponent {
             error_msg: null,
         };
         this.color_picker=props.color_picker;
-        this.show_pid=load_single_meta(this.props.show_sidebar,this.props.token);
         this.syncState=props.sync_state||(()=>{});
         this.reply_ref=React.createRef();
     }
@@ -282,6 +284,9 @@ class FlowSidebar extends PureComponent {
     render() {
         if(this.state.loading_status==='loading')
             return (<p className="box box-tip">加载中……</p>);
+
+        let show_pid=load_single_meta(this.props.show_sidebar,this.props.token,this.props.parents.concat([this.state.info.pid]));
+
         return (
             <div className="flow-item-row sidebar-flow-item">
                 <div className="box box-tip">
@@ -308,7 +313,7 @@ class FlowSidebar extends PureComponent {
                 </div>
                 <ClickHandler callback={(e)=>{this.show_reply_bar('',e);}}>
                     <FlowItem info={this.state.info} attention={this.state.attention} img_clickable={true}
-                        color_picker={this.color_picker} show_pid={this.show_pid} replies={this.state.replies}
+                        color_picker={this.color_picker} show_pid={show_pid} replies={this.state.replies}
                         set_variant={(variant)=>{this.set_variant(null,variant);}}
                     />
                 </ClickHandler>
@@ -327,7 +332,7 @@ class FlowSidebar extends PureComponent {
                     <LazyLoad key={reply.cid} offset={1500} height="5em" overflow={true} once={true}>
                         <ClickHandler callback={(e)=>{this.show_reply_bar(reply.name,e);}}>
                             <Reply
-                                info={reply} color_picker={this.color_picker} show_pid={this.show_pid}
+                                info={reply} color_picker={this.color_picker} show_pid={show_pid}
                                 set_variant={(variant)=>{this.set_variant(reply.cid,variant);}}
                             />
                         </ClickHandler>
@@ -344,6 +349,24 @@ class FlowSidebar extends PureComponent {
     }
 }
 
+function FlowSidebarTitle(props) {
+    let last_pid=props.parents.length ? props.parents[props.parents.length-1] : null;
+    return (
+        <span>
+            树洞&nbsp;
+            {!!last_pid &&
+                <span>
+                    <a onClick={()=>load_single_meta(props.show_sidebar,props.token,props.parents.slice(0,-1))(last_pid)}>
+                        #{last_pid}
+                    </a>
+                    &nbsp;→&nbsp;
+                </span>
+            }
+            #{props.pid}
+        </span>
+    );
+}
+
 class FlowItemRow extends PureComponent {
     constructor(props) {
         super(props);
@@ -354,7 +377,6 @@ class FlowItemRow extends PureComponent {
             attention: false,
         };
         this.color_picker=new ColorPicker();
-        this.show_pid=load_single_meta(this.props.show_sidebar,this.props.token);
     }
 
     componentDidMount() {
@@ -393,16 +415,18 @@ class FlowItemRow extends PureComponent {
 
     show_sidebar() {
         this.props.show_sidebar(
-            '帖子详情',
+            <FlowSidebarTitle pid={this.state.info.pid} parents={[]} show_sidebar={this.props.show_sidebar} token={this.props.token} />,
             <FlowSidebar
                 info={this.state.info} replies={this.state.replies} attention={this.state.attention} sync_state={this.setState.bind(this)}
                 token={this.props.token} show_sidebar={this.props.show_sidebar} color_picker={this.color_picker}
-                deletion_detect={this.props.deletion_detect}
+                deletion_detect={this.props.deletion_detect} parents={[]}
             />
         );
     }
 
     render() {
+        let show_pid=load_single_meta(this.props.show_sidebar,this.props.token,[this.state.info.pid]);
+
         let hl_rules=[
             ['url',URL_RE],
             ['pid',PID_RE],
@@ -429,14 +453,14 @@ class FlowItemRow extends PureComponent {
                     this.show_sidebar();
             }}>
                 <FlowItem parts={parts} info={this.state.info} attention={this.state.attention} img_clickable={false} is_quote={this.props.is_quote}
-                    color_picker={this.color_picker} show_pid={this.show_pid} replies={this.state.replies} />
+                    color_picker={this.color_picker} show_pid={show_pid} replies={this.state.replies} />
                 <div className="flow-reply-row">
                     {this.state.reply_status==='loading' && <div className="box box-tip">加载中</div>}
                     {this.state.reply_status==='failed' &&
                         <div className="box box-tip"><a onClick={()=>{this.load_replies()}}>重新加载</a></div>
                     }
                     {this.state.replies.slice(0,PREVIEW_REPLY_COUNT).map((reply)=>(
-                        <Reply key={reply.cid} info={reply} color_picker={this.color_picker} show_pid={this.show_pid} />
+                        <Reply key={reply.cid} info={reply} color_picker={this.color_picker} show_pid={show_pid} />
                     ))}
                     {this.state.replies.length>PREVIEW_REPLY_COUNT &&
                         <div className="box box-tip">还有 {this.state.replies.length-PREVIEW_REPLY_COUNT} 条</div>

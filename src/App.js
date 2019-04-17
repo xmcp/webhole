@@ -8,7 +8,7 @@ import {TokenCtx,ISOP_APPKEY} from './UserAction';
 import ImasuguApp from './imasugu/src/App';
 
 function DeprecatedAlert(props) {
-    if(['pkuhelper.pku.edu.cn','127.0.0.1','localhostx'].indexOf(document.domain)===-1)
+    if(['pkuhelper.pku.edu.cn','127.0.0.1','localhost'].indexOf(document.domain)===-1)
         return (
             <div className="flow-item-row">
                 <div className="box box-tip aux-margin">
@@ -28,16 +28,6 @@ function DeprecatedAlert(props) {
                         </div>
                     )}</TokenCtx.Consumer>
                     <p>@xmcp from PKUHelper Team</p>
-                </div>
-            </div>
-        );
-    if(props.token && props.token.startsWith('isop_'))
-        return (
-            <div className="flow-item-row">
-                <div className="box box-tip box-danger aux-margin">
-                    <p>树洞于2019年3月更新登录方式，原先登录已失效。</p>
-                    <p>请按右上角的按钮，点“注销”，然后重新登录。</p>
-                    <p><b>好消息：更新后支持客户端和网页同时使用了！</b></p>
                 </div>
             </div>
         );
