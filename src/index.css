@@ -7,8 +7,11 @@ body {
     background-color: #124;
 }
 
-body::-webkit-scrollbar {
+html::-webkit-scrollbar {
     display: none;
+}
+html {
+    scrollbar-width: none;
 }
 
 body, textarea, pre {

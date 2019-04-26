@@ -34,6 +34,9 @@
 .flow-reply-row::-webkit-scrollbar {
     display: none;
 }
+.flow-reply-row {
+    scrollbar-width: none;
+}
 
 .flow-reply-row:empty {
     margin: 0 !important;
@@ -138,13 +141,13 @@
 
 .flow-item-dot {
     position: relative;
-    top: calc(-.5em - 5px);
-    left: calc(-.5em - 5px);
+    top: calc(-.5em - 4px);
+    left: calc(-.5em - 4px);
     width: 10px;
     height: 10px;
     margin-bottom: -10px;
     border-radius: 50%;
-    background-color: orange;
+    background-color: #ffbb44;
     box-shadow: 0 0 5px rgba(0,0,0,.4);
 }
 
@@ -155,6 +158,7 @@
 .box-id {
     color: #666666;
 }
+
 .box-id a:hover::before {
     content: "复制全文";
     position: relative;
@@ -180,6 +184,11 @@
     margin-left: 2.5em;
     max-height: 15em;
     overflow-y: hidden;
+}
+
+.flow-item-quote .flow-item-dot,
+.flow-item-quote .box-id a:hover::before {
+    display: none;
 }
 
 .quote-tip {
