@@ -70,7 +70,7 @@ export class PressureHelper extends  Component {
                     if(this.esc_interval)
                         clearInterval(this.esc_interval);
                     this.setState({
-                        level: THRESHOLD,
+                        level: THRESHOLD/2,
                     },()=>{
                         this.esc_interval=setInterval(()=>{
                             let new_level=this.state.level+.1;
@@ -80,7 +80,7 @@ export class PressureHelper extends  Component {
                                 this.setState({
                                     level: new_level,
                                 });
-                        },50);
+                        },30);
                     });
                 }
             });
@@ -99,9 +99,13 @@ export class PressureHelper extends  Component {
     }
 
     render() {
-        const pad=this.state.level===0 ? -BORDER_WIDTH-500 : MULTIPLIER*(this.state.level-THRESHOLD)-BORDER_WIDTH;
+        const pad=MULTIPLIER*(this.state.level-THRESHOLD)-BORDER_WIDTH;
         return (
-            <div className={'pressure-box '+(this.state.fired ? 'pressure-box-fired' : '')} style={{
+            <div className={
+                'pressure-box'
+                +(this.state.fired ? ' pressure-box-fired' : '')
+                +(this.state.level<=.0001 ? ' pressure-box-empty' : '')
+            } style={{
                 left: pad,
                 right: pad,
                 top: pad,
