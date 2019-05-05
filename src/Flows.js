@@ -440,7 +440,7 @@ class FlowItemRow extends PureComponent {
         let quote_id=null;
         if(!this.props.is_quote && localStorage['DISABLE_QUOTE']!=='on')
             for(let [mode,content] of parts)
-                if(mode==='pid' && QUOTE_BLACKLIST.indexOf(content)===-1)
+                if(mode==='pid' && QUOTE_BLACKLIST.indexOf(content)===-1 && parseInt(content)<parseInt(this.state.info.pid))
                     if(quote_id===null)
                         quote_id=parseInt(content);
                     else {
