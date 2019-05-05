@@ -132,12 +132,12 @@ export class LoginForm extends Component {
                                 <button type="button" onClick={()=>{token.set_value(null);}}>注销</button>
                             </p>
                             <p>
-                                User Token：<a onClick={this.copy_token.bind(this,token.value)}>复制</a><br />
+                                <a onClick={this.copy_token.bind(this,token.value)}>复制 User Token</a><br />
                                 User Token 可用于迁移登录状态，请勿泄露，因为它与您的账户唯一对应且泄露后无法重置
                             </p>
                         </div> :
                         <div>
-                            <p>登录后可以使用关注、回复等功能</p>
+                            <p>登录后可以发树洞、回复、关注树洞</p>
                             <p>
                                 <label>
                                     　学号&nbsp;
@@ -157,9 +157,6 @@ export class LoginForm extends Component {
                                         onClick={(e)=>this.do_login(token.set_value)}>
                                     登录
                                 </button>
-                            </p>
-                            <p>
-                                登录请求会被发送到北大统一验证接口和 PKU Helper 服务器
                             </p>
                             <hr />
                             <p>从其他设备导入登录状态</p>
@@ -471,6 +468,9 @@ export class PostForm extends Component {
                     </p>
                 }
                 <SafeTextarea ref={this.area_ref} id="new_post" on_change={this.on_change_bound} on_submit={this.on_submit.bind(this)} />
+                <p><small>
+                    请遵守<a href="http://pkuhelper.pku.edu.cn/treehole_rules.html" target="_blank">树洞管理规范</a>，文明发言
+                </small></p>
             </form>
         )
     }

@@ -8,37 +8,28 @@ import './Title.css';
 const flag_re=/^\/\/setflag ([a-zA-Z0-9_]+)=(.*)$/;
 
 const HELP_TEXT=(
-    <div className="box">
-        <p className="centered-line">使用提示</p>
-        <ul>
-            <li>为保证使用体验，请使用 Chrome 或 Mobile Safari 浏览器最新版</li>
-            <li>在列表中左右滑动可以预览回复，点击展开侧边栏进行操作</li>
-            <li>新出现的帖子会在左上角显示一个圆点</li>
-            <li>本网站支持 3D Touch，重压屏幕或者短暂按住 Esc 键可以快速返回 / 刷新树洞</li>
-        </ul>
-        <p>
-            在&nbsp;
-            <a href="https://github.com/xmcp/ashole" target="_blank">
-                <span className="icon icon-github" /> GitHub
-            </a>
-            &nbsp;开源，如有反馈请提交 Issue
-        </p>
-        <br />
-        <p>By @xmcp</p>
-        <br />
-        <p>
-            This program is free software: you can redistribute it and/or modify
-            it under the terms of the GNU General Public License as published by
-            the Free Software Foundation, either version 3 of the License, or
-            (at your option) any later version.
-        </p>
-        <br />
-        <p>
-            This program is distributed in the hope that it will be useful,
-            but WITHOUT ANY WARRANTY; without even the implied warranty of
-            MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-            GNU General Public License for more details.
-        </p>
+    <div>
+        <div className="box list-menu">
+            <p><a href="http://pkuhelper.pku.edu.cn/treehole_rules.html" target="_blank">树洞管理规范</a></p>
+            <p><a href="https://github.com/xmcp/ashole/issues" target="_blank">意见反馈 <span className="icon icon-github" /></a></p>
+        </div>
+        <div className="box">
+            <p className="centered-line">树洞网页版 by @xmcp</p>
+            <br />
+            <p>
+                This program is free software: you can redistribute it and/or modify
+                it under the terms of the GNU General Public License as published by
+                the Free Software Foundation, either version 3 of the License, or
+                (at your option) any later version.
+            </p>
+            <br />
+            <p>
+                This program is distributed in the hope that it will be useful,
+                but WITHOUT ANY WARRANTY; without even the implied warranty of
+                MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+                GNU General Public License for more details.
+            </p>
+        </div>
     </div>
 );
 
