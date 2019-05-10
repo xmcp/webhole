@@ -72,7 +72,7 @@ export class LoginForm extends Component {
                 .then((json)=>{
                     if(json.code!==0) {
                         if(json.msg) alert(json.msg);
-                        throw new Error(json);
+                        throw new Error(JSON.stringify(json));
                     }
 
                     set_token(json.user_token);
@@ -226,7 +226,7 @@ export class ReplyForm extends Component {
             .then((json)=>{
                 if(json.code!==0) {
                     if(json.msg) alert(json.msg);
-                    throw new Error(json);
+                    throw new Error(JSON.stringify(json));
                 }
 
                 this.setState({
@@ -306,7 +306,7 @@ export class PostForm extends Component {
             .then((json)=>{
                 if(json.code!==0) {
                     if(json.msg) alert(json.msg);
-                    throw new Error(json);
+                    throw new Error(JSON.stringify(json));
                 }
 
                 this.setState({

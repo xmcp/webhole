@@ -19,7 +19,7 @@ export const API={
             .then((json)=>{
                 if(json.code!==0) {
                     if(json.msg) throw new Error(json.msg);
-                    else throw new Error(json);
+                    else throw new Error(JSON.stringify(json));
                 }
 
                 json.data=json.data
@@ -54,7 +54,7 @@ export const API={
                     if(json.msg && json.msg==='已经关注过辣') {}
                     else {
                         if(json.msg) alert(json.msg);
-                        throw new Error(json);
+                        throw new Error(JSON.stringify(json));
                     }
                 }
                 return json;
@@ -77,7 +77,7 @@ export const API={
             .then((json)=>{
                 if(json.code!==0) {
                     if(json.msg) alert(json.msg);
-                    throw new Error(json);
+                    throw new Error(JSON.stringify(json));
                 }
                 return json;
             });
@@ -92,7 +92,7 @@ export const API={
             .then((res)=>res.json())
             .then((json)=>{
                 if(json.code!==0)
-                    throw new Error(json);
+                    throw new Error(JSON.stringify(json));
                 return json;
             });
     },
@@ -108,7 +108,7 @@ export const API={
             .then((json)=>{
                 if(json.code!==0) {
                     if(json.msg) alert(json.msg);
-                    throw new Error(json);
+                    throw new Error(JSON.stringify(json));
                 }
                 return json;
             });
@@ -124,7 +124,7 @@ export const API={
             .then((json)=>{
                 if(json.code!==0) {
                     if(json.msg) throw new Error(json.msg);
-                    else throw new Error(json);
+                    else throw new Error(JSON.stringify(json));
                 }
                 return json;
             });
@@ -139,7 +139,7 @@ export const API={
             .then((json)=>{
                 if(json.code!==0) {
                     if(json.msg) alert(json.msg);
-                    throw new Error(json);
+                    throw new Error(JSON.stringify(json));
                 }
                 return json;
             });
