@@ -3,7 +3,7 @@
     border-radius: 5px;
     margin: 1em 0;
     padding: .5em;
-    box-shadow: 0 5px 10px rgba(0,0,0,.4);
+    box-shadow: 0 3px 8px rgba(0,0,0,.4);
 }
 
 .box-tip {
@@ -29,6 +29,9 @@
     margin-left: -25px;
     padding-left: 18px;
     overflow-x: auto;
+}
+.flow-reply-row.config-no-scroll {
+    overflow-x: hidden !important;
 }
 
 .flow-reply-row::-webkit-scrollbar {
@@ -177,7 +180,7 @@
 
 .flow-item-row-quote {
     opacity: .8;
-    filter: brightness(90%);
+    filter: brightness(95%);
 }
 
 .flow-item-quote>.box {

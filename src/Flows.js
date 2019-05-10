@@ -438,7 +438,7 @@ class FlowItemRow extends PureComponent {
         let parts=split_text(this.state.info.text,hl_rules);
 
         let quote_id=null;
-        if(!this.props.is_quote && localStorage['DISABLE_QUOTE']!=='on')
+        if(!this.props.is_quote && window.config.quote)
             for(let [mode,content] of parts)
                 if(mode==='pid' && QUOTE_BLACKLIST.indexOf(content)===-1 && parseInt(content)<parseInt(this.state.info.pid))
                     if(quote_id===null)
@@ -455,7 +455,7 @@ class FlowItemRow extends PureComponent {
             }}>
                 <FlowItem parts={parts} info={this.state.info} attention={this.state.attention} img_clickable={false} is_quote={this.props.is_quote}
                     color_picker={this.color_picker} show_pid={show_pid} replies={this.state.replies} />
-                <div className="flow-reply-row">
+                <div className={'flow-reply-row'+(window.config.horizontal_scroll ? '' : ' config-no-scroll')}>
                     {this.state.reply_status==='loading' && <div className="box box-tip">加载中</div>}
                     {this.state.reply_status==='failed' &&
                         <div className="box box-tip"><a onClick={()=>{this.load_replies()}}>重新加载</a></div>

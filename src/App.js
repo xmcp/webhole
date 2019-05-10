@@ -4,6 +4,7 @@ import {Title} from './Title';
 import {Sidebar} from './Sidebar';
 import {PressureHelper} from './PressureHelper';
 import {TokenCtx,ISOP_APPKEY} from './UserAction';
+import {load_config,bgimg_style} from './Config';
 
 import ImasuguApp from './imasugu/src/App';
 
@@ -37,6 +38,7 @@ function DeprecatedAlert(props) {
 class App extends Component {
     constructor(props) {
         super(props);
+        load_config();
         this.state={
             sidebar_title: '',
             sidebar_content: null, // determine status of sidebar
@@ -97,9 +99,7 @@ class App extends Component {
                 },
             }}>
                 <PressureHelper callback={this.on_pressure_bound} />
-                <div className="bg-img" style={{
-                    backgroundImage: 'url('+(localStorage['REPLACE_ERIRI_WITH_URL'] || 'static/eriri_bg.jpg')+')'
-                }} />
+                <div className="bg-img" style={bgimg_style()} />
                 <Title show_sidebar={this.show_sidebar_bound} set_mode={this.set_mode_bound} />
                 <TokenCtx.Consumer>{(token)=>(
                     <div className="left-container">

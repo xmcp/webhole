@@ -2,34 +2,29 @@ import React, {Component, PureComponent} from 'react';
 import {LoginForm, PostForm} from './UserAction';
 import {TokenCtx} from './UserAction';
 import {PromotionBar} from './Common';
+import {ConfigUI} from './Config';
 
 import './Title.css';
 
 const flag_re=/^\/\/setflag ([a-zA-Z0-9_]+)=(.*)$/;
 
 const HELP_TEXT=(
-    <div>
-        <div className="box list-menu">
-            <p><a href="http://pkuhelper.pku.edu.cn/treehole_rules.html" target="_blank">树洞管理规范</a></p>
-            <p><a href="https://github.com/xmcp/ashole/issues" target="_blank">意见反馈 <span className="icon icon-github" /></a></p>
-        </div>
-        <div className="box">
-            <p className="centered-line">树洞网页版 by @xmcp</p>
-            <br />
-            <p>
-                This program is free software: you can redistribute it and/or modify
-                it under the terms of the GNU General Public License as published by
-                the Free Software Foundation, either version 3 of the License, or
-                (at your option) any later version.
-            </p>
-            <br />
-            <p>
-                This program is distributed in the hope that it will be useful,
-                but WITHOUT ANY WARRANTY; without even the implied warranty of
-                MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-                GNU General Public License for more details.
-            </p>
-        </div>
+    <div className="box">
+        <p className="centered-line">树洞网页版 by @xmcp</p>
+        <br />
+        <p>
+            This program is free software: you can redistribute it and/or modify
+            it under the terms of the GNU General Public License as published by
+            the Free Software Foundation, either version 3 of the License, or
+            (at your option) any later version.
+        </p>
+        <br />
+        <p>
+            This program is distributed in the hope that it will be useful,
+            but WITHOUT ANY WARRANTY; without even the implied warranty of
+            MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+            GNU General Public License for more details.
+        </p>
     </div>
 );
 
@@ -122,6 +117,16 @@ class ControlBar extends PureComponent {
                             <div>
                                 <PromotionBar />
                                 <LoginForm />
+                                <div className="box list-menu">
+                                    <a onClick={()=>{this.props.show_sidebar(
+                                        '设置',
+                                        <ConfigUI />
+                                    )}}>树洞网页版设置</a>
+                                    &nbsp;/&nbsp;
+                                    <a href="http://pkuhelper.pku.edu.cn/treehole_rules.html" target="_blank">树洞规范</a>
+                                    &nbsp;/&nbsp;
+                                    <a href="https://github.com/xmcp/ashole/issues" target="_blank">意见反馈 <span className="icon icon-github" /></a>
+                                </div>
                                 {HELP_TEXT}
                             </div>
                         )
@@ -149,7 +154,7 @@ class ControlBar extends PureComponent {
 
 export function Title(props) {
     let date=new Date();
-    let eriri_easteregg=(1+date.getMonth())===3 && date.getDate()===20 && !localStorage['REPLACE_ERIRI_WITH_URL'];
+    let final_exam_egg=(1+date.getMonth())===6 && date.getDate()>=8 && date.getDate()<=21;
 
     return (
         <div className="title-bar">
@@ -159,8 +164,8 @@ export function Title(props) {
                         P大树洞
                     </p>
                     <p className="title-small">
-                        { eriri_easteregg ?
-                            <span style={{backgroundColor: 'yellow'}}>3月20日是看板娘<a href="https://zh.moegirl.org/%E6%B3%BD%E6%9D%91%C2%B7%E6%96%AF%E5%AE%BE%E5%A1%9E%C2%B7%E8%8B%B1%E6%A2%A8%E6%A2%A8" target="_blank">英梨梨</a>的生日</span> :
+                        { final_exam_egg && window.config.easter_egg ?
+                            <span style={{backgroundColor: 'yellow'}}>期末加油</span> :
                             "官方网页版"
                         }
                     </p>

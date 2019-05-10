@@ -37,7 +37,7 @@ export class PressureHelper extends  Component {
     }
 
     componentDidMount() {
-        if(localStorage['DISABLE_PRESSURE']!=='on') {            
+        if(window.config.pressure) {
             Pressure.set(document.body, {
                 change: (force)=>{
                     if(!this.state.fired) {

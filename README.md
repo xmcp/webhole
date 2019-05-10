@@ -24,6 +24,7 @@ React 版 P大树洞，[pkuhelper.pku.edu.cn/hole](http://pkuhelper.pku.edu.cn/h
 - 显示无限条搜索结果
 - 智能调整上传图片的质量
 - 用颜色区分不同人的回复
+- 自动显示提到的树洞
 - 突出显示未读树洞
 - 精确显示发帖时间
 - 复制树洞链接和全文
@@ -36,15 +37,3 @@ React 版 P大树洞，[pkuhelper.pku.edu.cn/hole](http://pkuhelper.pku.edu.cn/h
 
 - 搜索时筛选有图片、语音的树洞
 - 发表语音树洞
-- 关注的树洞有回复时推送提醒
-
-**附：进行自定义的方法**
-
-在搜索框中输入类似 `//setflag KEY=value` 的内容（注意大小写、全半角和空格），然后重新打开页面即可生效。
-
-目前可以自定义的功能包括：
-
-- 检测瀑布流中被删除的树洞和树洞被删除的评论（`//setflag DELETION_DETECT=on`）
-- 自定义背景图片（`//setflag REPLACE_ERIRI_WITH_URL=http://...`）
-- 禁用重压屏幕（3D Touch）或按住 Esc 键返回（`//setflag DISABLE_PRESSURE=on`）
-- 禁用自动显示引用树洞功能（`//setflag DISABLE_QUOTE=on`）
