@@ -33,11 +33,11 @@
     flex: 0 0 2em;
     text-align: center;
     color: black;
+    border-radius: 5px;
 }
 .control-btn:hover {
     background-color: #555555;
     color: white;
-    border-radius: 5px;
 }
 
 .control-btn .icon:before {

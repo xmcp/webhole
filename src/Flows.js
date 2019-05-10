@@ -604,10 +604,11 @@ export class Flow extends PureComponent {
             if(this.state.mode==='list') {
                 API.get_list(page,this.props.token)
                     .then((json)=>{
-                        json.data.forEach((x)=>{
-                            if(parseInt(x.pid,10)>(parseInt(localStorage['_LATEST_POST_ID'],10)||0))
-                                localStorage['_LATEST_POST_ID']=x.pid;
-                        });
+                        if(page===1)
+                            json.data.forEach((x)=>{
+                                if(parseInt(x.pid,10)>(parseInt(localStorage['_LATEST_POST_ID'],10)||0))
+                                    localStorage['_LATEST_POST_ID']=x.pid;
+                            });
                         this.setState((prev,props)=>({
                             chunks: {
                                 title: 'News Feed',
