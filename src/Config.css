@@ -1,6 +1,6 @@
 .config-ui-header {
     text-align: center;
-    top: 0;
+    top: 1em;
     position: sticky;
 }
 

@@ -17,18 +17,24 @@
 
 .sidebar {
     user-select: text;
-    transition: left 150ms ease-out;
     position: fixed;
-    left: 100%;
     top: 0;
     height: 100%;
     width: calc(100% - 700px);
     padding: 1em;
     background-color: rgba(255,255,255,.7);
-    z-index: 21;
     overflow-y: auto;
+    padding-top: 2em;
+    padding-bottom: 1em;
 }
-.sidebar-on .sidebar {
+
+.sidebar, .sidebar-title {
+    left: 100%;
+    transition: left 150ms ease-out;
+    z-index: 21;
+    width: calc(100% - 700px);
+}
+.sidebar-on .sidebar, .sidebar-on .sidebar-title {
     left: 700px;
 }
 
@@ -38,19 +44,19 @@
 }
 
 @media screen and (max-width: 1300px) {
-    .sidebar {
+    .sidebar, .sidebar-title {
         width: 550px;
         padding: 1em .5em;
     }
-    .sidebar-on .sidebar {
+    .sidebar-on .sidebar, .sidebar-on .sidebar-title {
         left: calc(100% - 550px);
     }
 }
 @media screen and (max-width: 570px) {
-    .sidebar {
+    .sidebar, .sidebar-title {
         width: calc(100% - 20px);
     }
-    .sidebar-on .sidebar {
+    .sidebar-on .sidebar, .sidebar-on .sidebar-title {
         left: 20px;
     }
 }
