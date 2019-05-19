@@ -10,7 +10,7 @@
 }
 .reply-sticky {
     position: sticky;
-    bottom: 0;
+    bottom: 1em;
 }
 
 .reply-form textarea {
