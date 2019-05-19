@@ -6,13 +6,11 @@ export function Sidebar(props) {
         <div className={props.content ? 'sidebar-on' : ''}>
             <div className="sidebar-shadow" onClick={props.do_close} />
             <div className="sidebar">
-                <div className="sidebar-title">
+                <p className="sidebar-title">
                     <a onClick={props.do_close}>&nbsp;<span className="icon icon-back" />&nbsp;</a>
                     {props.title}
-                </div>
-                <div className="sidebar-content">
-                    {props.content}
-                </div>
+                </p>
+                {props.content}
             </div>
         </div>
     );

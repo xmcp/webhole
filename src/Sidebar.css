@@ -23,6 +23,7 @@
     top: 0;
     height: 100%;
     width: calc(100% - 700px);
+    padding: 1em;
     background-color: rgba(255,255,255,.7);
     z-index: 21;
     overflow-y: auto;
@@ -34,30 +35,12 @@
 .sidebar-title {
     text-shadow: 0 0 3px white;
     font-weight: bold;
-    position: fixed;
-    width: 100%;
-    top: 0;
-    line-height: 3em;
-    padding-left: .5em;
-    padding-bottom: 1em;
-    margin-bottom: -1em;
-    background-image: linear-gradient(top,rgba(255,255,255,.7) 40%,rgba(255,255,255,0) 100%);
-    pointer-events: none;
-}
-.sidebar-title a {
-    pointer-events: initial;
-}
-
-.sidebar-content {
-    padding: 2em 1em 1em 1em;
 }
 
 @media screen and (max-width: 1300px) {
     .sidebar {
         width: 550px;
-    }
-    .sidebar-content {
-        padding: 2em .5em 1em .5em;
+        padding: 1em .5em;
     }
     .sidebar-on .sidebar {
         left: calc(100% - 550px);
