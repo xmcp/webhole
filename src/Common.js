@@ -158,16 +158,16 @@ export class ClickHandler extends PureComponent {
     }
 
     on_begin(e) {
-        //console.log('click',e.screenY,e.screenX);
+        //console.log('click',(e.touches?e.touches[0]:e).screenY,(e.touches?e.touches[0]:e).screenX);
         this.setState({
             moved: false,
-            init_y: e.screenY,
-            init_x: e.screenX,
+            init_y: (e.touches?e.touches[0]:e).screenY,
+            init_x: (e.touches?e.touches[0]:e).screenX,
         });
     }
     on_move(e) {
         if(!this.state.moved) {
-            let mvmt=Math.abs(e.screenY-this.state.init_y)+Math.abs(e.screenX-this.state.init_x);
+            let mvmt=Math.abs((e.touches?e.touches[0]:e).screenY-this.state.init_y)+Math.abs((e.touches?e.touches[0]:e).screenX-this.state.init_x);
             //console.log('move',mvmt);
             if(mvmt>this.MOVE_THRESHOLD)
                 this.setState({

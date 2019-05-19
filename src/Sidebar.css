@@ -22,7 +22,7 @@
     height: 100%;
     background-color: rgba(255,255,255,.7);
     overflow-y: auto;
-    padding-top: 2em;
+    padding-top: 3em;
     padding-bottom: 1em;
 }
 
@@ -44,9 +44,7 @@
     top: 0;
     line-height: 3em;
     padding-left: .5em;
-    padding-bottom: .5em;
-    margin-bottom: -.5em;
-    background-image: linear-gradient(top,rgba(255,255,255,.7) 50%,rgba(255,255,255,0) 100%);
+    background-color: rgba(255,255,255,.6);
     pointer-events: none;
 }
 .sidebar-title a {
