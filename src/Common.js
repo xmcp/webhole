@@ -146,26 +146,42 @@ export class ClickHandler extends PureComponent {
     constructor(props) {
         super(props);
         this.state={
-            moved: false,
+            moved: true,
+            init_y: 0,
+            init_x: 0,
         };
         this.on_begin_bound=this.on_begin.bind(this);
         this.on_move_bound=this.on_move.bind(this);
         this.on_end_bound=this.on_end.bind(this);
+
+        this.MOVE_THRESHOLD=3;
     }
 
-    on_begin() {
+    on_begin(e) {
+        //console.log('click',e.screenY,e.screenX);
         this.setState({
             moved: false,
+            init_y: e.screenY,
+            init_x: e.screenX,
         });
     }
-    on_move() {
+    on_move(e) {
+        if(!this.state.moved) {
+            let mvmt=Math.abs(e.screenY-this.state.init_y)+Math.abs(e.screenX-this.state.init_x);
+            //console.log('move',mvmt);
+            if(mvmt>this.MOVE_THRESHOLD)
+                this.setState({
+                    moved: true,
+                });
+        }
+    }
+    on_end(event) {
+        //console.log('end');
+        if(!this.state.moved)
+            this.props.callback(event);
         this.setState({
             moved: true,
         });
-    }
-    on_end(event) {
-        if(!this.state.moved)
-            this.props.callback(event);
     }
 
     render() {
