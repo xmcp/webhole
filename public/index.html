@@ -33,7 +33,8 @@
             var config=JSON.parse(localStorage['hole_config']||'{}');
             for(var key in config)
                 if(config.hasOwnProperty(key))
-                    _czc.push(["_setCustomVar","config_"+key,encodeURIComponent(JSON.stringify(config[key])),0]);
+                    _czc.push(["_trackEvent",'config',key,encodeURIComponent(JSON.stringify(config[key])),0,'']);
+                    //_czc.push(["_setCustomVar","config_"+key,encodeURIComponent(JSON.stringify(config[key])),0]);
         } catch(e) {
             console.trace(e);
         }
