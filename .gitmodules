@@ -1,3 +1,8 @@
 [submodule "src/imasugu"]
 	path = src/imasugu
 	url = https://github.com/xmcp/imasugu
+
+[submodule "src/react-lazyload"]
+	path = src/react-lazyload
+	url = https://github.com/xmcp/react-lazyload
+

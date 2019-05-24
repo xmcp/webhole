@@ -4,7 +4,7 @@ import {ColorPicker} from './color_picker';
 import {split_text,NICKNAME_RE,PID_RE,URL_RE} from './text_splitter';
 import {format_time, build_highlight_re, Time, TitleLine, HighlightedText, ClickHandler} from './Common';
 import './Flows.css';
-import LazyLoad from 'react-lazyload';
+import LazyLoad from './react-lazyload/src';
 import {AudioWidget} from './AudioWidget';
 import {TokenCtx, ReplyForm} from './UserAction';
 
@@ -549,7 +549,7 @@ function FlowChunk(props) {
             <div className="flow-chunk">
                 {!!props.title && <TitleLine text={props.title} />}
                 {props.list.map((info,ind)=>(
-                    <LazyLoad key={info.pid} offset={1500} height="15em" once={true}>
+                    <LazyLoad key={info.pid} offset={1500} height="15em" hiddenIfInvisible={true}>
                         <div>
                             {!!(props.deletion_detect && props.mode==='list' && ind && props.list[ind-1].pid-info.pid>1) &&
                                 <div className="flow-item-row">
