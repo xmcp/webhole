@@ -41,8 +41,10 @@ export class PressureHelper extends  Component {
             Pressure.set(document.body, {
                 change: (force)=>{
                     if(!this.state.fired) {
-                        if(force>=.999)
+                        if(force>=.999) {
+                            document.body.classList.add('pressure-no-select');
                             this.do_fire();
+                        }
                         else
                             this.setState({
                                 level: force,
@@ -54,15 +56,12 @@ export class PressureHelper extends  Component {
                         level: 0,
                         fired: false,
                     });
+                    document.body.classList.remove('pressure-no-select');
                 },
             }, {
                 polyfill: false,
                 only: 'touch',
                 preventSelect: false,
-            });
-            document.body.addEventListener('selectstart',(event)=>{
-                if(this.state.level>THRESHOLD)
-                    event.preventDefault();
             });
 
             document.addEventListener('keydown',(e)=>{

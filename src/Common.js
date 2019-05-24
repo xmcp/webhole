@@ -155,6 +155,7 @@ export class ClickHandler extends PureComponent {
         this.on_end_bound=this.on_end.bind(this);
 
         this.MOVE_THRESHOLD=3;
+        this.last_fire=0;
     }
 
     on_begin(e) {
@@ -178,10 +179,16 @@ export class ClickHandler extends PureComponent {
     on_end(event) {
         //console.log('end');
         if(!this.state.moved)
-            this.props.callback(event);
+            this.do_callback(event);
         this.setState({
             moved: true,
         });
+    }
+
+    do_callback(event) {
+        if(this.last_fire+100>+new Date()) return;
+        this.last_fire=+new Date();
+        this.props.callback(event);
     }
 
     render() {

@@ -9,29 +9,6 @@ import {load_config,bgimg_style} from './Config';
 import ImasuguApp from './imasugu/src/App';
 
 function DeprecatedAlert(props) {
-    if(['pkuhelper.pku.edu.cn','127.0.0.1','localhost'].indexOf(document.domain)===-1)
-        return (
-            <div className="flow-item-row">
-                <div className="box box-tip aux-margin">
-                    <p><b>树洞又㕛叒换域名了！</b></p>
-                    <br />
-                    <p>记住树洞网页版新网址</p>
-                    <p><a href="http://pkuhelper.pku.edu.cn/hole">pkuhelper.pku.edu.cn/hole</a></p>
-                    <br />
-                    <p><small>当前域名我也不清楚什么时候停止维护。</small></p>
-                    <p><small>另外我们终于支持了 HTTPS 和 HTTP/2。</small></p>
-                    <br />
-                    <TokenCtx.Consumer>{(token)=>(
-                        !!token.value && <div>
-                            <p>*Tips: </p>
-                            <p>点击右上角的 <span className="icon icon-about" /> ，复制 User Token，在新网址的登录页面输入，就不用重发验证码了。</p>
-                            <br />
-                        </div>
-                    )}</TokenCtx.Consumer>
-                    <p>@xmcp from PKUHelper Team</p>
-                </div>
-            </div>
-        );
     return null;
 }
 
