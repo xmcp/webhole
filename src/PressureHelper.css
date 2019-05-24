@@ -10,10 +10,6 @@
     visibility: hidden;
 }
 
-.pressure-no-select * {
-    user-select: none !important;
-}
-
 .pressure-box-fired {
     border-color: orangered;
     pointer-events: initial !important;

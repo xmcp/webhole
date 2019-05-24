@@ -173,6 +173,17 @@ class FlowSidebar extends PureComponent {
         this.reply_ref=React.createRef();
     }
 
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            attention: nextProps.attention,
+            info: nextProps.info,
+            replies: nextProps.replies,
+            loading_status: 'done',
+        });
+        this.color_picker=nextProps.color_picker;
+        this.syncState=nextProps.sync_state||(()=>{});
+    }
+
     set_variant(cid,variant) {
         this.setState((prev)=>{
             if(cid)

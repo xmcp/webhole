@@ -17,7 +17,7 @@ class App extends Component {
         super(props);
         load_config();
         this.state={
-            sidebar_title: '',
+            sidebar_title: null,
             sidebar_content: null, // determine status of sidebar
             mode: 'list', // list, single, search, attention
             search_text: null,
@@ -33,11 +33,11 @@ class App extends Component {
     }
 
     on_pressure() {
-        if(this.state.sidebar_content)
-            this.setState({
-                sidebar_title: '',
-                sidebar_content: null,
-            });
+        if(this.state.sidebar_title!==null)
+            this.setState((prevState)=>({
+                sidebar_title: null,
+                sidebar_content: prevState.sidebar_content,
+            }));
         else
             this.set_mode('list',null);
     }
@@ -97,6 +97,7 @@ class App extends Component {
                 )}</TokenCtx.Consumer>
                 <Sidebar do_close={()=>{
                     this.setState({
+                        sidebar_title: null,
                         sidebar_content: null,
                     });
                 }} content={this.state.sidebar_content} title={this.state.sidebar_title} />

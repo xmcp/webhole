@@ -42,7 +42,6 @@ export class PressureHelper extends  Component {
                 change: (force)=>{
                     if(!this.state.fired) {
                         if(force>=.999) {
-                            document.body.classList.add('pressure-no-select');
                             this.do_fire();
                         }
                         else
@@ -56,7 +55,6 @@ export class PressureHelper extends  Component {
                         level: 0,
                         fired: false,
                     });
-                    document.body.classList.remove('pressure-no-select');
                 },
             }, {
                 polyfill: false,
