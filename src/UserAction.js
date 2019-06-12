@@ -107,7 +107,7 @@ export class LoginForm extends Component {
                     set_token(token);
                 })
                 .catch((e)=>{
-                    alert('Token检验失败');
+                    alert('Token检验失败\n'+e);
                     this.setState({
                         loading_status: 'done',
                     });

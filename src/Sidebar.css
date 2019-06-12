@@ -1,4 +1,5 @@
 .sidebar-shadow {
+    will-change: opacity;
     opacity: 0;
     background-color: black;
     pointer-events: none;
@@ -27,6 +28,7 @@
 }
 
 .sidebar, .sidebar-title {
+    will-change: left;
     left: 100%;
     transition: left 150ms ease-out;
     z-index: 21;

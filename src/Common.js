@@ -195,7 +195,7 @@ export class ClickHandler extends PureComponent {
         return (
             <div onTouchStart={this.on_begin_bound} onMouseDown={this.on_begin_bound}
                  onTouchMove={this.on_move_bound} onMouseMove={this.on_move_bound}
-                 onTouchEnd={this.on_end_bound} onMouseUp={this.on_end_bound} >
+                 onClick={this.on_end_bound} >
                 {this.props.children}
             </div>
         )
