@@ -9,7 +9,8 @@ export class Sidebar extends PureComponent {
 
     componentWillReceiveProps(nextProps) {
         //console.log('sidebar top');
-        this.sidebar_ref.current.scrollTo(0,0);
+        if(this.sidebar_ref.current)
+            this.sidebar_ref.current.scrollTop=0;
     }
 
     render() {
