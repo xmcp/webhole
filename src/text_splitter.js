@@ -6,6 +6,9 @@ export function split_text(txt,rules) {
     // rules: [['name',/regex/],...]
     // return: [['name','part'],[null,'part'],...]
 
+    if(window.config.easter_egg && txt.indexOf('浏览器咑閞')!==-1)
+        return [['disable',txt]];
+
     txt=[[null,txt]];
     rules.forEach((rule)=>{
         let [name,regex]=rule;

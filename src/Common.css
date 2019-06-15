@@ -57,3 +57,8 @@
     border-bottom: 1px solid black;
     font-weight: bold;
 }
+
+.easter-egg-dmm-disable {
+    cursor: not-allowed;
+    user-select: none !important;
+}
