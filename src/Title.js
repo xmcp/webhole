@@ -116,7 +116,7 @@ class ControlBar extends PureComponent {
                             'P大树洞 网页版',
                             <div>
                                 <PromotionBar />
-                                <LoginForm />
+                                <LoginForm show_sidebar={this.props.show_sidebar} />
                                 <div className="box list-menu">
                                     <a onClick={()=>{this.props.show_sidebar(
                                         '设置',

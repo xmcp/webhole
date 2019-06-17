@@ -9,6 +9,16 @@ import {load_config,bgimg_style} from './Config';
 import ImasuguApp from './imasugu/src/App';
 
 function DeprecatedAlert(props) {
+    if(document.domain==='hole.xmcp.ml')
+        return (
+            <div className="flow-item">
+                <div className="box box-tip">
+                    <p><b>请使用新域名访问P大树洞！</b></p>
+                    <p><a href="http://pkuhelper.pku.edu.cn/hole/">pkuhelper.pku.edu.cn/hole</a></p>
+                    <p>当前域名将停止支持</p>
+                </div>
+            </div>
+        );
     return null;
 }
 

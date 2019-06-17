@@ -1,11 +1,15 @@
 import {API_BASE} from './Common';
 
 export const API_VERSION_PARAM='&PKUHelperAPI=3.0';
-export const PKUHELPER_ROOT= // don't use :10301 if we are already in the same domain
-    document.domain==='pkuhelper.pku.edu.cn' ? '/' : '//pkuhelper.pku.edu.cn/';
+export const PKUHELPER_ROOT='//pkuhelper.pku.edu.cn/';
 
 function token_param(token) {
     return API_VERSION_PARAM + (token ? ('&user_token='+token) : '');
+}
+
+export function get_json(res) {
+    if(!res.ok) throw Error(`网络错误 ${res.status} ${res.statusText}`);
+    return res.json();
 }
 
 export const API={
@@ -15,7 +19,7 @@ export const API={
             '&pid='+pid+
             token_param(token)
         )
-            .then((res)=>res.json())
+            .then(get_json)
             .then((json)=>{
                 if(json.code!==0) {
                     if(json.msg) throw new Error(json.msg);
@@ -48,7 +52,7 @@ export const API={
             },
             body: data,
         })
-            .then((res)=>res.json())
+            .then(get_json)
             .then((json)=>{
                 if(json.code!==0) {
                     if(json.msg && json.msg==='已经关注过辣') {}
@@ -73,7 +77,7 @@ export const API={
             },
             body: data,
         })
-            .then((res)=>res.json())
+            .then(get_json)
             .then((json)=>{
                 if(json.code!==0) {
                     if(json.msg) alert(json.msg);
@@ -89,7 +93,7 @@ export const API={
             '&p='+page+
             token_param(token)
         )
-            .then((res)=>res.json())
+            .then(get_json)
             .then((json)=>{
                 if(json.code!==0)
                     throw new Error(JSON.stringify(json));
@@ -104,7 +108,7 @@ export const API={
             '&keywords='+encodeURIComponent(keyword)+
             token_param(token)
         )
-            .then((res)=>res.json())
+            .then(get_json)
             .then((json)=>{
                 if(json.code!==0) {
                     if(json.msg) alert(json.msg);
@@ -120,7 +124,7 @@ export const API={
             '&pid='+pid+
             token_param(token)
         )
-            .then((res)=>res.json())
+            .then(get_json)
             .then((json)=>{
                 if(json.code!==0) {
                     if(json.msg) throw new Error(json.msg);
@@ -135,7 +139,7 @@ export const API={
             API_BASE+'/api.php?action=getattention'+
             token_param(token)
         )
-            .then((res)=>res.json())
+            .then(get_json)
             .then((json)=>{
                 if(json.code!==0) {
                     if(json.msg) alert(json.msg);

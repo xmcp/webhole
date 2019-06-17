@@ -1,12 +1,13 @@
 import React, {Component, PureComponent} from 'react';
 import copy from 'copy-to-clipboard';
 import {SafeTextarea} from './Common';
-import {API_VERSION_PARAM,PKUHELPER_ROOT,API} from './flows_api'
+import {API_VERSION_PARAM,PKUHELPER_ROOT,API,get_json} from './flows_api'
 import md5 from 'md5';
 
 import './UserAction.css';
 
 import {API_BASE} from './Common';
+import {MessageViewer} from './Message';
 const LOGIN_BASE=PKUHELPER_ROOT+'services/login';
 const MAX_IMG_PX=2500;
 const MAX_IMG_FILESIZE=300000;
@@ -68,15 +69,16 @@ export class LoginForm extends Component {
                 },
                 body: data,
             })
-                .then((res)=>res.json())
+                .then(get_json)
                 .then((json)=>{
                     if(json.code!==0) {
                         if(json.msg) alert(json.msg);
                         throw new Error(JSON.stringify(json));
                     }
 
+                    let freshman_welcome=json.uid.indexOf('19')===0 && (+new Date())<1567958400000; // 2019-09-09 0:00 GMT+8
                     set_token(json.user_token);
-                    alert(`成功以 ${json.name} 的身份登录`);
+                    alert(`成功以 ${json.name} 的身份登录`+(freshman_welcome ? '\n欢迎来到北京大学！' : ''));
                     this.setState({
                         loading_status: 'done',
                     });
@@ -130,6 +132,13 @@ export class LoginForm extends Component {
                             <p>
                                 <b>您已登录。</b>
                                 <button type="button" onClick={()=>{token.set_value(null);}}>注销</button>
+                            </p>
+                            <p>
+                                <a onClick={()=>{this.props.show_sidebar(
+                                    '系统消息',
+                                    <MessageViewer token={token.value} />
+                                )}}>查看系统消息</a><br />
+                                当您发送的内容违规时，我们将用系统消息提示您
                             </p>
                             <p>
                                 <a onClick={this.copy_token.bind(this,token.value)}>复制 User Token</a><br />
@@ -222,7 +231,7 @@ export class ReplyForm extends Component {
             },
             body: data,
         })
-            .then((res)=>res.json())
+            .then(get_json)
             .then((json)=>{
                 if(json.code!==0) {
                     if(json.msg) alert(json.msg);
@@ -248,7 +257,7 @@ export class ReplyForm extends Component {
     render() {
         return (
             <form onSubmit={this.on_submit.bind(this)} className={'reply-form box'+(this.state.text?' reply-sticky':'')}>
-                <SafeTextarea ref={this.area_ref} id={this.props.pid} on_change={this.on_change_bound} on_submit={this.on_submit.bind(this)} />
+                <SafeTextarea key={this.props.pid} ref={this.area_ref} id={this.props.pid} on_change={this.on_change_bound} on_submit={this.on_submit.bind(this)} />
                 {this.state.loading_status==='loading' ?
                     <button disabled="disabled">
                         <span className="icon icon-loading" />
@@ -302,7 +311,7 @@ export class PostForm extends Component {
             },
             body: data,
         })
-            .then((res)=>res.json())
+            .then(get_json)
             .then((json)=>{
                 if(json.code!==0) {
                     if(json.msg) alert(json.msg);
