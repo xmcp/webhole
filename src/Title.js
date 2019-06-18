@@ -125,7 +125,7 @@ class ControlBar extends PureComponent {
                                     &nbsp;/&nbsp;
                                     <a href="http://pkuhelper.pku.edu.cn/treehole_rules.html" target="_blank">树洞规范</a>
                                     &nbsp;/&nbsp;
-                                    <a href="https://github.com/xmcp/ashole/issues" target="_blank">意见反馈 <span className="icon icon-github" /></a>
+                                    <a href="https://github.com/pkuhelper-web/webhole/issues" target="_blank">意见反馈 <span className="icon icon-github" /></a>
                                 </div>
                                 {HELP_TEXT}
                             </div>

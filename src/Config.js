@@ -20,19 +20,20 @@ const DEFAULT_CONFIG={
 };
 
 export function load_config() {
-    let config_txt=localStorage['hole_config']||'{}';
-    let config;
+    let config=Object.assign({},DEFAULT_CONFIG);
+    let loaded_config;
     try {
-        config=JSON.parse(config_txt);
+        loaded_config=JSON.parse(localStorage['hole_config']||'{}');
     } catch(e) {
         alert('设置加载失败，将重置为默认设置！\n'+e);
         delete localStorage['hole_config'];
-        config={};
+        loaded_config={};
     }
 
-    Object.keys(DEFAULT_CONFIG).forEach((key)=>{
-        if(config[key]===undefined)
-            config[key]=DEFAULT_CONFIG[key];
+    // unrecognized configs are removed
+    Object.keys(loaded_config).forEach((key)=>{
+        if(config[key]!==undefined)
+            config[key]=loaded_config[key];
     });
 
     console.log('config loaded',config);
@@ -208,7 +209,7 @@ export class ConfigUI extends PureComponent {
                     <hr />
                     <p>
                         新功能建议或问题反馈请在&nbsp;
-                        <a href="https://github.com/xmcp/ashole/issues" target="_blank">GitHub <span className="icon icon-github" /></a>
+                        <a href="https://github.com/pkuhelper-web/webhole/issues" target="_blank">GitHub <span className="icon icon-github" /></a>
                         &nbsp;提出。
                     </p>
                 </div>

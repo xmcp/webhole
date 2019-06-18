@@ -283,7 +283,7 @@ class FlowSidebar extends PureComponent {
     show_reply_bar(name,event) {
         if(this.reply_ref.current && !event.target.closest('a')) {
             let text=this.reply_ref.current.get();
-            if(/^\s*(Re (洞主|\b[A-Z][a-z]+){0,2}:)?\s*$/.test(text)) {// text is nearly empty so we can replace it
+            if(/^\s*(?:Re (?:|洞主|(?:[A-Z][a-z]+ )?(?:[A-Z][a-z]+)):)?\s*$/.test(text)) {// text is nearly empty so we can replace it
                 let should_text='Re '+name+': ';
                 if(should_text===this.reply_ref.current.get())
                     this.reply_ref.current.set('');
