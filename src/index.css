@@ -1,10 +1,6 @@
 body {
-    margin: 0;
-    padding: 0;
     background-size: cover;
-    overflow-x: hidden;
     user-select: none;
-    text-size-adjust: 100%;
     background-color: #124;
 }
 
@@ -15,24 +11,8 @@ html {
     scrollbar-width: none;
 }
 
-body, textarea, pre {
-    font-family: 'Segoe UI', '微软雅黑', 'Microsoft YaHei', sans-serif;
-}
-
-* {
-    box-sizing: border-box;
-    word-wrap: break-word;
-    -webkit-overflow-scrolling: touch;
-}
-
-p, pre {
-    margin: 0;
-}
-
 a {
-    text-decoration: none;
     color: #00c;
-    cursor: pointer;
 }
 
 input, textarea {
@@ -47,10 +27,6 @@ input {
 
 audio {
     vertical-align: middle;
-}
-
-pre {
-    white-space: pre-line;
 }
 
 button, .button {
@@ -69,8 +45,4 @@ button:hover, .button:hover {
 
 button:disabled, .button:disabled {
     background-color: rgba(128,128,128,.5);
-}
-
-code {
-    font-family: Consolas, Courier, monospace;
 }

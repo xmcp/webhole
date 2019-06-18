@@ -1,19 +1,12 @@
 import React, {Component, PureComponent} from 'react';
+import {format_time,Time,TitleLine} from './infrastructure/widgets';
 import {PKUHELPER_ROOT} from './flows_api';
-
-import TimeAgo from 'react-timeago';
-import chineseStrings from 'react-timeago/lib/language-strings/zh-CN';
-import buildFormatter from 'react-timeago/lib/formatters/buildFormatter';
 
 import './Common.css';
 
-const chinese_format=buildFormatter(chineseStrings);
+export {format_time,Time,TitleLine};
 
 export const API_BASE=PKUHELPER_ROOT+'services/pkuhole';
-
-function pad2(x) {
-    return x<10 ? '0'+x : ''+x;
-}
 
 // https://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
 function escape_regex(string) {
@@ -22,29 +15,6 @@ function escape_regex(string) {
 
 export function build_highlight_re(txt,split) {
     return txt ? new RegExp(`(${txt.split(split).filter((x)=>!!x).map(escape_regex).join('|')})`,'g') : /^$/g;
-}
-
-export function format_time(time) {
-    return `${time.getMonth()+1}-${pad2(time.getDate())} ${time.getHours()}:${pad2(time.getMinutes())}:${pad2(time.getSeconds())}`;
-}
-
-export function Time(props) {
-    const time=new Date(props.stamp*1000);
-    return (
-        <span>
-            <TimeAgo date={time} formatter={chinese_format} />
-            &nbsp;
-            {format_time(time)}
-        </span>
-    );
-}
-
-export function TitleLine(props) {
-    return (
-        <p className="centered-line title-line aux-margin">
-            <span className="black-outline">{props.text}</span>
-        </p>
-    )
 }
 
 export class HighlightedText extends PureComponent {

@@ -1,16 +1,15 @@
+import {get_json} from './infrastructure/functions';
+import {PKUHELPER_ROOT} from './infrastructure/const';
 import {API_BASE} from './Common';
 
 export const API_VERSION_PARAM='&PKUHelperAPI=3.0';
-export const PKUHELPER_ROOT='//pkuhelper.pku.edu.cn/';
+export {PKUHELPER_ROOT};
 
 function token_param(token) {
     return API_VERSION_PARAM + (token ? ('&user_token='+token) : '');
 }
 
-export function get_json(res) {
-    if(!res.ok) throw Error(`网络错误 ${res.status} ${res.statusText}`);
-    return res.json();
-}
+export {get_json};
 
 export const API={
     load_replies: (pid,token,color_picker)=>{

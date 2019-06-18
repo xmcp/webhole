@@ -6,3 +6,6 @@
 	path = src/react-lazyload
 	url = https://github.com/xmcp/react-lazyload
 
+[submodule "src/infrastructure"]
+	path = src/infrastructure
+	url = https://github.com/pkuhelper-web/infrastructure

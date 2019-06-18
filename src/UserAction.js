@@ -1,20 +1,18 @@
 import React, {Component, PureComponent} from 'react';
+import {ISOP_APPKEY,ISOP_APPCODE,ISOP_SVCID} from './infrastructure/const';
 import copy from 'copy-to-clipboard';
-import {SafeTextarea} from './Common';
-import {API_VERSION_PARAM,PKUHELPER_ROOT,API,get_json} from './flows_api'
+import {API_BASE,SafeTextarea} from './Common';
+import {MessageViewer} from './Message';
+import {API_VERSION_PARAM,PKUHELPER_ROOT,API,get_json} from './flows_api';
 import md5 from 'md5';
 
 import './UserAction.css';
 
-import {API_BASE} from './Common';
-import {MessageViewer} from './Message';
 const LOGIN_BASE=PKUHELPER_ROOT+'services/login';
 const MAX_IMG_PX=2500;
 const MAX_IMG_FILESIZE=300000;
 
-export const ISOP_APPKEY='0feb3a8a831e11e8933a0050568508a5';
-export const ISOP_APPCODE='0fec960a831e11e8933a0050568508a5';
-export const ISOP_SVCID='PERSON_BASE_INFO,STUDENT_SCORE,STUDENT_COURSE_TABLE,STUDENT_COURSE_TABLE_ROOM,CARD_BALANCE';
+export {ISOP_APPKEY,ISOP_APPCODE,ISOP_SVCID};
 
 export const TokenCtx=React.createContext({
     value: null,
