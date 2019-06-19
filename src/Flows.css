@@ -59,21 +59,13 @@
     overflow-y: hidden;
 }
 
-.aux-margin,
 .left-container .flow-item {
     margin-left: 50px;
 }
-.aux-margin {
-    width: calc(100% - 2 * 50px);
-}
 
 @media screen and (max-width: 1300px) {
-    .aux-margin,
     .left-container .flow-item {
         margin-left: 10px;
-    }
-    .aux-margin {
-        width: calc(100% - 2 * 10px);
     }
 
     .flow-reply-row {

@@ -1,4 +1,5 @@
 import React, {Component, PureComponent} from 'react';
+import {AppSwitcher} from './infrastructure/widgets';
 import {LoginForm, PostForm} from './UserAction';
 import {TokenCtx} from './UserAction';
 import {PromotionBar} from './Common';
@@ -153,21 +154,13 @@ class ControlBar extends PureComponent {
 }
 
 export function Title(props) {
-    let date=new Date();
-    let final_exam_egg=(1+date.getMonth())===6 && date.getDate()>=8 && date.getDate()<=21;
-
     return (
         <div className="title-bar">
+            <AppSwitcher appid="hole" />
             <div className="aux-margin">
                 <div className="title">
                     <p className="centered-line">
                         P大树洞
-                    </p>
-                    <p className="title-small">
-                        { final_exam_egg && window.config.easter_egg ?
-                            <span style={{backgroundColor: 'yellow'}}>期末加油</span> :
-                            "官方网页版"
-                        }
                     </p>
                 </div>
                 <ControlBar show_sidebar={props.show_sidebar} set_mode={props.set_mode} />
