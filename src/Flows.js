@@ -30,13 +30,17 @@ function load_single_meta(show_sidebar,token,parents) {
                 正在加载 #{pid}
             </div>
         );
-        Promise.all([
-            API.get_single(pid,token),
-            API.load_replies(pid,token,color_picker),
-        ])
-            .then((res)=>{
-                const [single,replies]=res;
+        API.get_single(pid,token)
+            .then((single)=>{
                 single.data.variant={};
+                return new Promise((resolve,reject)=>{
+                    API.load_replies_with_cache(pid,token,color_picker,parseInt(single.data.reply))
+                        .then((replies)=>{resolve([single,replies])})
+                        .catch(reject);
+                });
+            })
+            .then((res)=>{
+                let [single,replies]=res;
                 show_sidebar(
                     title_elem,
                     <FlowSidebar
@@ -212,7 +216,7 @@ class FlowSidebar extends PureComponent {
             loading_status: 'loading',
             error_msg: null,
         });
-        API.load_replies(this.state.info.pid,this.props.token,this.color_picker)
+        API.load_replies(this.state.info.pid,this.props.token,this.color_picker,null)
             .then((json)=>{
                 this.setState((prev,props)=>({
                     replies: json.data,
@@ -401,7 +405,7 @@ class FlowItemRow extends PureComponent {
         this.setState({
             reply_status: 'loading',
         });
-        API.load_replies(this.state.info.pid,this.props.token,this.color_picker)
+        API.load_replies_with_cache(this.state.info.pid,this.props.token,this.color_picker,parseInt(this.state.info.reply))
             .then((json)=>{
                 this.setState((prev,props)=>({
                     replies: json.data,

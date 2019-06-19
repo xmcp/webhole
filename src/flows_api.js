@@ -1,6 +1,7 @@
 import {get_json} from './infrastructure/functions';
 import {PKUHELPER_ROOT} from './infrastructure/const';
 import {API_BASE} from './Common';
+import {cache} from './cache';
 
 export const API_VERSION_PARAM='&PKUHelperAPI=3.0';
 export {PKUHELPER_ROOT};
@@ -12,7 +13,8 @@ function token_param(token) {
 export {get_json};
 
 export const API={
-    load_replies: (pid,token,color_picker)=>{
+    load_replies: (pid,token,color_picker,cache_version)=>{
+        pid=parseInt(pid);
         return fetch(
             API_BASE+'/api.php?action=getcomment'+
             '&pid='+pid+
@@ -25,6 +27,9 @@ export const API={
                     else throw new Error(JSON.stringify(json));
                 }
 
+                cache.put(pid,cache_version,json);
+
+                // also change load_replies_with_cache!
                 json.data=json.data
                     .sort((a,b)=>{
                         return parseInt(a.timestamp,10)-parseInt(b.timestamp,10);
@@ -36,6 +41,29 @@ export const API={
                     });
 
                 return json;
+            });
+    },
+
+    load_replies_with_cache: (pid,token,color_picker,cache_version)=> {
+        pid=parseInt(pid);
+        return cache.get(pid,cache_version)
+            .then((json)=>{
+                if(json) {
+                    // also change load_replies!
+                    json.data=json.data
+                        .sort((a,b)=>{
+                            return parseInt(a.timestamp,10)-parseInt(b.timestamp,10);
+                        })
+                        .map((info)=>{
+                            info._display_color=color_picker.get(info.name);
+                            info.variant={};
+                            return info;
+                        });
+
+                    return json;
+                }
+                else
+                    return API.load_replies(pid,token,color_picker,cache_version);
             });
     },
 
