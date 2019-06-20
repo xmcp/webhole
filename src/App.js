@@ -6,8 +6,6 @@ import {PressureHelper} from './PressureHelper';
 import {TokenCtx,ISOP_APPKEY} from './UserAction';
 import {load_config,bgimg_style} from './Config';
 
-import ImasuguApp from './imasugu/src/App';
-
 function DeprecatedAlert(props) {
     if(document.domain==='hole.xmcp.ml')
         return (
@@ -68,13 +66,6 @@ class App extends Component {
     }
 
     render() {
-        if(window.location.search.match(/[?&]imasugu($|&)/)) {
-            document.body.style.backgroundColor='white';
-            return (
-                <ImasuguApp api_base={`proxy_building?appKey=${ISOP_APPKEY}&buildingName={building}`} />
-            );
-        }
-
         return (
             <TokenCtx.Provider value={{
                 value: this.state.token,
