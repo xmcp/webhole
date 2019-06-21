@@ -114,7 +114,7 @@ class ControlBar extends PureComponent {
                     />
                     <a className="control-btn" onClick={()=>{
                         this.props.show_sidebar(
-                            'P大树洞 网页版',
+                            'P大树洞',
                             <div>
                                 <PromotionBar />
                                 <LoginForm show_sidebar={this.props.show_sidebar} />

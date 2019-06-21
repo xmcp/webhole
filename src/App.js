@@ -82,14 +82,20 @@ class App extends Component {
                 <TokenCtx.Consumer>{(token)=>(
                     <div className="left-container">
                         <DeprecatedAlert token={token.value} />
+                        {!token.value &&
+                            <div className="flow-item-row aux-margin">
+                                <div className="box box-tip">
+                                    <p>点击右上角的 <span className="icon icon-login" /> 按钮登录</p>
+                                </div>
+                            </div>
+                        }
                         {this.inpku_flag||token.value ?
                             <Flow key={this.state.flow_render_key} show_sidebar={this.show_sidebar_bound}
                                   mode={this.state.mode} search_text={this.state.search_text} token={token.value}
                             /> :
-                            <div className="flow-item-row">
-                                <div className="box box-tip aux-margin">
-                                    <p>本网站仅限校内用户使用</p>
-                                    <p>请点击右上角的 <span className="icon icon-login" /> 按钮登录</p>
+                            <div className="flow-item-row aux-margin">
+                                <div className="box box-tip">
+                                    <p>本网站仅限校内用户使用，请登录后访问。</p>
                                 </div>
                             </div>
                         }

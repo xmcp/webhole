@@ -4,6 +4,9 @@ import './index.css';
 import App from './App';
 //import registerServiceWorker from './registerServiceWorker';
 
+if(window.location.search.indexOf('user_token=')!==-1)
+    window.history.replaceState({},'?','?');
+
 ReactDOM.render(<App />, document.getElementById('root'));
 //registerServiceWorker();
 if(navigator.serviceWorker && navigator.serviceWorker.getRegistrations)

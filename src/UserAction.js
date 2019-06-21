@@ -35,18 +35,39 @@ export class LoginForm extends Component {
         if(this.state.loading_status==='loading')
             return;
 
-        let param=
-            'user='+this.username_ref.current.value+
-            '&svcId='+ISOP_SVCID+
-            '&appKey='+ISOP_APPKEY+
-            '&timestamp='+(+new Date());
+        this.setState({
+            loading_status: 'loading',
+        },()=>{
+            let param=
+                'user='+this.username_ref.current.value+
+                '&svcId='+ISOP_SVCID+
+                '&appKey='+ISOP_APPKEY+
+                '&timestamp='+(+new Date());
 
-        fetch(
-            'https://isop.pku.edu.cn/svcpub/svc/oauth/validcode?'+param+
-            '&msg='+md5(param+ISOP_APPCODE),
-            {mode: 'no-cors'}
-        );
-        alert('如果学号存在，短信验证码将会发到您的手机上，请注意查收！');
+            fetch(
+                PKUHELPER_ROOT+'isop_proxy/validcode?'+param+
+                '&msg='+md5(param+ISOP_APPCODE),
+            )
+                .then(get_json)
+                .then((json)=>{
+                    console.log(json);
+                    if(!json.success)
+                        throw new Error(JSON.stringify(json));
+
+                    alert(json.msg);
+                    this.setState({
+                        loading_status: 'done',
+                    });
+                })
+                .catch((e)=>{
+                    console.error(e);
+                    alert('发送失败。'+e);
+                    this.setState({
+                        loading_status: 'done',
+                    });
+                });
+
+        });
     }
 
     do_login(set_token) {
@@ -82,11 +103,11 @@ export class LoginForm extends Component {
                     });
                 })
                 .catch((e)=>{
+                    console.error(e);
                     alert('登录失败');
                     this.setState({
                         loading_status: 'done',
                     });
-                    console.error(e);
                 });
         });
     }
