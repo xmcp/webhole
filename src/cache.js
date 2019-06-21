@@ -6,21 +6,23 @@ class Cache {
     constructor() {
         this.db=null;
         this.added_items_since_maintenance=0;
-        const open_req=indexedDB.open('hole_cache_db',CACHE_DB_VER);
-        open_req.onerror=console.error.bind(console);
-        open_req.onupgradeneeded=(event)=>{
-            console.log('comment cache db upgrade');
-            const db=event.target.result;
-            const store=db.createObjectStore('comment',{
-                keyPath: 'pid',
-            });
-            store.createIndex('last_access','last_access',{unique: false});
-        };
-        open_req.onsuccess=(event)=>{
-            console.log('comment cache db loaded');
-            this.db=event.target.result;
-            setTimeout(this.maintenance.bind(this),1);
-        };
+        if(window.config.comment_cache) {
+            const open_req=indexedDB.open('hole_cache_db',CACHE_DB_VER);
+            open_req.onerror=console.error.bind(console);
+            open_req.onupgradeneeded=(event)=>{
+                console.log('comment cache db upgrade');
+                const db=event.target.result;
+                const store=db.createObjectStore('comment',{
+                    keyPath: 'pid',
+                });
+                store.createIndex('last_access','last_access',{unique: false});
+            };
+            open_req.onsuccess=(event)=>{
+                console.log('comment cache db loaded');
+                this.db=event.target.result;
+                setTimeout(this.maintenance.bind(this),1);
+            };
+        }
     }
 
     get(pid,target_version) {

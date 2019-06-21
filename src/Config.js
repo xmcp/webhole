@@ -12,11 +12,12 @@ const BUILTIN_IMGS={
 const DEFAULT_CONFIG={
     background_img: 'static/bg/eriri.jpg',
     background_color: '#112244',
-    pressure: true,
+    pressure: false,
     quote: true,
     horizontal_scroll: true,
     color_picker: true,
     easter_egg: true,
+    comment_cache: false,
 };
 
 export function load_config() {
@@ -201,6 +202,10 @@ export class ConfigUI extends PureComponent {
                     <hr />
                     <ConfigSwitch callback={this.save_changes_bound} id="color_picker" name="回复颜色标记"
                                   description="为不同人的回复分配不同颜色"
+                    />
+                    <hr />
+                    <ConfigSwitch callback={this.save_changes_bound} id="comment_cache" name="评论缓存"
+                                  description="缓存已读树洞的评论（加载更快，但可能有bug）"
                     />
                     <hr />
                     <ConfigSwitch callback={this.save_changes_bound} id="easter_egg" name="允许彩蛋"
