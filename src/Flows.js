@@ -351,15 +351,6 @@ class FlowSidebar extends PureComponent {
                                 info={reply} color_picker={this.color_picker} show_pid={show_pid}
                                 set_variant={(variant)=>{this.set_variant(reply.cid,variant);}}
                             />
-                            {reply.cid==='2567418' && window.config.easter_egg &&
-                                <div className="box" style={{
-                                    backgroundColor: 'white',
-                                    color: 'red',
-                                    fontWeight: 'bold',
-                                }}>
-                                    <span className="icon icon-about" /> xmcp: This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-                                </div>
-                            }
                         </ClickHandler>
                     </LazyLoad>
                 ))}
