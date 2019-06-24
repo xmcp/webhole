@@ -82,7 +82,7 @@ export const API={
             .then(get_json)
             .then((json)=>{
                 if(json.code!==0) {
-                    if(json.msg && json.msg==='已经关注过辣') {}
+                    if(json.msg && json.msg==='已经关注过了') {}
                     else {
                         if(json.msg) alert(json.msg);
                         throw new Error(JSON.stringify(json));

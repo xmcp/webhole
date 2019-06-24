@@ -171,6 +171,7 @@ class FlowSidebar extends PureComponent {
             replies: props.replies,
             loading_status: 'done',
             error_msg: null,
+            dz_only: false,
         };
         this.color_picker=props.color_picker;
         this.syncState=props.sync_state||(()=>{});
@@ -284,6 +285,12 @@ class FlowSidebar extends PureComponent {
         }
     }
 
+    toggle_dz_only() {
+        this.setState((prevState)=>({
+            dz_only: !prevState.dz_only,
+        }));
+    }
+
     show_reply_bar(name,event) {
         if(this.reply_ref.current && !event.target.closest('a')) {
             let text=this.reply_ref.current.get();
@@ -303,6 +310,8 @@ class FlowSidebar extends PureComponent {
 
         let show_pid=load_single_meta(this.props.show_sidebar,this.props.token,this.props.parents.concat([this.state.info.pid]));
 
+        let replies_to_show=this.state.dz_only ? this.state.replies.filter((r)=>r.islz) : this.state.replies;
+
         return (
             <div className="flow-item-row sidebar-flow-item">
                 <div className="box box-tip">
@@ -313,6 +322,8 @@ class FlowSidebar extends PureComponent {
                         </span>
                     }
                     <a onClick={this.load_replies.bind(this)}>刷新回复</a>
+                    &nbsp;/&nbsp;
+                    <a onClick={this.toggle_dz_only.bind(this)}>{this.state.dz_only ? '查看全部' : '只看洞主'}</a>
                     {!!this.props.token &&
                         <span>
                             &nbsp;/&nbsp;
@@ -344,7 +355,7 @@ class FlowSidebar extends PureComponent {
                         {parseInt(this.state.info.reply)-this.state.replies.length} 条回复被删除
                     </div>
                 }
-                {this.state.replies.map((reply)=>(
+                {replies_to_show.map((reply)=>(
                     <LazyLoad key={reply.cid} offset={1500} height="5em" overflow={true} once={true}>
                         <ClickHandler callback={(e)=>{this.show_reply_bar(reply.name,e);}}>
                             <Reply
