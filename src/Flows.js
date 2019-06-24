@@ -356,7 +356,7 @@ class FlowSidebar extends PureComponent {
                     </div>
                 }
                 {replies_to_show.map((reply)=>(
-                    <LazyLoad key={reply.cid} offset={1500} height="5em" overflow={true} once={true}>
+                    <LazyLoad key={reply.cid+(+this.state.dz_only)} offset={1500} height="5em" overflow={true} once={true}>
                         <ClickHandler callback={(e)=>{this.show_reply_bar(reply.name,e);}}>
                             <Reply
                                 info={reply} color_picker={this.color_picker} show_pid={show_pid}
