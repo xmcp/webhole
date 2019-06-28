@@ -556,9 +556,11 @@ class FlowItemQuote extends PureComponent {
             );
         else if(this.state.loading_status==='error')
             return (
-                <div className="box box-tip aux-margin">
-                    <p><a onClick={this.load.bind(this)}>重新加载</a></p>
-                    <p>{this.state.error_msg}</p>
+                <div className="aux-margin">
+                    <div className="box box-tip">
+                        <p><a onClick={this.load.bind(this)}>重新加载</a></p>
+                        <p>{this.state.error_msg}</p>
+                    </div>
                 </div>
             );
         else // 'done'
@@ -728,9 +730,11 @@ export class Flow extends PureComponent {
                     show_sidebar={this.props.show_sidebar} deletion_detect={should_deletion_detect}
                 />
                 {this.state.loading_status==='failed' &&
-                    <div className="box box-tip aux-margin">
-                        <p><a onClick={()=>{this.load_page(this.state.loaded_pages+1)}}>重新加载</a></p>
-                        <p>{this.state.error_msg}</p>
+                    <div className="aux-margin">
+                        <div className="box box-tip">
+                            <p><a onClick={()=>{this.load_page(this.state.loaded_pages+1)}}>重新加载</a></p>
+                            <p>{this.state.error_msg}</p>
+                        </div>
                     </div>
                 }
                 <TitleLine text={
