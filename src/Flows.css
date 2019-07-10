@@ -63,6 +63,18 @@
     margin-left: 50px;
 }
 
+@media screen and (min-width: 1301px) {
+    .left-container .flow-item-row .flow-item:hover::before {
+        content: '>>';
+        position: absolute;
+        left: 10px;
+        margin-top: 1.5em;
+        color: white;
+        text-shadow: 0 0 2px #000;
+        font-family: 'Consolas', 'Courier', monospace;
+    }
+}
+
 @media screen and (max-width: 1300px) {
     .left-container .flow-item {
         margin-left: 10px;
@@ -101,16 +113,6 @@
 
 .left-container .flow-item-row {
     cursor: default;
-}
-
-.left-container .flow-item-row:hover::before {
-    content: '>>';
-    position: absolute;
-    left: 10px;
-    margin-top: 1.5em;
-    color: white;
-    text-shadow: 0 0 2px #000;
-    font-family: 'Consolas', 'Courier', monospace;
 }
 
 .box-header, .box-footer {

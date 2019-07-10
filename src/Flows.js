@@ -549,9 +549,11 @@ class FlowItemQuote extends PureComponent {
             return null;
         else if(this.state.loading_status==='loading')
             return (
-                <div className="box box-tip aux-margin">
-                    <span className="icon icon-loading" />
-                    提到了 #{this.props.pid}
+                <div className="aux-margin">
+                    <div className="box box-tip">
+                        <span className="icon icon-loading" />
+                        提到了 #{this.props.pid}
+                    </div>
                 </div>
             );
         else if(this.state.loading_status==='error')
