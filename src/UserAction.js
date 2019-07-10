@@ -19,6 +19,60 @@ export const TokenCtx=React.createContext({
     set_value: ()=>{},
 });
 
+class ResetUsertokenWidget extends Component {
+    constructor(props) {
+        super(props);
+        this.state={
+            loading_status: 'done',
+        };
+    }
+
+    do_reset() {
+        if(window.confirm('您正在重置 UserToken！\n您的账号将会在【所有设备】上注销，您需要手动重新登录！')) {
+            let uid=window.prompt('您正在重置 UserToken！\n请输入您的学号以确认身份：');
+            if(uid)
+                this.setState({
+                    loading_status: 'loading',
+                },()=>{
+                    fetch(PKUHELPER_ROOT+'api_xmcp/hole/reset_usertoken', {
+                        method: 'post',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            user_token: this.props.token,
+                            uid: uid,
+                        }),
+                    })
+                        .then(get_json)
+                        .then((json)=>{
+                            if(json.error)
+                                throw new Error(json.error);
+                            else
+                                alert('重置成功！您需要在所有设备上重新登录。');
+
+                            this.setState({
+                                loading_status: 'done',
+                            });
+                        })
+                        .catch((e)=>{
+                            alert('重置失败：'+e);
+                            this.setState({
+                                loading_status: 'done',
+                            });
+                        })
+                });
+        }
+    }
+
+    render() {
+        if(this.state.loading_status==='done')
+            return (<a onClick={this.do_reset.bind(this)}>重置</a>);
+        else if(this.state.loading_status==='loading')
+            return (<a><span className="icon icon-loading" /></a>);
+    }
+}
+
 export class LoginForm extends Component {
     constructor(props) {
         super(props);
@@ -161,7 +215,7 @@ export class LoginForm extends Component {
                             </p>
                             <p>
                                 <a onClick={this.copy_token.bind(this,token.value)}>复制 User Token</a><br />
-                                User Token 可用于迁移登录状态，请勿泄露，因为它与您的账户唯一对应且泄露后无法重置
+                                User Token 用于迁移登录状态，切勿告知他人，若不慎泄露请尽快 <ResetUsertokenWidget token={token.value} />
                             </p>
                         </div> :
                         <div>
