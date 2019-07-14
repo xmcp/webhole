@@ -64,7 +64,7 @@
 }
 
 @media screen and (min-width: 1301px) {
-    .left-container .flow-item-row .flow-item:hover::before {
+    .left-container .flow-item-row-with-prompt:hover::before {
         content: '>>';
         position: absolute;
         left: 10px;

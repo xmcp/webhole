@@ -474,7 +474,7 @@ class FlowItemRow extends PureComponent {
                     }
 
         let res=(
-            <div className={'flow-item-row'+(this.props.is_quote ? ' flow-item-row-quote' : '')} onClick={(event)=>{
+            <div className={'flow-item-row flow-item-row-with-prompt'+(this.props.is_quote ? ' flow-item-row-quote' : '')} onClick={(event)=>{
                 if(!CLICKABLE_TAGS[event.target.tagName.toLowerCase()])
                     this.show_sidebar();
             }}>
