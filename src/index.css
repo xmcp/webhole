@@ -1,7 +1,7 @@
 body {
     background-size: cover;
     user-select: none;
-    background-color: #124;
+    background-color: #333;
 }
 
 html::-webkit-scrollbar {

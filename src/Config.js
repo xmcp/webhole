@@ -3,15 +3,16 @@ import React, {Component, PureComponent} from 'react';
 import './Config.css';
 
 const BUILTIN_IMGS={
-    'static/bg/eriri.jpg': '平成著名画师（默认）',
+    'static/bg/gbp.jpg': '追逐繁星（默认）',
+    'static/bg/eriri.jpg': '平成著名画师',
     'static/bg/yurucamp.jpg': '露营天下第一',
     'static/bg/minecraft.jpg': '麦恩·库拉夫特',
     'static/bg/sif.jpg': '梦开始的地方',
 };
 
 const DEFAULT_CONFIG={
-    background_img: 'static/bg/eriri.jpg',
-    background_color: '#112244',
+    background_img: 'static/bg/gbp.jpg',
+    background_color: '#113366',
     pressure: false,
     quote: true,
     horizontal_scroll: true,
@@ -50,7 +51,7 @@ export function bgimg_style(img,color) {
     if(color===undefined) color=window.config.background_color;
     return {
         background: 'transparent center center',
-        backgroundImage: img===null ? 'unset' : 'url('+encodeURI(img)+')',
+        backgroundImage: img===null ? 'unset' : 'url("'+encodeURI(img)+'")',
         backgroundColor: color,
         backgroundSize: 'cover',
     };
