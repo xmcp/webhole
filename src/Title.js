@@ -23,8 +23,9 @@ const HELP_TEXT=(
         <p>
             This program is distributed in the hope that it will be useful,
             but WITHOUT ANY WARRANTY; without even the implied warranty of
-            MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-            GNU General Public License for more details.
+            MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&nbsp;
+            <a href="https://www.gnu.org/licenses/gpl-3.0.zh-cn.html" target="_blank">GNU General Public License</a>
+            &nbsp;for more details.
         </p>
     </div>
 );

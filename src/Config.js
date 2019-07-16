@@ -3,7 +3,7 @@ import React, {Component, PureComponent} from 'react';
 import './Config.css';
 
 const BUILTIN_IMGS={
-    'static/bg/gbp.jpg': '追逐繁星（默认）',
+    'static/bg/gbp.jpg': '寻觅繁星（默认）',
     'static/bg/eriri.jpg': '平成著名画师',
     'static/bg/yurucamp.jpg': '露营天下第一',
     'static/bg/minecraft.jpg': '麦恩·库拉夫特',
