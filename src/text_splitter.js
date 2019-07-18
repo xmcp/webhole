@@ -7,7 +7,7 @@ export function split_text(txt,rules) {
     // rules: [['name',/regex/],...]
     // return: [['name','part'],[null,'part'],...]
 
-    if(window.config.easter_egg)
+    if(window.config.easter_egg && (+new Date())<=1563548400000) // Jul 19 2019 23:00:00 GMT+0800
         rules=[...rules,['easter_egg_kyoani',EASTER_EGG_KYOANI_RE]];
 
     txt=[[null,txt]];
