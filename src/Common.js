@@ -32,7 +32,7 @@ export class HighlightedText extends PureComponent {
                             rule==='pid' ? <a href={'##'+p} onClick={(e)=>{e.preventDefault(); this.props.show_pid(p);}}>{p}</a> :
                             rule==='nickname' ? <span style={{backgroundColor: this.props.color_picker.get(p)}}>{p}</span> :
                             rule==='search' ? <span className="search-query-highlight">{p}</span> :
-                            rule==='disable' ? <span className="easter-egg-dmm-disable">{p}</span> :
+                            rule==='easter_egg_kyoani' ? <span className="easter-egg-kyoani">{p}</span> :
                             p
                         }</span>
                     );

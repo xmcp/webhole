@@ -22,7 +22,7 @@
     font-weight: bold;
 }
 
-.easter-egg-dmm-disable {
-    cursor: not-allowed;
-    user-select: none !important;
+.easter-egg-kyoani {
+    background-color: black;
+    color: white;
 }
