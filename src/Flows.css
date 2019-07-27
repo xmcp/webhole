@@ -55,7 +55,7 @@
 
 .left-container .flow-reply {
     flex: 0 0 300px;
-    .max-height: 15em;
+    max-height: 15em;
     margin-right: -7px;
     overflow-y: hidden;
 }
