@@ -79,7 +79,13 @@ class Reply extends PureComponent {
                 backgroundColor: this.props.info._display_color,
             } : null}>
                 <div className="box-header">
-                    <code className="box-id">#{this.props.info.cid}</code>&nbsp;
+                    <code className="box-id">#{this.props.info.cid}</code>
+                    &nbsp;
+                    {this.props.info.tag!==null &&
+                        <span className="box-header-tag">
+                                {this.props.info.tag}
+                            </span>
+                    }
                     <Time stamp={this.props.info.timestamp} />
                 </div>
                 <div className="box-content">
@@ -139,6 +145,11 @@ class FlowItem extends PureComponent {
                         }
                         <code className="box-id"><a href={'##'+props.info.pid} onClick={this.copy_link.bind(this)}>#{props.info.pid}</a></code>
                         &nbsp;
+                        {props.info.tag!==null &&
+                            <span className="box-header-tag">
+                                {props.info.tag}
+                            </span>
+                        }
                         <Time stamp={props.info.timestamp} />
                     </div>
                     <div className="box-content">

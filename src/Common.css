@@ -8,13 +8,13 @@
 }
 
 .black-outline {
-    text-shadow:
-        -1px -1px 0 #000,
-        0 -1px 0 #000,
-        1px -1px 0 #000,
-        -1px 1px 0 #000,
-        0 1px 0 #000,
-        1px 1px 0 #000;
+    text-shadow: /* also change .flow-item-row-with-prompt:hover::before */
+        -1px -1px 0 rgba(0,0,0,.6),
+        0 -1px 0 rgba(0,0,0,.6),
+        1px -1px 0 rgba(0,0,0,.6),
+        -1px 1px 0 rgba(0,0,0,.6),
+        0 1px 0 rgba(0,0,0,.6),
+        1px 1px 0 rgba(0,0,0,.6);
 }
 
 .search-query-highlight {

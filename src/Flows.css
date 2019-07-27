@@ -13,7 +13,8 @@
 }
 
 .box-danger {
-    background-color: #faa;
+    background-color: #fcc;
+    border: 2px solid #f77;
 }
 
 .left-container .flow-item {
@@ -54,7 +55,7 @@
 
 .left-container .flow-reply {
     flex: 0 0 300px;
-    max-height: 15em;
+    .max-height: 15em;
     margin-right: -7px;
     overflow-y: hidden;
 }
@@ -70,7 +71,13 @@
         left: 10px;
         margin-top: 1.5em;
         color: white;
-        text-shadow: 0 0 2px #000;
+        text-shadow: /* copied from .black-outline */
+                -1px -1px 0 rgba(0,0,0,.6),
+                0 -1px 0 rgba(0,0,0,.6),
+                1px -1px 0 rgba(0,0,0,.6),
+                -1px 1px 0 rgba(0,0,0,.6),
+                0 1px 0 rgba(0,0,0,.6),
+                1px 1px 0 rgba(0,0,0,.6);
         font-family: 'Consolas', 'Courier', monospace;
     }
 }
@@ -152,6 +159,11 @@
     margin: .5em 0;
 }
 
+.left-container .box-content {
+    max-height: calc(100vh + 15em);
+    overflow-y: hidden;
+}
+
 .box-id {
     color: #666666;
 }
@@ -197,4 +209,13 @@
     width: 2.5em;
     text-align: center;
     color: white;
+}
+
+.box-header-tag {
+    color: white;
+    background-color: #00c;
+    font-weight: bold;
+    border-radius: 3px;
+    margin-right: .25em;
+    padding: 0 .25em;
 }

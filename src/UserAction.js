@@ -9,8 +9,11 @@ import md5 from 'md5';
 import './UserAction.css';
 
 const LOGIN_BASE=PKUHELPER_ROOT+'services/login';
-const MAX_IMG_PX=2500;
-const MAX_IMG_FILESIZE=300000;
+
+const BASE64_RATE=4/3;
+const MAX_IMG_DIAM=8000;
+const MAX_IMG_PX=6000000;
+const MAX_IMG_FILESIZE=450000*BASE64_RATE;
 
 export {ISOP_APPKEY,ISOP_APPCODE,ISOP_SVCID};
 
@@ -427,16 +430,24 @@ export class PostForm extends Component {
                     let width=image.width;
                     let height=image.height;
                     let compressed=false;
-                    if(width>MAX_IMG_PX) {
-                        height=height*MAX_IMG_PX/width;
-                        width=MAX_IMG_PX;
+                    
+                    if(width>MAX_IMG_DIAM) {
+                        height=height*MAX_IMG_DIAM/width;
+                        width=MAX_IMG_DIAM;
                         compressed=true;
                     }
-                    if(height>MAX_IMG_PX) {
-                        width=width*MAX_IMG_PX/height;
-                        height=MAX_IMG_PX;
+                    if(height>MAX_IMG_DIAM) {
+                        width=width*MAX_IMG_DIAM/height;
+                        height=MAX_IMG_DIAM;
                         compressed=true;
                     }
+                    if(height*width>MAX_IMG_PX) {
+                        let rate=Math.sqrt(height*width/MAX_IMG_PX);
+                        height/=rate;
+                        width/=rate;
+                        compressed=true;
+                    }
+                    console.log('chosen img size',width,height);
 
                     let canvas=document.createElement('canvas');
                     let ctx=canvas.getContext('2d');
@@ -445,7 +456,7 @@ export class PostForm extends Component {
                     ctx.drawImage(image,0,0,width,height);
 
                     let quality_l=.1,quality_r=.9,quality,new_url;
-                    while(quality_r-quality_l>=.06) {
+                    while(quality_r-quality_l>=.03) {
                         quality=(quality_r+quality_l)/2;
                         new_url=canvas.toDataURL('image/jpeg',quality);
                         console.log(quality_l,quality_r,'trying quality',quality,'size',new_url.length);
@@ -481,7 +492,7 @@ export class PostForm extends Component {
                     .then((d)=>{
                         this.setState({
                             img_tip: `（${d.compressed?'压缩到':'尺寸'} ${d.width}*${d.height} / `+
-                                `质量 ${Math.floor(d.quality*100)}% / ${Math.floor(d.img.length/1000)}KB）`,
+                                `质量 ${Math.floor(d.quality*100)}% / ${Math.floor(d.img.length/BASE64_RATE/1000)}KB）`,
                         });
                     })
                     .catch((e)=>{
