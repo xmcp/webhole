@@ -88,7 +88,7 @@ export class LoginForm extends Component {
         this.input_token_ref=React.createRef();
     }
 
-    do_sendcode() {
+    do_sendcode(api_name) {
         if(this.state.loading_status==='loading')
             return;
 
@@ -102,7 +102,7 @@ export class LoginForm extends Component {
                 '&timestamp='+(+new Date());
 
             fetch(
-                PKUHELPER_ROOT+'isop_proxy/validcode?'+param+
+                PKUHELPER_ROOT+'isop_proxy/'+api_name+'?'+param+
                 '&msg='+md5(param+ISOP_APPCODE),
             )
                 .then(get_json)
@@ -222,16 +222,21 @@ export class LoginForm extends Component {
                             </p>
                         </div> :
                         <div>
-                            <p>登录后可以发树洞、回复、关注树洞</p>
+                            <p>接收验证码来登录 PKU Helper</p>
                             <p>
                                 <label>
                                     　学号&nbsp;
                                     <input ref={this.username_ref} type="tel" />
                                 </label>
-                                <button type="button" disabled={this.state.loading_status==='loading'}
-                                        onClick={(e)=>this.do_sendcode()}>
-                                    发送验证码
-                                </button>
+                                <span className="login-type">
+                                    <a onClick={(e)=>this.do_sendcode('validcode')}>
+                                        &nbsp;短信&nbsp;
+                                    </a>
+                                    /
+                                    <a onClick={(e)=>this.do_sendcode('validcode2mail')}>
+                                        &nbsp;邮件&nbsp;
+                                    </a>
+                                </span>
                             </p>
                             <p>
                                 <label>
