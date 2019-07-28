@@ -356,7 +356,7 @@ class FlowSidebar extends PureComponent {
                     />
                 </ClickHandler>
                 {!!this.state.error_msg &&
-                    <div className="box box-tip flow-item box-danger">
+                    <div className="box box-tip flow-item">
                         <p>回复加载失败</p>
                         <p>{this.state.error_msg}</p>
                     </div>

@@ -13,8 +13,9 @@
 }
 
 .box-danger {
-    background-color: #fcc;
-    border: 2px solid #f77;
+    background-color: #f33;
+    color: white;
+    text-shadow: 0 0 3px black;
 }
 
 .left-container .flow-item {
@@ -156,7 +157,7 @@
 }
 
 .box-content {
-    margin: .5em 0;
+    padding: .5em 0;
 }
 
 .left-container .box-content {
