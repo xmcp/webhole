@@ -21,10 +21,11 @@
     position: fixed;
     top: 0;
     height: 100%;
-    background-color: rgba(255,255,255,.8);
+    background-color: rgba(255,255,255,.7);
     overflow-y: auto;
     padding-top: 3em;
     padding-bottom: 1em;
+    backdrop-filter: blur(10px);
 }
 
 .sidebar, .sidebar-title {
@@ -48,6 +49,8 @@
     padding-left: .5em;
     background-color: rgba(255,255,255,.6);
     pointer-events: none;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 3px 5px rgba(0,0,0,.2);
 }
 .sidebar-title a {
     pointer-events: initial;

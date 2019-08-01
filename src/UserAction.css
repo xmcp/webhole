@@ -42,10 +42,11 @@
 }
 .post-form-bar input[type=file] {
     border: 0;
+    padding: 0 .5em;
 }
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 570px) {
     .post-form-bar input[type=file] {
-        width: 150px;
+        width: 110px;
     }
 }
 .post-form-bar button {
