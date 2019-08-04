@@ -104,10 +104,13 @@ class FlowItem extends PureComponent {
     copy_link(event) {
         event.preventDefault();
         copy(
-            `${event.target.href}\n`+
+            `${event.target.href}${this.props.info.tag ? ' 【'+this.props.info.tag+'】' : ''}\n`+
             `${this.props.info.text}${this.props.info.type==='image'?' [图片]':this.props.info.type==='audio'?' [语音]':''}\n`+
             `（${format_time(new Date(this.props.info.timestamp*1000))} ${this.props.info.likenum}关注 ${this.props.info.reply}回复）\n`+
-            this.props.replies.map((r)=>(r.text)).join('\n')
+            this.props.replies.map((r)=>(
+                (r.tag ? '【'+r.tag+'】' : '')+
+                r.text
+            )).join('\n')
         );
     }
 

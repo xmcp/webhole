@@ -208,6 +208,10 @@ export class LoginForm extends Component {
                             <p>
                                 <b>您已登录。</b>
                                 <button type="button" onClick={()=>{token.set_value(null);}}>注销</button>
+                                <br />
+                            </p>
+                            <p>
+                                根据计算中心要求，访问授权三个月内有效。<br />若提示“授权过期”，请注销后重新登录。
                             </p>
                             <p>
                                 <a onClick={()=>{this.props.show_sidebar(

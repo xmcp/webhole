@@ -44,3 +44,7 @@
 .list-menu {
     text-align: center;
 }
+
+.help-desc-box p {
+    margin: .5em;
+}

@@ -10,16 +10,26 @@ import './Title.css';
 const flag_re=/^\/\/setflag ([a-zA-Z0-9_]+)=(.*)$/;
 
 const HELP_TEXT=(
-    <div className="box">
-        <p className="centered-line">树洞网页版 by @xmcp</p>
-        <br />
+    <div className="box help-desc-box">
+        <p>
+            PKUHelper 网页版树洞 by @xmcp，
+            基于&nbsp;
+            <a href="https://www.gnu.org/licenses/gpl-3.0.zh-cn.html" target="_blank">GPLv3</a>
+            &nbsp;协议在 <a href="https://github.com/pkuhelper-web/webhole" target="_blank">GitHub</a> 开源
+        </p>
+        <p>
+            PKUHelper 网页版的诞生离不开&nbsp;
+            <a href="https://reactjs.org/" target="_blank" rel="noopener">React</a>
+            、
+            <a href="https://icomoon.io/#icons" target="_blank" rel="noopener">IcoMoon</a>
+            &nbsp;等开源项目
+        </p>
         <p>
             This program is free software: you can redistribute it and/or modify
             it under the terms of the GNU General Public License as published by
             the Free Software Foundation, either version 3 of the License, or
             (at your option) any later version.
         </p>
-        <br />
         <p>
             This program is distributed in the hope that it will be useful,
             but WITHOUT ANY WARRANTY; without even the implied warranty of
