@@ -28,6 +28,7 @@ export class HighlightedText extends PureComponent {
                     let [rule,p]=part;
                     return (
                         <span key={idx}>{
+                            rule==='url_pid' ? <span className="url-pid-link" title={p}>/hole/##</span> :
                             rule==='url' ? <a href={normalize_url(p)} target="_blank" rel="noopener">{p}</a> :
                             rule==='pid' ? <a href={'##'+p} onClick={(e)=>{e.preventDefault(); this.props.show_pid(p);}}>{p}</a> :
                             rule==='nickname' ? <span style={{backgroundColor: this.props.color_picker.get(p)}}>{p}</span> :

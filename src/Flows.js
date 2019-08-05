@@ -1,7 +1,7 @@
 import React, {Component, PureComponent} from 'react';
 import copy from 'copy-to-clipboard';
 import {ColorPicker} from './color_picker';
-import {split_text,NICKNAME_RE,PID_RE,URL_RE} from './text_splitter';
+import {split_text, NICKNAME_RE, PID_RE, URL_RE, URL_PID_RE} from './text_splitter';
 import {format_time, build_highlight_re, Time, TitleLine, HighlightedText, ClickHandler} from './Common';
 import './Flows.css';
 import LazyLoad from './react-lazyload/src';
@@ -70,6 +70,7 @@ class Reply extends PureComponent {
 
     render() {
         let parts=split_text(this.props.info.text,[
+            ['url_pid',URL_PID_RE],
             ['url',URL_RE],
             ['pid',PID_RE],
             ['nickname',NICKNAME_RE],
@@ -117,6 +118,7 @@ class FlowItem extends PureComponent {
     render() {
         let props=this.props;
         let parts=props.parts||split_text(props.info.text,[
+            ['url_pid',URL_PID_RE],
             ['url',URL_RE],
             ['pid',PID_RE],
             ['nickname',NICKNAME_RE],
@@ -468,6 +470,7 @@ class FlowItemRow extends PureComponent {
         let show_pid=load_single_meta(this.props.show_sidebar,this.props.token,[this.state.info.pid]);
 
         let hl_rules=[
+            ['url_pid',URL_PID_RE],
             ['url',URL_RE],
             ['pid',PID_RE],
             ['nickname',NICKNAME_RE],
