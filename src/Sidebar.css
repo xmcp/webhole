@@ -15,6 +15,9 @@
     opacity: .3;
     pointer-events: initial;
 }
+.sidebar-on .sidebar-shadow:active {
+    opacity: .6;
+}
 
 .sidebar {
     user-select: text;
@@ -73,12 +76,16 @@
         left: calc(100% - 550px);
     }
 }
-@media screen and (max-width: 570px) {
+@media screen and (max-width: 580px) {
     .sidebar, .sidebar-title {
-        width: calc(100% - 20px);
+        width: calc(100% - 30px);
+    }
+    .sidebar, .sidebar-title {
+        padding-left: .25em;
+        padding-right: .25em;
     }
     .sidebar-on .sidebar, .sidebar-on .sidebar-title {
-        left: 20px;
+        left: 30px;
     }
 }
 
