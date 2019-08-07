@@ -16,7 +16,8 @@
     pointer-events: initial;
 }
 .sidebar-on .sidebar-shadow:active {
-    opacity: .6;
+    opacity: .5;
+    transition: unset;
 }
 
 .sidebar {

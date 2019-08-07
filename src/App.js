@@ -105,7 +105,6 @@ class App extends Component {
                 <Sidebar do_close={()=>{
                     this.setState({
                         sidebar_title: null,
-                        sidebar_content: null,
                     });
                 }} content={this.state.sidebar_content} title={this.state.sidebar_title} />
             </TokenCtx.Provider>
