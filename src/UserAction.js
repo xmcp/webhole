@@ -1,10 +1,8 @@
 import React, {Component, PureComponent} from 'react';
-import {ISOP_APPKEY,ISOP_APPCODE,ISOP_SVCID} from './infrastructure/const';
 import copy from 'copy-to-clipboard';
 import {API_BASE,SafeTextarea} from './Common';
 import {MessageViewer} from './Message';
 import {API_VERSION_PARAM,PKUHELPER_ROOT,API,get_json} from './flows_api';
-import md5 from 'md5';
 
 import './UserAction.css';
 
@@ -14,8 +12,6 @@ const BASE64_RATE=4/3;
 const MAX_IMG_DIAM=8000;
 const MAX_IMG_PX=6000000;
 const MAX_IMG_FILESIZE=450000*BASE64_RATE;
-
-export {ISOP_APPKEY,ISOP_APPCODE,ISOP_SVCID};
 
 export const TokenCtx=React.createContext({
     value: null,
@@ -95,15 +91,8 @@ export class LoginForm extends Component {
         this.setState({
             loading_status: 'loading',
         },()=>{
-            let param=
-                'user='+this.username_ref.current.value+
-                '&svcId='+ISOP_SVCID+
-                '&appKey='+ISOP_APPKEY+
-                '&timestamp='+(+new Date());
-
             fetch(
-                PKUHELPER_ROOT+'isop_proxy/'+api_name+'?'+param+
-                '&msg='+md5(param+ISOP_APPCODE),
+                PKUHELPER_ROOT+'api_xmcp/isop/'+api_name+'?user='+encodeURIComponent(this.username_ref.current.value),
             )
                 .then(get_json)
                 .then((json)=>{
