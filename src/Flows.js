@@ -10,8 +10,9 @@ import {TokenCtx, ReplyForm} from './UserAction';
 
 import {API, PKUHELPER_ROOT} from './flows_api';
 
-const IMAGE_BASE=PKUHELPER_ROOT+'services/pkuhole/images/';
-const AUDIO_BASE=PKUHELPER_ROOT+'services/pkuhole/audios/';
+// troubleshotting performance problem with http2
+const IMAGE_BASE='http://pkuhelper.pku.edu.cn/services/pkuhole/images/';
+const AUDIO_BASE='http://pkuhelper.pku.edu.cn/services/pkuhole/audios/';
 
 const SEARCH_PAGESIZE=50;
 const CLICKABLE_TAGS={a: true, audio: true};
