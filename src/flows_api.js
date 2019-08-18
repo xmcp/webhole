@@ -27,7 +27,7 @@ export const API={
                     else throw new Error(JSON.stringify(json));
                 }
 
-                cache.put(pid,cache_version,json);
+                cache().put(pid,cache_version,json);
 
                 // also change load_replies_with_cache!
                 json.data=json.data
@@ -46,7 +46,7 @@ export const API={
 
     load_replies_with_cache: (pid,token,color_picker,cache_version)=> {
         pid=parseInt(pid);
-        return cache.get(pid,cache_version)
+        return cache().get(pid,cache_version)
             .then((json)=>{
                 if(json) {
                     // also change load_replies!

@@ -39,7 +39,7 @@ class Cache {
                     resolve(null);
                 } else if(target_version===res.version) { // hit
                     console.log('cache hit');
-                    res.last_access=+new Date();
+                    res.last_access=(+new Date());
                     store.put(res);
                     resolve(res.data);
                 } else { // expired
@@ -97,4 +97,8 @@ class Cache {
     }
 };
 
-export let cache=new Cache();
+export function cache() {
+    if(!window._cache)
+        window._cache=new Cache();
+    return window._cache;
+}
