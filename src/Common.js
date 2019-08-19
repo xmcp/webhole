@@ -102,15 +102,38 @@ export class SafeTextarea extends Component {
     }
 }
 
+let pwa_prompt_event=null;
+window.addEventListener('beforeinstallprompt', (e) => {
+    console.log('pwa: received before install prompt');
+    pwa_prompt_event=e;
+});
+
 export function PromotionBar(props) {
-    const is_ios=/iPhone|iPad|iPod/i.test(window.navigator.userAgent);
-    // noinspection JSConstructorReturnsPrimitive
-    return is_ios ? (
-        <div className="box promotion-bar">
-            <span className="icon icon-about" />&nbsp;
-            用 Safari 将本网站 <b>添加到主屏幕</b> 更好用
-        </div>
-    ) : null;
+    let is_ios=/iPhone|iPad|iPod/i.test(window.navigator.userAgent);
+    let is_installed=(window.matchMedia('(display-mode: standalone)').matches) || (window.navigator.standalone);
+
+    if(is_installed)
+        return null;
+
+    if(is_ios)
+        // noinspection JSConstructorReturnsPrimitive
+        return !navigator.standalone ? (
+            <div className="box promotion-bar">
+                <span className="icon icon-about" />&nbsp;
+                用 Safari 把树洞 <b>添加到主屏幕</b> 更好用
+            </div>
+        ) : null;
+    else
+        // noinspection JSConstructorReturnsPrimitive
+        return pwa_prompt_event ? (
+            <div className="box promotion-bar">
+                <span className="icon icon-about" />&nbsp;
+                把网页版树洞 <b><a onClick={()=>{
+                    if(pwa_prompt_event)
+                        pwa_prompt_event.prompt();
+            }}>安装到桌面</a></b> 更好用
+            </div>
+        ) : null;
 }
 
 export class ClickHandler extends PureComponent {
