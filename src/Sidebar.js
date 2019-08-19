@@ -7,10 +7,12 @@ export class Sidebar extends PureComponent {
         this.sidebar_ref=React.createRef();
     }
 
-    componentWillReceiveProps(nextProps) {
-        //console.log('sidebar top');
-        if(this.sidebar_ref.current)
-            this.sidebar_ref.current.scrollTop=0;
+    componentDidUpdate(nextProps) {
+        if(this.props.content!==nextProps.content) {
+            //console.log('sidebar top');
+            if(this.sidebar_ref.current)
+                this.sidebar_ref.current.scrollTop=0;
+        }
     }
 
     render() {

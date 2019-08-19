@@ -6,10 +6,10 @@
     "copy-to-clipboard": "^3.0.8",
     "load-script": "^1.0.0",
     "pressure": "^2.1.2",
-    "react": "^16.4.2",
-    "react-dom": "^16.4.2",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
     "react-lazyload": "latest",
-    "react-scripts": "1.1.4",
+    "react-scripts": "^3.1.1",
     "react-timeago": "^4.1.9"
   },
   "scripts": {
@@ -18,5 +18,17 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "homepage": "."
+  "homepage": ".",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }

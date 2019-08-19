@@ -44,7 +44,7 @@ function load_single_meta(show_sidebar,token,parents) {
                 let [single,replies]=res;
                 show_sidebar(
                     title_elem,
-                    <FlowSidebar
+                    <FlowSidebar key={single.data.pid}
                         info={single.data} replies={replies.data} attention={replies.attention}
                         token={token} show_sidebar={show_sidebar} color_picker={color_picker}
                         deletion_detect={localStorage['DELETION_DETECT']==='on'} parents={parents}
@@ -195,7 +195,7 @@ class FlowSidebar extends PureComponent {
         this.reply_ref=React.createRef();
     }
 
-    componentWillReceiveProps(nextProps) {
+    /*componentWillReceiveProps(nextProps) {
         this.setState({
             attention: nextProps.attention,
             info: nextProps.info,
@@ -204,7 +204,7 @@ class FlowSidebar extends PureComponent {
         });
         this.color_picker=nextProps.color_picker;
         this.syncState=nextProps.sync_state||(()=>{});
-    }
+    }*/ // refactored to use key instead
 
     set_variant(cid,variant) {
         this.setState((prev)=>{
@@ -459,7 +459,7 @@ class FlowItemRow extends PureComponent {
     show_sidebar() {
         this.props.show_sidebar(
             <FlowSidebarTitle pid={this.state.info.pid} parents={[]} show_sidebar={this.props.show_sidebar} token={this.props.token} />,
-            <FlowSidebar
+            <FlowSidebar key={this.state.info.pid}
                 info={this.state.info} replies={this.state.replies} attention={this.state.attention} sync_state={this.setState.bind(this)}
                 token={this.props.token} show_sidebar={this.props.show_sidebar} color_picker={this.color_picker}
                 deletion_detect={this.props.deletion_detect} parents={[]}
