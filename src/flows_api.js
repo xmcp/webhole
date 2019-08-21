@@ -32,7 +32,7 @@ export const API={
                 // also change load_replies_with_cache!
                 json.data=json.data
                     .sort((a,b)=>{
-                        return parseInt(a.timestamp,10)-parseInt(b.timestamp,10);
+                        return parseInt(a.cid,10)-parseInt(b.cid,10);
                     })
                     .map((info)=>{
                         info._display_color=color_picker.get(info.name);
@@ -52,7 +52,7 @@ export const API={
                     // also change load_replies!
                     json.data=json.data
                         .sort((a,b)=>{
-                            return parseInt(a.timestamp,10)-parseInt(b.timestamp,10);
+                            return parseInt(a.cid,10)-parseInt(b.cid,10);
                         })
                         .map((info)=>{
                             info._display_color=color_picker.get(info.name);

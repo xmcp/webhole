@@ -36,9 +36,13 @@
 .control-search {
     flex: auto;
     color: black;
-    background-color: rgba(255,255,255,.5);
+    background-color: rgba(255,255,255,.3);
     margin: 0 .5em;
     min-width: 8em;
+}
+
+.control-search:focus {
+    background-color: white;
 }
 
 .list-menu {
