@@ -25,6 +25,21 @@ const HELP_TEXT=(
             &nbsp;等开源项目
         </p>
         <p>
+            <a onClick={()=>{
+                if('serviceWorker' in navigator) {
+                    navigator.serviceWorker.ready.then((reg)=>{
+                        console.log('unregister service worker:',reg);
+                        reg.unregister();
+                    });
+                }
+                setTimeout(()=>{
+                    // noinspection SillyAssignmentJS
+                    window.location.href=window.location.href;
+                },300);
+            }}>强制更新</a>
+            （当前程序版本 [{process.env.REACT_APP_BUILD_INFO||'---'}] {process.env.NODE_ENV}）
+        </p>
+        <p>
             This program is free software: you can redistribute it and/or modify
             it under the terms of the GNU General Public License as published by
             the Free Software Foundation, either version 3 of the License, or
