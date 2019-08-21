@@ -33,9 +33,8 @@ const HELP_TEXT=(
                     });
                 }
                 setTimeout(()=>{
-                    // noinspection SillyAssignmentJS
-                    window.location.href=window.location.href;
-                },300);
+                    window.location.refresh(true);
+                },200);
             }}>强制更新</a>
             （当前程序版本 [{process.env.REACT_APP_BUILD_INFO||'---'}] {process.env.NODE_ENV}）
         </p>
