@@ -46,7 +46,7 @@ function load_single_meta(show_sidebar,token,parents) {
                 let [single,replies]=res;
                 show_sidebar(
                     title_elem,
-                    <FlowSidebar key={single.data.pid}
+                    <FlowSidebar key={+new Date()}
                         info={single.data} replies={replies.data} attention={replies.attention}
                         token={token} show_sidebar={show_sidebar} color_picker={color_picker}
                         deletion_detect={localStorage['DELETION_DETECT']==='on'} parents={parents}
@@ -462,7 +462,7 @@ class FlowItemRow extends PureComponent {
     show_sidebar() {
         this.props.show_sidebar(
             <FlowSidebarTitle pid={this.state.info.pid} parents={[]} show_sidebar={this.props.show_sidebar} token={this.props.token} />,
-            <FlowSidebar key={this.state.info.pid}
+            <FlowSidebar key={+new Date()}
                 info={this.state.info} replies={this.state.replies} attention={this.state.attention} sync_state={this.setState.bind(this)}
                 token={this.props.token} show_sidebar={this.props.show_sidebar} color_picker={this.color_picker}
                 deletion_detect={this.props.deletion_detect} parents={[]}
