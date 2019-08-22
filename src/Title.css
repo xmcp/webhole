@@ -1,3 +1,11 @@
+/* overriding infrastructure/widget.css */
+.root-dark-mode .title-line {
+    color: var(--foreground-dark);
+}
+.root-dark-mode .title-line::before, .root-dark-mode .title-line::after {
+    background-color: var(--foreground-dark);
+}
+
 .title-bar {
     z-index: 10;
     position: sticky;
@@ -9,6 +17,10 @@
     box-shadow: 0 0 25px rgba(0,0,0,.4);
     margin-bottom: 1em;
     backdrop-filter: blur(10px);
+}
+
+.root-dark-mode .title-bar {
+    background-color: hsla(0,0%,80%,.7);
 }
 
 .control-bar {
@@ -36,13 +48,17 @@
 .control-search {
     flex: auto;
     color: black;
-    background-color: rgba(255,255,255,.3);
+    background-color: rgba(255,255,255,.3) !important;
     margin: 0 .5em;
     min-width: 8em;
 }
 
 .control-search:focus {
-    background-color: white;
+    background-color: white !important;
+}
+
+.root-dark-mode .control-search:focus {
+    background-color: hsl(0,0%,90%) !important;
 }
 
 .list-menu {

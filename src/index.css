@@ -4,6 +4,10 @@ body {
     background-color: #333;
 }
 
+body.root-dark-mode {
+    background-color: black;
+}
+
 html::-webkit-scrollbar {
     display: none;
 }
@@ -13,6 +17,10 @@ html {
 
 a {
     color: #00c;
+}
+
+.root-dark-mode .left-container a, .root-dark-mode .sidebar a, .root-dark-mode .sidebar-title a {
+    color: #9bf;
 }
 
 input, textarea {
@@ -39,10 +47,18 @@ button, .button {
     margin: 0 .5rem;
 }
 
+.root-dark-mode button, .root-dark-mode .button {
+    background-color: rgba(255,255,255,.6);
+}
+
 button:hover, .button:hover {
     background-color: rgba(255,255,255,.7);
 }
 
 button:disabled, .button:disabled {
     background-color: rgba(128,128,128,.5);
+}
+
+.root-dark-mode input:not([type=file]), .root-dark-mode textarea {
+    background-color: hsl(0,0%,80%);
 }

@@ -17,6 +17,15 @@ export function build_highlight_re(txt,split) {
     return txt ? new RegExp(`(${txt.split(split).filter((x)=>!!x).map(escape_regex).join('|')})`,'g') : /^$/g;
 }
 
+function ColoredSpan(props) {
+    return (
+        <span className="colored-span" style={{
+            '--coloredspan-bgcolor-light': props.colors[0],
+            '--coloredspan-bgcolor-dark': props.colors[1],
+        }}>{props.children}</span>
+    )
+}
+
 export class HighlightedText extends PureComponent {
     render() {
         function normalize_url(url) {
@@ -31,7 +40,7 @@ export class HighlightedText extends PureComponent {
                             rule==='url_pid' ? <span className="url-pid-link" title={p}>/hole/##</span> :
                             rule==='url' ? <a href={normalize_url(p)} target="_blank" rel="noopener">{p}</a> :
                             rule==='pid' ? <a href={'##'+p} onClick={(e)=>{e.preventDefault(); this.props.show_pid(p);}}>{p}</a> :
-                            rule==='nickname' ? <span style={{backgroundColor: this.props.color_picker.get(p)}}>{p}</span> :
+                            rule==='nickname' ? <ColoredSpan colors={this.props.color_picker.get(p)}>{p}</ColoredSpan> :
                             rule==='search' ? <span className="search-query-highlight">{p}</span> :
                             p
                         }</span>

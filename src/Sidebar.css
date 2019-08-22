@@ -20,6 +20,13 @@
     transition: unset;
 }
 
+.root-dark-mode .sidebar-on .sidebar-shadow {
+    opacity: .5;
+}
+.root-dark-mode .sidebar-on .sidebar-shadow:active {
+    opacity: .3;
+}
+
 .sidebar {
     user-select: text;
     position: fixed;
@@ -30,6 +37,10 @@
     padding-top: 3em;
     padding-bottom: 1em;
     backdrop-filter: blur(10px);
+}
+
+.root-dark-mode .sidebar {
+    background-color: hsla(0,0%,5%,.7);
 }
 
 .sidebar, .sidebar-title {
@@ -56,6 +67,13 @@
     backdrop-filter: blur(10px);
     box-shadow: 0 3px 5px rgba(0,0,0,.2);
 }
+
+.root-dark-mode .sidebar-title {
+    background-color: hsla(0,0%,20%,.6);
+    color: var(--foreground-dark);
+    text-shadow: 0 0 3px black;
+}
+
 .sidebar-title a {
     pointer-events: initial;
 }

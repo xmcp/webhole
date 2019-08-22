@@ -80,7 +80,8 @@ class Reply extends PureComponent {
         ]);
         return (
             <div className={'flow-reply box'} style={this.props.info._display_color ? {
-                backgroundColor: this.props.info._display_color,
+                '--box-bgcolor-light': this.props.info._display_color[0],
+                '--box-bgcolor-dark': this.props.info._display_color[1],
             } : null}>
                 <div className="box-header">
                     <code className="box-id">#{this.props.info.cid}</code>

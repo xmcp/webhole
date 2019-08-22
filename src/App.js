@@ -21,6 +21,7 @@ class App extends Component {
             search_text: null,
             flow_render_key: +new Date(),
             token: localStorage['TOKEN']||null,
+            darkmode: window.matchMedia('(prefers-color-scheme: dark)').matches,
         };
         this.show_sidebar_bound=this.show_sidebar.bind(this);
         this.set_mode_bound=this.set_mode.bind(this);
@@ -29,6 +30,28 @@ class App extends Component {
         //                     document             cookie                    'pku_ip_flag=yes'
         this.inpku_flag=window[atob('ZG9jdW1lbnQ')][atob('Y29va2ll')].indexOf(atob('cGt1X2lwX2ZsYWc9eWVz'))!==-1;
     }
+
+    componentDidMount() {
+        this.update_color_scheme();
+        window.matchMedia('(prefers-color-scheme: dark)').addListener((e)=>{
+            this.setState({
+                darkmode: e.matches,
+            });
+        });
+    }
+
+    componentDidUpdate(prevProps,prevState) {
+        if(this.state.darkmode!==prevState.darkmode)
+            this.update_color_scheme();
+    }
+
+    update_color_scheme() {
+        if(this.state.darkmode)
+            document.body.classList.add('root-dark-mode');
+        else
+            document.body.classList.remove('root-dark-mode');
+    }
+
 
     on_pressure() {
         if(this.state.sidebar_title!==null)
