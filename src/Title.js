@@ -27,16 +27,19 @@ const HELP_TEXT=(
         <p>
             <a onClick={()=>{
                 if('serviceWorker' in navigator) {
-                    navigator.serviceWorker.ready.then((reg)=>{
-                        console.log('unregister service worker:',reg);
-                        reg.unregister();
-                    });
+                    navigator.serviceWorker.getRegistrations()
+                        .then((registrations)=>{
+                            for(let registration of registrations) {
+                                console.log('unregister',registration);
+                                registration.unregister();
+                            }
+                        });
                 }
                 setTimeout(()=>{
-                    window.location.refresh(true);
+                    window.location.reload(true);
                 },200);
-            }}>强制更新</a>
-            （当前程序版本 [{process.env.REACT_APP_BUILD_INFO||'---'}] {process.env.NODE_ENV}）
+            }}>强制检查更新</a>&nbsp;
+            ([{process.env.REACT_APP_BUILD_INFO||'---'}] {process.env.NODE_ENV})
         </p>
         <p>
             This program is free software: you can redistribute it and/or modify
