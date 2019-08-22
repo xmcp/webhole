@@ -19,6 +19,7 @@ const DEFAULT_CONFIG={
     color_picker: true,
     easter_egg: true,
     comment_cache: false,
+    color_scheme: 'default',
 };
 
 export function load_config() {
@@ -119,6 +120,47 @@ class ConfigBackground extends PureComponent {
     }
 }
 
+class ConfigColorScheme extends PureComponent {
+    constructor(props) {
+        super(props);
+        this.state={
+            color_scheme: window.config.color_scheme,
+        };
+    }
+
+    save_changes() {
+        this.props.callback({
+            color_scheme: this.state.color_scheme,
+        });
+    }
+
+    on_select(e) {
+        let value=e.target.value;
+        this.setState({
+            color_scheme: value,
+        },this.save_changes.bind(this));
+    }
+
+    render() {
+        return (
+            <div>
+                <p>
+                    <b>夜间模式：</b>
+                    <select value={this.state.color_scheme} onChange={this.on_select.bind(this)}>
+                        <option value="default">跟随系统</option>
+                        <option value="light">始终浅色模式</option>
+                        <option value="dark">始终深色模式</option>
+                    </select>
+                    &nbsp; <small>#color_scheme</small>
+                </p>
+                <p>
+                    选择浅色或深色模式，或者与系统颜色模式一致
+                </p>
+            </div>
+        )
+    }
+}
+
 class ConfigSwitch extends PureComponent {
     constructor(props) {
         super(props);
@@ -188,6 +230,8 @@ export class ConfigUI extends PureComponent {
                 </div>
                 <div className="box">
                     <ConfigBackground callback={this.save_changes_bound} />
+                    <hr />
+                    <ConfigColorScheme callback={this.save_changes_bound} />
                     <hr />
                     <ConfigSwitch callback={this.save_changes_bound} id="pressure" name="快速返回"
                                   description="短暂按住 Esc 键或重压屏幕（3D Touch）可以快速返回或者刷新树洞"

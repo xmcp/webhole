@@ -21,7 +21,7 @@ class App extends Component {
             search_text: null,
             flow_render_key: +new Date(),
             token: localStorage['TOKEN']||null,
-            darkmode: window.matchMedia('(prefers-color-scheme: dark)').matches,
+            darkmode: App.is_darkmode(),
         };
         this.show_sidebar_bound=this.show_sidebar.bind(this);
         this.set_mode_bound=this.set_mode.bind(this);
@@ -33,9 +33,9 @@ class App extends Component {
 
     componentDidMount() {
         this.update_color_scheme();
-        window.matchMedia('(prefers-color-scheme: dark)').addListener((e)=>{
+        window.matchMedia('(prefers-color-scheme: dark)').addListener(()=>{
             this.setState({
-                darkmode: e.matches,
+                darkmode: App.is_darkmode(),
             });
         });
     }
@@ -43,6 +43,14 @@ class App extends Component {
     componentDidUpdate(prevProps,prevState) {
         if(this.state.darkmode!==prevState.darkmode)
             this.update_color_scheme();
+    }
+
+    static is_darkmode() {
+        if(window.config.color_scheme==='dark') return true;
+        if(window.config.color_scheme==='light') return false;
+        else { // 'default'
+            return window.matchMedia('(prefers-color-scheme: dark)').matches;
+        }
     }
 
     update_color_scheme() {
