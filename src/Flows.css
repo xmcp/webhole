@@ -1,7 +1,6 @@
 :root {
     --box-bgcolor-light: hsl(0,0%,97%);
     --box-bgcolor-dark: hsl(0,0%,20%);
-    --foreground-dark: hsl(0,0%,93%)
 }
 
 .box {
@@ -16,6 +15,7 @@
 .root-dark-mode .box {
     background-color: var(--box-bgcolor-dark);
     color: var(--foreground-dark);
+    box-shadow: 0 0 10px rgba(255,255,255,.1);
 }
 
 .root-dark-mode .sidebar .box {
@@ -226,6 +226,11 @@
 .flow-item-row-quote {
     opacity: .8;
     filter: brightness(95%);
+}
+
+.root-dark-mode .flow-item-row-quote {
+    opacity: .7;
+    filter: unset;
 }
 
 .flow-item-quote>.box {

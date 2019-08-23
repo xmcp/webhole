@@ -5,6 +5,7 @@ import {Sidebar} from './Sidebar';
 import {PressureHelper} from './PressureHelper';
 import {TokenCtx} from './UserAction';
 import {load_config,bgimg_style} from './Config';
+import {listen_darkmode} from './infrastructure/functions';
 
 function DeprecatedAlert(props) {
     return null;
@@ -14,6 +15,7 @@ class App extends Component {
     constructor(props) {
         super(props);
         load_config();
+        listen_darkmode({default: undefined, light: false, dark: true}[window.config.color_scheme]);
         this.state={
             sidebar_title: null,
             sidebar_content: null, // determine status of sidebar
@@ -21,7 +23,6 @@ class App extends Component {
             search_text: null,
             flow_render_key: +new Date(),
             token: localStorage['TOKEN']||null,
-            darkmode: App.is_darkmode(),
         };
         this.show_sidebar_bound=this.show_sidebar.bind(this);
         this.set_mode_bound=this.set_mode.bind(this);
@@ -31,20 +32,6 @@ class App extends Component {
         this.inpku_flag=window[atob('ZG9jdW1lbnQ')][atob('Y29va2ll')].indexOf(atob('cGt1X2lwX2ZsYWc9eWVz'))!==-1;
     }
 
-    componentDidMount() {
-        this.update_color_scheme();
-        window.matchMedia('(prefers-color-scheme: dark)').addListener(()=>{
-            this.setState({
-                darkmode: App.is_darkmode(),
-            });
-        });
-    }
-
-    componentDidUpdate(prevProps,prevState) {
-        if(this.state.darkmode!==prevState.darkmode)
-            this.update_color_scheme();
-    }
-
     static is_darkmode() {
         if(window.config.color_scheme==='dark') return true;
         if(window.config.color_scheme==='light') return false;
@@ -52,14 +39,6 @@ class App extends Component {
             return window.matchMedia('(prefers-color-scheme: dark)').matches;
         }
     }
-
-    update_color_scheme() {
-        if(this.state.darkmode)
-            document.body.classList.add('root-dark-mode');
-        else
-            document.body.classList.remove('root-dark-mode');
-    }
-
 
     on_pressure() {
         if(this.state.sidebar_title!==null)
