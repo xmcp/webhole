@@ -92,7 +92,9 @@ export class LoginForm extends Component {
             loading_status: 'loading',
         },()=>{
             fetch(
-                PKUHELPER_ROOT+'api_xmcp/isop/'+api_name+'?user='+encodeURIComponent(this.username_ref.current.value),
+                PKUHELPER_ROOT+'api_xmcp/isop/'+api_name
+                +'?user='+encodeURIComponent(this.username_ref.current.value)
+                +API_VERSION_PARAM()
             )
                 .then(get_json)
                 .then((json)=>{
@@ -127,7 +129,7 @@ export class LoginForm extends Component {
             data.append('username', this.username_ref.current.value);
             data.append('valid_code', this.password_ref.current.value);
             data.append('isnewloginflow', 'true');
-            fetch(LOGIN_BASE+'/login.php?platform=webhole', {
+            fetch(LOGIN_BASE+'/login.php?platform=webhole'+API_VERSION_PARAM(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',

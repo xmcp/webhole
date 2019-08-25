@@ -1,5 +1,5 @@
 import React, {Component, PureComponent} from 'react';
-import {PKUHELPER_ROOT,get_json} from './flows_api';
+import {PKUHELPER_ROOT, get_json, API_VERSION_PARAM} from './flows_api';
 import {Time} from './Common';
 
 export class MessageViewer extends PureComponent {
@@ -20,7 +20,7 @@ export class MessageViewer extends PureComponent {
         this.setState({
             loading_status: 'loading',
         },()=>{
-            fetch(PKUHELPER_ROOT+'api_xmcp/hole/system_msg?user_token='+encodeURIComponent(this.props.token))
+            fetch(PKUHELPER_ROOT+'api_xmcp/hole/system_msg?user_token='+encodeURIComponent(this.props.token)+API_VERSION_PARAM())
                 .then(get_json)
                 .then((json)=>{
                     if(json.error)
