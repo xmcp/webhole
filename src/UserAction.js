@@ -298,7 +298,7 @@ export class ReplyForm extends Component {
         data.append('pid',this.props.pid);
         data.append('text',this.state.text);
         data.append('user_token',this.props.token);
-        fetch(API_BASE+'/api.php?action=docomment'+API_VERSION_PARAM, {
+        fetch(API_BASE+'/api.php?action=docomment'+API_VERSION_PARAM(), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -378,7 +378,7 @@ export class PostForm extends Component {
         if(img)
             data.append('data',img);
 
-        fetch(API_BASE+'/api.php?action=dopost'+API_VERSION_PARAM, {
+        fetch(API_BASE+'/api.php?action=dopost'+API_VERSION_PARAM(), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',

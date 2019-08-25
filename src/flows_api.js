@@ -3,11 +3,13 @@ import {PKUHELPER_ROOT} from './infrastructure/const';
 import {API_BASE} from './Common';
 import {cache} from './cache';
 
-export const API_VERSION_PARAM='&PKUHelperAPI=3.0';
+export function API_VERSION_PARAM() {
+    return '&PKUHelperAPI=3.0&jsapiver='+encodeURIComponent((process.env.REACT_APP_BUILD_INFO||'null')+'-'+Math.floor(+new Date()/3600000));
+}
 export {PKUHELPER_ROOT};
 
 function token_param(token) {
-    return API_VERSION_PARAM + (token ? ('&user_token='+token) : '');
+    return API_VERSION_PARAM()+(token ? ('&user_token='+token) : '');
 }
 
 export {get_json};
@@ -72,7 +74,7 @@ export const API={
         data.append('user_token',token);
         data.append('pid',pid);
         data.append('switch',attention ? '1' : '0');
-        return fetch(API_BASE+'/api.php?action=attention'+API_VERSION_PARAM, {
+        return fetch(API_BASE+'/api.php?action=attention'+API_VERSION_PARAM(), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -97,7 +99,7 @@ export const API={
         data.append('user_token',token);
         data.append('pid',pid);
         data.append('reason',reason);
-        return fetch(API_BASE+'/api.php?action=report'+API_VERSION_PARAM, {
+        return fetch(API_BASE+'/api.php?action=report'+API_VERSION_PARAM(), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',

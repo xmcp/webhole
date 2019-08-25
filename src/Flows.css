@@ -15,7 +15,7 @@
 .root-dark-mode .box {
     background-color: var(--box-bgcolor-dark);
     color: var(--foreground-dark);
-    box-shadow: 0 0 10px rgba(255,255,255,.1);
+    box-shadow: 0 0 5px rgba(255,255,255,.15);
 }
 
 .root-dark-mode .sidebar .box {
