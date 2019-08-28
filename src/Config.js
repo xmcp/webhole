@@ -233,7 +233,7 @@ export class ConfigUI extends PureComponent {
                     <hr />
                     <ConfigSwitch callback={this.save_changes_bound} id="pressure" name="快速返回"
                                   description="短暂按住 Esc 键或重压屏幕（3D Touch）可以快速返回或者刷新树洞"
-                    />y
+                    />
                     <hr />
                     <ConfigSwitch callback={this.save_changes_bound} id="horizontal_scroll" name="横向滚动"
                                   description="在树洞列表里横向滚动浏览回复，如果经常误触可以把它关掉"
