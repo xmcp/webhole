@@ -6,6 +6,7 @@ import {PromotionBar} from './Common';
 import {ConfigUI} from './Config';
 
 import './Title.css';
+import {BalanceShower} from './BalanceShower';
 
 const flag_re=/^\/\/setflag ([a-zA-Z0-9_]+)=(.*)$/;
 
@@ -39,7 +40,7 @@ const HELP_TEXT=(
                     window.location.reload(true);
                 },200);
             }}>强制检查更新</a>&nbsp;
-            ([{process.env.REACT_APP_BUILD_INFO||'---'}] {process.env.NODE_ENV})
+            ({process.env.REACT_APP_BUILD_INFO||'---'} {process.env.NODE_ENV})
         </p>
         <p>
             This program is free software: you can redistribute it and/or modify
@@ -186,11 +187,13 @@ export function Title(props) {
         <div className="title-bar">
             <AppSwitcher appid="hole" />
             <div className="aux-margin">
-                <div className="title">
-                    <p className="centered-line">
-                        P大树洞
-                    </p>
-                </div>
+                <BalanceShower>
+                    <div className="title">
+                        <p className="centered-line">
+                            P大树洞
+                        </p>
+                    </div>
+                </BalanceShower>
                 <ControlBar show_sidebar={props.show_sidebar} set_mode={props.set_mode} />
             </div>
         </div>

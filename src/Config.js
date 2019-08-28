@@ -14,9 +14,7 @@ const DEFAULT_CONFIG={
     background_img: 'static/bg/gbp.jpg',
     background_color: '#113366',
     pressure: false,
-    quote: true,
     horizontal_scroll: true,
-    color_picker: true,
     easter_egg: true,
     comment_cache: false,
     color_scheme: 'default',
@@ -235,18 +233,10 @@ export class ConfigUI extends PureComponent {
                     <hr />
                     <ConfigSwitch callback={this.save_changes_bound} id="pressure" name="快速返回"
                                   description="短暂按住 Esc 键或重压屏幕（3D Touch）可以快速返回或者刷新树洞"
-                    />
-                    <hr />
-                    <ConfigSwitch callback={this.save_changes_bound} id="quote" name="自动显示引文"
-                                  description="当树洞正文提到另一个树洞的编号时，在下方自动显示引文"
-                    />
+                    />y
                     <hr />
                     <ConfigSwitch callback={this.save_changes_bound} id="horizontal_scroll" name="横向滚动"
                                   description="在树洞列表里横向滚动浏览回复，如果经常误触可以把它关掉"
-                    />
-                    <hr />
-                    <ConfigSwitch callback={this.save_changes_bound} id="color_picker" name="回复颜色标记"
-                                  description="为不同人的回复分配不同颜色"
                     />
                     <hr />
                     <ConfigSwitch callback={this.save_changes_bound} id="comment_cache" name="评论缓存"

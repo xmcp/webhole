@@ -484,7 +484,7 @@ class FlowItemRow extends PureComponent {
         let parts=split_text(this.state.info.text,hl_rules);
 
         let quote_id=null;
-        if(!this.props.is_quote && window.config.quote)
+        if(!this.props.is_quote)
             for(let [mode,content] of parts)
                 if(mode==='pid' && QUOTE_BLACKLIST.indexOf(content)===-1 && parseInt(content)<parseInt(this.state.info.pid))
                     if(quote_id===null)

@@ -12,8 +12,6 @@ export class ColorPicker {
         name=name.toLowerCase();
         if(name==='洞主')
             return ['hsl(0,0%,97%)','hsl(0,0%,25%)'];
-        if(!window.config.color_picker)
-            return ['hsl(0,0%,87%)','hsl(0,0%,13%)'];
 
         if(!this.names[name]) {
             this.current_h+=golden_ratio_conjugate;
