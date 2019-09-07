@@ -109,7 +109,7 @@ export class LoginForm extends Component {
                 })
                 .catch((e)=>{
                     console.error(e);
-                    alert('发送失败。'+e);
+                    alert('发送失败\n'+e);
                     this.setState({
                         loading_status: 'done',
                     });
@@ -139,20 +139,19 @@ export class LoginForm extends Component {
                 .then(get_json)
                 .then((json)=>{
                     if(json.code!==0) {
-                        if(json.msg) alert(json.msg);
+                        if(json.msg) throw new Error(json.msg);
                         throw new Error(JSON.stringify(json));
                     }
 
-                    let freshman_welcome=json.uid.indexOf('19')===0 && (+new Date())<1567958400000; // 2019-09-09 0:00 GMT+8
                     set_token(json.user_token);
-                    alert(`成功以 ${json.name} 的身份登录`+(freshman_welcome ? '\n欢迎来到北京大学！' : ''));
+                    alert(`成功以 ${json.name} 的身份登录`);
                     this.setState({
                         loading_status: 'done',
                     });
                 })
                 .catch((e)=>{
                     console.error(e);
-                    alert('登录失败');
+                    alert('登录失败\n'+e);
                     this.setState({
                         loading_status: 'done',
                     });

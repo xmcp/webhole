@@ -15,7 +15,7 @@
 .root-dark-mode .box {
     background-color: var(--box-bgcolor-dark);
     color: var(--foreground-dark);
-    box-shadow: 0 0 5px rgba(255,255,255,.15);
+    box-shadow: 0 0 3px rgba(255,255,255,.2);
 }
 
 .root-dark-mode .sidebar .box {
@@ -145,7 +145,7 @@
 }
 
 .box-header, .box-footer {
-    font-size: small;
+    font-size: .8em;
 }
 
 .flow-item-row p.img {
@@ -161,7 +161,7 @@
 }
 
 .root-dark-mode .flow-item-row p.img img {
-    filter: brightness(.8);
+    filter: brightness(.85);
 }
 
 .box-header-badge {

@@ -63,7 +63,7 @@ export class BalanceShower extends PureComponent {
         else if(this.state.loading_status==='error')
             return (<div className="box box-tip balance-value"><a onClick={()=>{alert(this.state.error)}}>无法查询余额</a></div>);
         else if(this.state.loading_status==='done')
-            return (<div className="box box-tip balance-value">校园卡 ￥{this.state.balance}</div>);
+            return (<div className="box box-tip balance-value">校园卡 ￥{this.state.balance.toFixed(2)}</div>);
         else
             return null;
     }

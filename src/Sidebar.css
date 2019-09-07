@@ -24,7 +24,7 @@
     opacity: .5;
 }
 .root-dark-mode .sidebar-on .sidebar-shadow:active {
-    opacity: .3;
+    opacity: .65;
 }
 
 .sidebar {
