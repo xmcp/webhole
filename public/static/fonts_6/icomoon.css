@@ -1,9 +1,9 @@
 @font-face {
   font-family: 'icomoon';
   src:
-          url('icomoon.ttf?gqzyp6') format('truetype'),
-          url('icomoon.woff?gqzyp6') format('woff'),
-          url('icomoon.svg?gqzyp6#icomoon') format('svg');
+    url('icomoon.ttf?ycj3uk') format('truetype'),
+    url('icomoon.woff?ycj3uk') format('woff'),
+    url('icomoon.svg?ycj3uk#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -28,6 +28,9 @@
 .icon-send:before {
   content: "\e900";
 }
+.icon-textfile:before {
+  content: "\e926";
+}
 .icon-history:before {
   content: "\e94d";
 }
@@ -43,12 +46,21 @@
 .icon-login:before {
   content: "\e98d";
 }
+.icon-settings:before {
+  content: "\e994";
+}
 .icon-stats:before {
   content: "\e99b";
+}
+.icon-locate:before {
+  content: "\e9b3";
 }
 .icon-upload:before {
   content: "\e9c3";
   font-size: 1.2em;
+}
+.icon-flag:before {
+  content: "\e9cc";
 }
 .icon-attention:before {
   content: "\e9d3";
@@ -65,11 +77,18 @@
 .icon-about:before {
   content: "\ea0c";
 }
+.icon-logout:before {
+  content: "\ea14";
+}
 .icon-refresh:before {
   content: "\ea2e";
 }
 .icon-back:before {
   content: "\ea44";
+}
+.icon-order-rev:before {
+  content: "\ea46";
+  font-size: 1.2em;
 }
 .icon-github:before {
   content: "\eab0";

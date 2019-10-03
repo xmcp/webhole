@@ -151,11 +151,17 @@ class ControlBar extends PureComponent {
                                     <a onClick={()=>{this.props.show_sidebar(
                                         '设置',
                                         <ConfigUI />
-                                    )}}>网页版树洞设置</a>
-                                    &nbsp;/&nbsp;
-                                    <a href="http://pkuhelper.pku.edu.cn/treehole_rules.html" target="_blank">树洞规范</a>
-                                    &nbsp;/&nbsp;
-                                    <a href="https://github.com/pkuhelper-web/webhole/issues" target="_blank">意见反馈 <span className="icon icon-github" /></a>
+                                    )}}>
+                                        <span className="icon icon-settings" /><label>网页版树洞设置</label>
+                                    </a>
+                                    &nbsp;&nbsp;
+                                    <a href="http://pkuhelper.pku.edu.cn/treehole_rules.html" target="_blank">
+                                        <span className="icon icon-textfile" /><label>树洞规范</label>
+                                    </a>
+                                    &nbsp;&nbsp;
+                                    <a href="https://github.com/pkuhelper-web/webhole/issues" target="_blank">
+                                        <span className="icon icon-github" /><label>意见反馈</label>
+                                    </a>
                                 </div>
                                 {HELP_TEXT}
                             </div>

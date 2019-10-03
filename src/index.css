@@ -27,6 +27,7 @@ input, textarea {
     border-radius: 5px;
     border: 1px solid black;
     outline: none;
+    margin: 0;
 }
 input {
     padding: 0 1em;

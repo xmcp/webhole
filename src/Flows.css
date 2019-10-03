@@ -267,3 +267,14 @@
 .root-dark-mode .box-header-tag {
     background-color: #00a;
 }
+
+.filter-name-bar {
+    animation: slide-in-from-top .15s ease-out;
+    position: sticky;
+    top: 1em;
+}
+
+@keyframes slide-in-from-top {
+    0%   {opacity: 0; transform: translateY(-50%);}
+    100% {opacity: 1;}
+}

@@ -17,7 +17,7 @@ export function build_highlight_re(txt,split) {
     return txt ? new RegExp(`(${txt.split(split).filter((x)=>!!x).map(escape_regex).join('|')})`,'g') : /^$/g;
 }
 
-function ColoredSpan(props) {
+export function ColoredSpan(props) {
     return (
         <span className="colored-span" style={{
             '--coloredspan-bgcolor-light': props.colors[0],

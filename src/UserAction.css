@@ -30,6 +30,7 @@
 }
 .reply-form button {
     flex: 0 0 3em;
+    margin-right: 0;
 }
 
 .post-form-bar {
@@ -51,6 +52,7 @@
 }
 .post-form-bar button {
     flex: 0 0 8em;
+    margin-right: 0;
 }
 .post-form-img-tip {
     font-size: small;

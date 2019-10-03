@@ -197,7 +197,9 @@ export class LoginForm extends Component {
                         <div>
                             <p>
                                 <b>您已登录。</b>
-                                <button type="button" onClick={()=>{token.set_value(null);}}>注销</button>
+                                <button type="button" onClick={()=>{token.set_value(null);}}>
+                                    <span className="icon icon-logout" /> 注销
+                                </button>
                                 <br />
                             </p>
                             <p>

@@ -2,7 +2,7 @@ import React, {Component, PureComponent} from 'react';
 import copy from 'copy-to-clipboard';
 import {ColorPicker} from './color_picker';
 import {split_text, NICKNAME_RE, PID_RE, URL_RE, URL_PID_RE} from './text_splitter';
-import {format_time, build_highlight_re, Time, TitleLine, HighlightedText, ClickHandler} from './Common';
+import {format_time, build_highlight_re, Time, TitleLine, HighlightedText, ClickHandler, ColoredSpan} from './Common';
 import './Flows.css';
 import LazyLoad from './react-lazyload/src';
 import {AudioWidget} from './AudioWidget';
@@ -78,13 +78,19 @@ class Reply extends PureComponent {
             ['pid',PID_RE],
             ['nickname',NICKNAME_RE],
         ]);
+
         return (
             <div className={'flow-reply box'} style={this.props.info._display_color ? {
                 '--box-bgcolor-light': this.props.info._display_color[0],
                 '--box-bgcolor-dark': this.props.info._display_color[1],
             } : null}>
                 <div className="box-header">
-                    <code className="box-id">#{this.props.info.cid}</code>
+                    {this.props.do_filter_name ?
+                        <span className="clickable box-id" onClick={()=>{this.props.do_filter_name(this.props.info.name);}}>
+                            <span className="icon icon-locate" /> <code>#{this.props.info.cid}</code>
+                        </span> :
+                        <code className="box-id">#{this.props.info.cid}</code>
+                    }
                     &nbsp;
                     {this.props.info.tag!==null &&
                         <span className="box-header-tag">
@@ -191,23 +197,13 @@ class FlowSidebar extends PureComponent {
             replies: props.replies,
             loading_status: 'done',
             error_msg: null,
-            dz_only: false,
+            filter_name: null,
+            rev: false,
         };
         this.color_picker=props.color_picker;
         this.syncState=props.sync_state||(()=>{});
         this.reply_ref=React.createRef();
     }
-
-    /*componentWillReceiveProps(nextProps) {
-        this.setState({
-            attention: nextProps.attention,
-            info: nextProps.info,
-            replies: nextProps.replies,
-            loading_status: 'done',
-        });
-        this.color_picker=nextProps.color_picker;
-        this.syncState=nextProps.sync_state||(()=>{});
-    }*/ // refactored to use key instead
 
     set_variant(cid,variant) {
         this.setState((prev)=>{
@@ -305,14 +301,20 @@ class FlowSidebar extends PureComponent {
         }
     }
 
-    toggle_dz_only() {
+    set_filter_name(name) {
         this.setState((prevState)=>({
-            dz_only: !prevState.dz_only,
+            filter_name: name===prevState.filter_name ? null : name,
+        }));
+    }
+
+    toggle_rev() {
+        this.setState((prevState)=>({
+            rev: !prevState.rev,
         }));
     }
 
     show_reply_bar(name,event) {
-        if(this.reply_ref.current && !event.target.closest('a')) {
+        if(this.reply_ref.current && !event.target.closest('a, .clickable')) {
             let text=this.reply_ref.current.get();
             if(/^\s*(?:Re (?:|洞主|(?:[A-Z][a-z]+ )?(?:[A-Z][a-z]+)):)?\s*$/.test(text)) {// text is nearly empty so we can replace it
                 let should_text='Re '+name+': ';
@@ -330,29 +332,39 @@ class FlowSidebar extends PureComponent {
 
         let show_pid=load_single_meta(this.props.show_sidebar,this.props.token,this.props.parents.concat([this.state.info.pid]));
 
-        let replies_to_show=this.state.dz_only ? this.state.replies.filter((r)=>r.islz) : this.state.replies;
+        let replies_to_show=this.state.filter_name ? this.state.replies.filter((r)=>r.name===this.state.filter_name) : this.state.replies.slice();
+        if(this.state.rev) replies_to_show.reverse();
+
+        // key for lazyload elem
+        let view_mode_key=(this.state.rev ? 'y-' : 'n-')+(this.state.filter_name||'null');
 
         return (
             <div className="flow-item-row sidebar-flow-item">
                 <div className="box box-tip">
                     {!!this.props.token &&
                         <span>
-                            <a onClick={this.report.bind(this)}>举报</a>
-                            &nbsp;/&nbsp;
+                            <a onClick={this.report.bind(this)}>
+                                <span className="icon icon-flag" /><label>举报</label>
+                            </a>
+                            &nbsp;&nbsp;
                         </span>
                     }
-                    <a onClick={this.load_replies.bind(this)}>刷新回复</a>
-                    &nbsp;/&nbsp;
-                    <a onClick={this.toggle_dz_only.bind(this)}>{this.state.dz_only ? '查看全部' : '只看洞主'}</a>
+                    <a onClick={this.load_replies.bind(this)}>
+                        <span className="icon icon-refresh" /><label>刷新</label>
+                    </a>
+                    &nbsp;&nbsp;
+                    <a onClick={this.toggle_rev.bind(this)}>
+                        <span className="icon icon-order-rev" /><label>{this.state.rev ? '还原' : '逆序'}</label>
+                    </a>
                     {!!this.props.token &&
                         <span>
-                            &nbsp;/&nbsp;
+                            &nbsp;&nbsp;
                             <a onClick={()=>{
                                 this.toggle_attention();
                             }}>
                                 {this.state.attention ?
-                                    <span><span className="icon icon-star-ok" />&nbsp;已关注</span> :
-                                    <span><span className="icon icon-star" />&nbsp;未关注</span>
+                                    <span><span className="icon icon-star-ok" /><label>已关注</label></span> :
+                                    <span><span className="icon icon-star" /><label>未关注</label></span>
                                 }
                             </a>
                         </span>
@@ -375,12 +387,22 @@ class FlowSidebar extends PureComponent {
                         {parseInt(this.state.info.reply)-this.state.replies.length} 条回复被删除
                     </div>
                 }
+                {!!this.state.filter_name &&
+                <div className="box box-tip flow-item filter-name-bar">
+                    <p>
+                        <span style={{float: 'left'}}><a onClick={()=>{this.set_filter_name(null)}}>还原</a></span>
+                        <span className="icon icon-locate" />&nbsp;当前只看&nbsp;
+                        <ColoredSpan colors={this.color_picker.get(this.state.filter_name)}>{this.state.filter_name}</ColoredSpan>
+                    </p>
+                </div>
+                }
                 {replies_to_show.map((reply)=>(
-                    <LazyLoad key={reply.cid+(+this.state.dz_only)} offset={1500} height="5em" overflow={true} once={true}>
+                    <LazyLoad key={reply.cid+view_mode_key} offset={1500} height="5em" overflow={true} once={true}>
                         <ClickHandler callback={(e)=>{this.show_reply_bar(reply.name,e);}}>
                             <Reply
                                 info={reply} color_picker={this.color_picker} show_pid={show_pid}
                                 set_variant={(variant)=>{this.set_variant(reply.cid,variant);}}
+                                do_filter_name={this.set_filter_name.bind(this)}
                             />
                         </ClickHandler>
                     </LazyLoad>
