@@ -161,7 +161,7 @@
 }
 
 .root-dark-mode .flow-item-row p.img img {
-    filter: brightness(.85);
+    filter: brightness(85%);
 }
 
 .box-header-badge {

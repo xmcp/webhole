@@ -39,8 +39,8 @@ const HELP_TEXT=(
                 setTimeout(()=>{
                     window.location.reload(true);
                 },200);
-            }}>强制检查更新</a>&nbsp;
-            ({process.env.REACT_APP_BUILD_INFO||'---'} {process.env.NODE_ENV})
+            }}>强制检查更新</a>
+            （{process.env.REACT_APP_BUILD_INFO||'---'} {process.env.NODE_ENV} 会自动在后台检查更新并在下次访问时更新）
         </p>
         <p>
             This program is free software: you can redistribute it and/or modify

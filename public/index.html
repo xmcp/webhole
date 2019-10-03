@@ -32,6 +32,7 @@
         _czc.push(["_setAccount","1274501752"]);
         _czc.push(["_setCustomVar","has_token",localStorage['TOKEN']?'yes':'no',1]);
         _czc.push(["_setCustomVar","standalone",((window.matchMedia('(display-mode: standalone)').matches) || (window.navigator.standalone))?'yes':'no',1]);
+        _czc.push(["_setCustomVar","build_info","%REACT_APP_BUILD_INFO%"||'---']);
         try {
             var config=JSON.parse(localStorage['hole_config']||'{}');
             for(var key in config)

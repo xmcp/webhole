@@ -15,8 +15,10 @@ export class BalanceShower extends PureComponent {
         };
     }
 
-    do_load(token) {
+    do_load(e,token) {
         if(this.state.loading_status==='loading')
+            return;
+        if(e.target.closest('a')) // clicking at a link
             return;
         if(!token || !window.config.easter_egg) {
             this.setState({
@@ -71,7 +73,7 @@ export class BalanceShower extends PureComponent {
     render() {
         return (
             <TokenCtx.Consumer>{(token)=>(
-                <div onClick={()=>this.do_load(token.value)}>
+                <div onClick={(e)=>this.do_load(e,token.value)}>
                     <div className="balance-popover">{this.render_popover()}</div>
                     {this.props.children}
                 </div>

@@ -19,7 +19,7 @@ a {
     color: #00c;
 }
 
-.root-dark-mode .left-container a, .root-dark-mode .sidebar a, .root-dark-mode .sidebar-title a {
+.root-dark-mode .left-container a, .root-dark-mode .sidebar a, .root-dark-mode .sidebar-title a, .root-dark-mode .balance-popover a {
     color: #9bf;
 }
 

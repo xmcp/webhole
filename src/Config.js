@@ -152,7 +152,7 @@ class ConfigColorScheme extends PureComponent {
                     &nbsp; <small>#color_scheme</small>
                 </p>
                 <p>
-                    选择浅色或深色模式，或者与系统颜色模式一致
+                    选择浅色或深色模式，深色模式下将会调暗图片亮度
                 </p>
             </div>
         )
