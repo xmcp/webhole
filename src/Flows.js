@@ -169,7 +169,7 @@ class FlowItem extends PureComponent {
                         {props.info.type==='image' &&
                             <p className="img">
                                 {props.img_clickable ?
-                                    <a href={IMAGE_BASE+props.info.url} target="_blank"><img src={IMAGE_BASE+props.info.url} /></a> :
+                                    <a className="no-underline" href={IMAGE_BASE+props.info.url} target="_blank"><img src={IMAGE_BASE+props.info.url} /></a> :
                                     <img src={IMAGE_BASE+props.info.url} />
                                 }
                             </p>
