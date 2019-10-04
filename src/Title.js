@@ -130,18 +130,18 @@ class ControlBar extends PureComponent {
         return (
             <TokenCtx.Consumer>{({value: token})=>(
                 <div className="control-bar">
-                    <a className="control-btn" onClick={this.do_refresh_bound}>
+                    <a className="no-underline control-btn" onClick={this.do_refresh_bound}>
                         <span className="icon icon-refresh" />
                     </a>
                     {!!token &&
-                        <a className="control-btn" onClick={this.do_attention_bound}>
+                        <a className="no-underline control-btn" onClick={this.do_attention_bound}>
                             <span className="icon icon-attention" />
                         </a>
                     }
                     <input className="control-search" value={this.state.search_text} placeholder="搜索 或 #PID"
                            onChange={this.on_change_bound} onKeyPress={this.on_keypress_bound}
                     />
-                    <a className="control-btn" onClick={()=>{
+                    <a className="no-underline control-btn" onClick={()=>{
                         this.props.show_sidebar(
                             'P大树洞',
                             <div>
@@ -170,7 +170,7 @@ class ControlBar extends PureComponent {
                         <span className={'icon icon-'+(token ? 'about' : 'login')} />
                     </a>
                     {!!token &&
-                        <a className="control-btn" onClick={()=>{
+                        <a className="no-underline control-btn" onClick={()=>{
                             this.props.show_sidebar(
                                 '发表树洞',
                                 <PostForm token={token} on_complete={()=>{

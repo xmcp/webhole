@@ -23,7 +23,7 @@ export class Sidebar extends PureComponent {
                     {this.props.content}
                 </div>
                 <div className="sidebar-title">
-                    <a onClick={this.props.do_close}>&nbsp;<span className="icon icon-back" />&nbsp;</a>
+                    <a className="no-underline" onClick={this.props.do_close}>&nbsp;<span className="icon icon-back" />&nbsp;</a>
                     {this.props.title}
                 </div>
             </div>

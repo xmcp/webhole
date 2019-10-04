@@ -15,12 +15,19 @@ html {
     scrollbar-width: none;
 }
 
-a {
-    color: #00c;
+:root {
+    --var-link-color: #00c;
+}
+.root-dark-mode .left-container, .root-dark-mode .sidebar, .root-dark-mode .sidebar-title, .root-dark-mode .balance-popover {
+    --var-link-color: #9bf;
 }
 
-.root-dark-mode .left-container a, .root-dark-mode .sidebar a, .root-dark-mode .sidebar-title a, .root-dark-mode .balance-popover a {
-    color: #9bf;
+a {
+    color: var(--var-link-color);
+}
+a:not(.no-underline):hover {
+    border-bottom: 1px solid var(--var-link-color);
+    margin-bottom: -1px;
 }
 
 input, textarea {

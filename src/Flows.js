@@ -342,6 +342,15 @@ class FlowSidebar extends PureComponent {
             replies_cnt[r.name]++;
         });
 
+        let main_thread_elem=(
+            <ClickHandler callback={(e)=>{this.show_reply_bar('',e);}}>
+                <FlowItem info={this.state.info} attention={this.state.attention} img_clickable={true}
+                          color_picker={this.color_picker} show_pid={show_pid} replies={this.state.replies}
+                          set_variant={(variant)=>{this.set_variant(null,variant);}}
+                />
+            </ClickHandler>
+        );
+
         return (
             <div className="flow-item-row sidebar-flow-item">
                 <div className="box box-tip">
@@ -356,10 +365,14 @@ class FlowSidebar extends PureComponent {
                     <a onClick={this.load_replies.bind(this)}>
                         <span className="icon icon-refresh" /><label>刷新</label>
                     </a>
-                    &nbsp;&nbsp;
-                    <a onClick={this.toggle_rev.bind(this)}>
-                        <span className="icon icon-order-rev" /><label>{this.state.rev ? '还原' : '逆序'}</label>
-                    </a>
+                    {(this.state.replies.length>1 || this.state.rev) &&
+                        <span>
+                            &nbsp;&nbsp;
+                            <a onClick={this.toggle_rev.bind(this)}>
+                                <span className="icon icon-order-rev" /><label>{this.state.rev ? '还原' : '逆序'}</label>
+                            </a>
+                        </span>
+                    }
                     {!!this.props.token &&
                         <span>
                             &nbsp;&nbsp;
@@ -374,12 +387,9 @@ class FlowSidebar extends PureComponent {
                         </span>
                     }
                 </div>
-                <ClickHandler callback={(e)=>{this.show_reply_bar('',e);}}>
-                    <FlowItem info={this.state.info} attention={this.state.attention} img_clickable={true}
-                        color_picker={this.color_picker} show_pid={show_pid} replies={this.state.replies}
-                        set_variant={(variant)=>{this.set_variant(null,variant);}}
-                    />
-                </ClickHandler>
+                {!this.state.rev &&
+                    main_thread_elem
+                }
                 {!!this.state.error_msg &&
                     <div className="box box-tip flow-item">
                         <p>回复加载失败</p>
@@ -411,6 +421,9 @@ class FlowSidebar extends PureComponent {
                         </ClickHandler>
                     </LazyLoad>
                 ))}
+                {this.state.rev &&
+                    main_thread_elem
+                }
                 {!!this.props.token ?
                     <ReplyForm pid={this.state.info.pid} token={this.props.token}
                                area_ref={this.reply_ref} on_complete={this.load_replies.bind(this)} /> :

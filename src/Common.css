@@ -55,7 +55,6 @@
     font-size: .9em;
     vertical-align: .05em;
     cursor: inherit;
-}
-.icon+label::before {
-    content: ' ';
+    padding: 0 .1rem;
+    margin-left: .15rem;
 }
