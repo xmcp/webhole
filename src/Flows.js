@@ -12,9 +12,6 @@ import {API, PKUHELPER_ROOT} from './flows_api';
 
 const IMAGE_BASE=PKUHELPER_ROOT+'services/pkuhole/images/';
 const AUDIO_BASE=PKUHELPER_ROOT+'services/pkuhole/audios/';
-// troubleshotting performance problem with http2
-//const IMAGE_BASE='http://pkuhelper.pku.edu.cn/services/pkuhole/images/';
-//const AUDIO_BASE='http://pkuhelper.pku.edu.cn/services/pkuhole/audios/';
 
 const SEARCH_PAGESIZE=50;
 const CLICKABLE_TAGS={a: true, audio: true};
@@ -85,11 +82,11 @@ class Reply extends PureComponent {
                 '--box-bgcolor-dark': this.props.info._display_color[1],
             } : null}>
                 <div className="box-header">
-                    {this.props.do_filter_name ?
-                        <span className="clickable box-id" onClick={()=>{this.props.do_filter_name(this.props.info.name);}}>
-                            <span className="icon icon-locate" /> <code>#{this.props.info.cid}</code>
-                        </span> :
-                        <code className="box-id">#{this.props.info.cid}</code>
+                    <code className="box-id">#{this.props.info.cid}</code>
+                    {!!this.props.do_filter_name &&
+                        <span className="reply-header-badge clickable" onClick={()=>{this.props.do_filter_name(this.props.info.name);}}>
+                            <span className="icon icon-locate" />
+                        </span>
                     }
                     &nbsp;
                     {this.props.info.tag!==null &&
@@ -338,6 +335,13 @@ class FlowSidebar extends PureComponent {
         // key for lazyload elem
         let view_mode_key=(this.state.rev ? 'y-' : 'n-')+(this.state.filter_name||'null');
 
+        let replies_cnt={};
+        replies_to_show.forEach((r)=>{
+            if(replies_cnt[r.name]===undefined)
+                replies_cnt[r.name]=0;
+            replies_cnt[r.name]++;
+        });
+
         return (
             <div className="flow-item-row sidebar-flow-item">
                 <div className="box box-tip">
@@ -402,7 +406,7 @@ class FlowSidebar extends PureComponent {
                             <Reply
                                 info={reply} color_picker={this.color_picker} show_pid={show_pid}
                                 set_variant={(variant)=>{this.set_variant(reply.cid,variant);}}
-                                do_filter_name={this.set_filter_name.bind(this)}
+                                do_filter_name={replies_cnt[reply.name]>1 ? this.set_filter_name.bind(this) : null}
                             />
                         </ClickHandler>
                     </LazyLoad>
