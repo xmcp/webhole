@@ -2,7 +2,7 @@ import React, {Component, PureComponent} from 'react';
 import copy from 'copy-to-clipboard';
 import {API_BASE,SafeTextarea} from './Common';
 import {MessageViewer} from './Message';
-import {API_VERSION_PARAM,PKUHELPER_ROOT,API,get_json} from './flows_api';
+import {API_VERSION_PARAM, PKUHELPER_ROOT, API, get_json, token_param} from './flows_api';
 
 import './UserAction.css';
 
@@ -301,7 +301,7 @@ export class ReplyForm extends Component {
         data.append('pid',this.props.pid);
         data.append('text',this.state.text);
         data.append('user_token',this.props.token);
-        fetch(API_BASE+'/api.php?action=docomment'+API_VERSION_PARAM(), {
+        fetch(API_BASE+'/api.php?action=docomment'+token_param(this.props.token), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -381,7 +381,7 @@ export class PostForm extends Component {
         if(img)
             data.append('data',img);
 
-        fetch(API_BASE+'/api.php?action=dopost'+API_VERSION_PARAM(), {
+        fetch(API_BASE+'/api.php?action=dopost'+token_param(this.props.token), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',

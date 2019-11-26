@@ -13,7 +13,6 @@ import {API, PKUHELPER_ROOT} from './flows_api';
 const IMAGE_BASE=PKUHELPER_ROOT+'services/pkuhole/images/';
 const AUDIO_BASE=PKUHELPER_ROOT+'services/pkuhole/audios/';
 
-const SEARCH_PAGESIZE=50;
 const CLICKABLE_TAGS={a: true, audio: true};
 const PREVIEW_REPLY_COUNT=10;
 const QUOTE_BLACKLIST=['23333','233333','66666','666666','10086','10000','100000','99999','999999','55555','555555'];
@@ -711,17 +710,20 @@ export class Flow extends PureComponent {
                     })
                     .catch(failed);
             } else if(this.state.mode==='search') {
-                API.get_search(SEARCH_PAGESIZE*page,this.state.search_param,this.props.token)
+                API.get_search(page,this.state.search_param,this.props.token)
                     .then((json)=>{
-                        const finished=json.data.length<SEARCH_PAGESIZE;
-                        this.setState({
+                        const finished=json.data.length===0;
+                        this.setState((prev,props)=>({
                             chunks: {
                                 title: 'Result for "'+this.state.search_param+'"',
-                                data: json.data,
+                                data: prev.chunks.data.concat(json.data.filter((x)=>(
+                                    prev.chunks.data.length===0 ||
+                                    !(prev.chunks.data.slice(-100).some((p)=>p.pid===x.pid))
+                                ))),
                             },
                             mode: finished ? 'search_finished' : 'search',
                             loading_status: 'done',
-                        });
+                        }));
                     })
                     .catch(failed);
             } else if(this.state.mode==='single') {

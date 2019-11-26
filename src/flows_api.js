@@ -8,11 +8,13 @@ export function API_VERSION_PARAM() {
 }
 export {PKUHELPER_ROOT};
 
-function token_param(token) {
+export function token_param(token) {
     return API_VERSION_PARAM()+(token ? ('&user_token='+token) : '');
 }
 
 export {get_json};
+
+const SEARCH_PAGESIZE=50;
 
 export const API={
     load_replies: (pid,token,color_picker,cache_version)=>{
@@ -74,7 +76,7 @@ export const API={
         data.append('user_token',token);
         data.append('pid',pid);
         data.append('switch',attention ? '1' : '0');
-        return fetch(API_BASE+'/api.php?action=attention'+API_VERSION_PARAM(), {
+        return fetch(API_BASE+'/api.php?action=attention'+token_param(token), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -99,7 +101,7 @@ export const API={
         data.append('user_token',token);
         data.append('pid',pid);
         data.append('reason',reason);
-        return fetch(API_BASE+'/api.php?action=report'+API_VERSION_PARAM(), {
+        return fetch(API_BASE+'/api.php?action=report'+token_param(token), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -130,10 +132,11 @@ export const API={
             });
     },
 
-    get_search: (pagesize,keyword,token)=>{
+    get_search: (page,keyword,token)=>{
         return fetch(
             API_BASE+'/api.php?action=search'+
-            '&pagesize='+pagesize+
+            '&pagesize='+SEARCH_PAGESIZE+
+            '&page='+page+
             '&keywords='+encodeURIComponent(keyword)+
             token_param(token)
         )
