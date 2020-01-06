@@ -57,7 +57,7 @@ export class SafeTextarea extends Component {
     constructor(props) {
         super(props);
         this.state={
-            text: window.TEXTAREA_BACKUP[props.id]||'',
+            text: '',
         };
         this.on_change_bound=this.on_change.bind(this);
         this.on_keydown_bound=this.on_keydown.bind(this);
@@ -66,6 +66,12 @@ export class SafeTextarea extends Component {
         this.change_callback=props.on_change||(()=>{});
         this.change_callback(this.state.text);
         this.submit_callback=props.on_submit||(()=>{});
+    }
+
+    componentDidMount() {
+        this.setState({
+            text: window.TEXTAREA_BACKUP[this.props.id]||''
+        });
     }
 
     componentWillUnmount() {
