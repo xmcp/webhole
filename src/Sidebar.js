@@ -5,26 +5,39 @@ export class Sidebar extends PureComponent {
     constructor(props) {
         super(props);
         this.sidebar_ref=React.createRef();
+        this.do_close_bound=this.do_close.bind(this);
+        this.do_back_bound=this.do_back.bind(this);
     }
 
     componentDidUpdate(nextProps) {
-        if(this.props.content!==nextProps.content) {
+        if(this.props.stack!==nextProps.stack) {
             //console.log('sidebar top');
             if(this.sidebar_ref.current)
                 this.sidebar_ref.current.scrollTop=0;
         }
     }
 
+    do_close() {
+        this.props.show_sidebar(null,null,'clear');
+    }
+    do_back() {
+        this.props.show_sidebar(null,null,'pop');
+    }
+
     render() {
+        let [cur_title,cur_content]=this.props.stack[this.props.stack.length-1];
         return (
-            <div className={this.props.title!==null ? 'sidebar-on' : ''}>
-                <div className="sidebar-shadow" onClick={this.props.do_close} onTouchEnd={(e)=>{e.preventDefault();e.target.click();}} />
+            <div className={cur_title!==null ? 'sidebar-on' : ''}>
+                <div className="sidebar-shadow" onClick={this.do_back_bound} onTouchEnd={(e)=>{e.preventDefault();e.target.click();}} />
                 <div ref={this.sidebar_ref} className="sidebar">
-                    {this.props.content}
+                    {cur_content}
                 </div>
                 <div className="sidebar-title">
-                    <a className="no-underline" onClick={this.props.do_close}>&nbsp;<span className="icon icon-back" />&nbsp;</a>
-                    {this.props.title}
+                    <a className="no-underline" onClick={this.do_close_bound}>&nbsp;<span className="icon icon-close" />&nbsp;</a>
+                    {this.props.stack.length>2 &&
+                        <a className="no-underline" onClick={this.do_back_bound}>&nbsp;<span className="icon icon-back" />&nbsp;</a>
+                    }
+                    {cur_title}
                 </div>
             </div>
         );

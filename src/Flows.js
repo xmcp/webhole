@@ -19,10 +19,12 @@ const QUOTE_BLACKLIST=['23333','233333','66666','666666','10086','10000','100000
 
 window.LATEST_POST_ID=parseInt(localStorage['_LATEST_POST_ID'],10)||0;
 
+const DZ_NAME='洞主';
+
 function load_single_meta(show_sidebar,token,parents) {
     return (pid)=>{
-        let title_elem=<FlowSidebarTitle pid={pid} parents={parents} show_sidebar={show_sidebar} token={token} />;
-        const color_picker=new ColorPicker();
+        let color_picker=new ColorPicker();
+        let title_elem='树洞 #'+pid;
         show_sidebar(
             title_elem,
             <div className="box box-tip">
@@ -46,7 +48,8 @@ function load_single_meta(show_sidebar,token,parents) {
                         info={single.data} replies={replies.data} attention={replies.attention}
                         token={token} show_sidebar={show_sidebar} color_picker={color_picker}
                         deletion_detect={localStorage['DELETION_DETECT']==='on'} parents={parents}
-                    />
+                    />,
+                    'replace'
                 )
             })
             .catch((e)=>{
@@ -56,7 +59,8 @@ function load_single_meta(show_sidebar,token,parents) {
                     <div className="box box-tip">
                         <p><a onClick={()=>load_single_meta(show_sidebar,token,parents)(pid)}>重新加载</a></p>
                         <p>{''+e}</p>
-                    </div>
+                    </div>,
+                    'replace'
                 );
             })
     };
@@ -142,6 +146,11 @@ class FlowItem extends PureComponent {
                         <div className="flow-item-dot" />
                     }
                     <div className="box-header">
+                        {!!this.props.do_filter_name &&
+                            <span className="reply-header-badge clickable" onClick={()=>{this.props.do_filter_name(DZ_NAME);}}>
+                                <span className="icon icon-locate" />
+                            </span>
+                        }
                         {!!parseInt(props.info.likenum,10) &&
                             <span className="box-header-badge">
                                 {props.info.likenum}&nbsp;
@@ -334,18 +343,20 @@ class FlowSidebar extends PureComponent {
         // key for lazyload elem
         let view_mode_key=(this.state.rev ? 'y-' : 'n-')+(this.state.filter_name||'null');
 
-        let replies_cnt={};
+        let replies_cnt={[DZ_NAME]:1};
         replies_to_show.forEach((r)=>{
             if(replies_cnt[r.name]===undefined)
                 replies_cnt[r.name]=0;
             replies_cnt[r.name]++;
         });
 
-        let main_thread_elem=(
+        // hide main thread when filtered
+        let main_thread_elem=(this.state.filter_name && this.state.filter_name!==DZ_NAME) ? null : (
             <ClickHandler callback={(e)=>{this.show_reply_bar('',e);}}>
                 <FlowItem info={this.state.info} attention={this.state.attention} img_clickable={true}
                           color_picker={this.color_picker} show_pid={show_pid} replies={this.state.replies}
                           set_variant={(variant)=>{this.set_variant(null,variant);}}
+                          do_filter_name={replies_cnt[DZ_NAME]>1 ? this.set_filter_name.bind(this) : null}
                 />
             </ClickHandler>
         );
@@ -364,7 +375,7 @@ class FlowSidebar extends PureComponent {
                     <a onClick={this.load_replies.bind(this)}>
                         <span className="icon icon-refresh" /><label>刷新</label>
                     </a>
-                    {(this.state.replies.length>1 || this.state.rev) &&
+                    {(this.state.replies.length>=1 || this.state.rev) &&
                         <span>
                             &nbsp;&nbsp;
                             <a onClick={this.toggle_rev.bind(this)}>
@@ -386,6 +397,15 @@ class FlowSidebar extends PureComponent {
                         </span>
                     }
                 </div>
+                {!!this.state.filter_name &&
+                    <div className="box box-tip flow-item filter-name-bar">
+                        <p>
+                            <span style={{float: 'left'}}><a onClick={()=>{this.set_filter_name(null)}}>还原</a></span>
+                            <span className="icon icon-locate" />&nbsp;当前只看&nbsp;
+                            <ColoredSpan colors={this.color_picker.get(this.state.filter_name)}>{this.state.filter_name}</ColoredSpan>
+                        </p>
+                    </div>
+                }
                 {!this.state.rev &&
                     main_thread_elem
                 }
@@ -399,15 +419,6 @@ class FlowSidebar extends PureComponent {
                     <div className="box box-tip flow-item box-danger">
                         {parseInt(this.state.info.reply)-this.state.replies.length} 条回复被删除
                     </div>
-                }
-                {!!this.state.filter_name &&
-                <div className="box box-tip flow-item filter-name-bar">
-                    <p>
-                        <span style={{float: 'left'}}><a onClick={()=>{this.set_filter_name(null)}}>还原</a></span>
-                        <span className="icon icon-locate" />&nbsp;当前只看&nbsp;
-                        <ColoredSpan colors={this.color_picker.get(this.state.filter_name)}>{this.state.filter_name}</ColoredSpan>
-                    </p>
-                </div>
                 }
                 {replies_to_show.map((reply)=>(
                     <LazyLoad key={reply.cid+view_mode_key} offset={1500} height="5em" overflow={true} once={true}>
@@ -431,24 +442,6 @@ class FlowSidebar extends PureComponent {
             </div>
         )
     }
-}
-
-function FlowSidebarTitle(props) {
-    let last_pid=props.parents.length ? props.parents[props.parents.length-1] : null;
-    return (
-        <span>
-            树洞&nbsp;
-            {!!last_pid &&
-                <span>
-                    <a onClick={()=>load_single_meta(props.show_sidebar,props.token,props.parents.slice(0,-1))(last_pid)}>
-                        #{last_pid}
-                    </a>
-                    &nbsp;→&nbsp;
-                </span>
-            }
-            #{props.pid}
-        </span>
-    );
 }
 
 class FlowItemRow extends PureComponent {
@@ -499,7 +492,7 @@ class FlowItemRow extends PureComponent {
 
     show_sidebar() {
         this.props.show_sidebar(
-            <FlowSidebarTitle pid={this.state.info.pid} parents={[]} show_sidebar={this.props.show_sidebar} token={this.props.token} />,
+            '树洞 #'+this.state.info.pid,
             <FlowSidebar key={+new Date()}
                 info={this.state.info} replies={this.state.replies} attention={this.state.attention} sync_state={this.setState.bind(this)}
                 token={this.props.token} show_sidebar={this.props.show_sidebar} color_picker={this.color_picker}
@@ -692,11 +685,14 @@ export class Flow extends PureComponent {
             if(this.state.mode==='list') {
                 API.get_list(page,this.props.token)
                     .then((json)=>{
-                        if(page===1)
+                        if(page===1 && json.data.length) { // update latest_post_id
+                            let max_id=-1;
                             json.data.forEach((x)=>{
-                                if(parseInt(x.pid,10)>(parseInt(localStorage['_LATEST_POST_ID'],10)||0))
-                                    localStorage['_LATEST_POST_ID']=x.pid;
+                                if(parseInt(x.pid,10)>max_id)
+                                    max_id=parseInt(x.pid,10);
                             });
+                            localStorage['_LATEST_POST_ID']=''+max_id;
+                        }
                         this.setState((prev,props)=>({
                             chunks: {
                                 title: 'News Feed',

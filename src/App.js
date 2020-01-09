@@ -17,8 +17,7 @@ class App extends Component {
         load_config();
         listen_darkmode({default: undefined, light: false, dark: true}[window.config.color_scheme]);
         this.state={
-            sidebar_title: null,
-            sidebar_content: null, // determine status of sidebar
+            sidebar_stack: [[null,null]], // list of [status, content]
             mode: 'list', // list, single, search, attention
             search_text: null,
             flow_render_key: +new Date(),
@@ -41,20 +40,39 @@ class App extends Component {
     }
 
     on_pressure() {
-        if(this.state.sidebar_title!==null)
-            this.setState((prevState)=>({
-                sidebar_title: null,
-                sidebar_content: prevState.sidebar_content,
-            }));
+        if(this.state.sidebar_stack.length>1)
+            this.show_sidebar(null,null,'clear');
         else
             this.set_mode('list',null);
     }
 
-    show_sidebar(title,content) {
-        this.setState({
-            sidebar_title: title,
-            sidebar_content: content,
-        });
+    show_sidebar(title,content,mode='push') {
+        if(mode==='push') {
+            this.setState((prevState)=>({
+                sidebar_stack: prevState.sidebar_stack.concat([[title,content]]),
+            }));
+        } else if(mode==='pop') {
+            this.setState((prevState)=>{
+                let ns=prevState.sidebar_stack.slice();
+                ns.pop();
+                return {
+                    sidebar_stack: ns,
+                };
+            });
+        } else if(mode==='replace') {
+            this.setState((prevState)=>{
+                let ns=prevState.sidebar_stack.slice();
+                ns.pop();
+                return {
+                    sidebar_stack: ns.concat([[title,content]]),
+                };
+            });
+        } else if(mode==='clear') {
+            this.setState({
+                sidebar_stack: [[null,null]],
+            });
+        } else
+            throw new Error('bad show_sidebar mode');
     }
 
     set_mode(mode,search_text) {
@@ -102,11 +120,7 @@ class App extends Component {
                         <br />
                     </div>
                 )}</TokenCtx.Consumer>
-                <Sidebar do_close={()=>{
-                    this.setState({
-                        sidebar_title: null,
-                    });
-                }} content={this.state.sidebar_content} title={this.state.sidebar_title} />
+                <Sidebar show_sidebar={this.show_sidebar_bound} stack={this.state.sidebar_stack} />
             </TokenCtx.Provider>
         );
     }

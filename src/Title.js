@@ -132,10 +132,12 @@ class ControlBar extends PureComponent {
                 <div className="control-bar">
                     <a className="no-underline control-btn" onClick={this.do_refresh_bound}>
                         <span className="icon icon-refresh" />
+                        <span className="control-btn-label">最新</span>
                     </a>
                     {!!token &&
                         <a className="no-underline control-btn" onClick={this.do_attention_bound}>
                             <span className="icon icon-attention" />
+                            <span className="control-btn-label">关注</span>
                         </a>
                     }
                     <input className="control-search" value={this.state.search_text} placeholder="搜索 或 #PID"
@@ -168,6 +170,7 @@ class ControlBar extends PureComponent {
                         )
                     }}>
                         <span className={'icon icon-'+(token ? 'about' : 'login')} />
+                        <span className="control-btn-label">{token ? '账户' : '登录'}</span>
                     </a>
                     {!!token &&
                         <a className="no-underline control-btn" onClick={()=>{
@@ -180,6 +183,7 @@ class ControlBar extends PureComponent {
                             )
                         }}>
                             <span className="icon icon-plus" />
+                            <span className="control-btn-label">发表</span>
                         </a>
                     }
                 </div>

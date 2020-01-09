@@ -23,7 +23,7 @@
 }
 
 .control-btn {
-    flex: 0 0 2em;
+    flex: 0 0 4.5em;
     text-align: center;
     color: black;
     border-radius: 5px;
@@ -31,6 +31,17 @@
 .control-btn:hover {
     background-color: #555555;
     color: white;
+}
+.control-btn-label {
+    margin-left: .25em;
+}
+@media screen and (max-width: 900px) {
+    .control-btn {
+        flex: 0 0 2em;
+    }
+    .control-btn-label {
+        display: none;
+    }
 }
 
 .root-dark-mode .control-btn {
@@ -40,11 +51,6 @@
 .root-dark-mode .control-btn:hover {
     color: var(--foreground-dark);
     opacity: 1;
-}
-
-.control-btn .icon:before {
-    margin: .5em;
-    display: inline-block;
 }
 
 .control-search {
