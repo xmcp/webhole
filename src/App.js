@@ -7,6 +7,8 @@ import {TokenCtx} from './UserAction';
 import {load_config,bgimg_style} from './Config';
 import {listen_darkmode} from './infrastructure/functions';
 
+const MAX_SIDEBAR_STACK_SIZE=10;
+
 function DeprecatedAlert(props) {
     return null;
 }
@@ -47,32 +49,25 @@ class App extends Component {
     }
 
     show_sidebar(title,content,mode='push') {
-        if(mode==='push') {
-            this.setState((prevState)=>({
-                sidebar_stack: prevState.sidebar_stack.concat([[title,content]]),
-            }));
-        } else if(mode==='pop') {
-            this.setState((prevState)=>{
-                let ns=prevState.sidebar_stack.slice();
+        this.setState((prevState)=>{
+            let ns=prevState.sidebar_stack.slice();
+            if(mode==='push') {
+                if(ns.length>MAX_SIDEBAR_STACK_SIZE)
+                    ns.splice(1,1);
+                ns=ns.concat([[title,content]]);
+            } else if(mode==='pop') {
                 ns.pop();
-                return {
-                    sidebar_stack: ns,
-                };
-            });
-        } else if(mode==='replace') {
-            this.setState((prevState)=>{
-                let ns=prevState.sidebar_stack.slice();
+            } else if(mode==='replace') {
                 ns.pop();
-                return {
-                    sidebar_stack: ns.concat([[title,content]]),
-                };
-            });
-        } else if(mode==='clear') {
-            this.setState({
-                sidebar_stack: [[null,null]],
-            });
-        } else
-            throw new Error('bad show_sidebar mode');
+                ns=ns.concat([[title,content]]);
+            } else if(mode==='clear') {
+                ns=[[null,null]];
+            } else
+                throw new Error('bad show_sidebar mode');
+            return {
+                sidebar_stack: ns,
+            };
+        });
     }
 
     set_mode(mode,search_text) {

@@ -21,7 +21,7 @@ window.LATEST_POST_ID=parseInt(localStorage['_LATEST_POST_ID'],10)||0;
 
 const DZ_NAME='洞主';
 
-function load_single_meta(show_sidebar,token,parents) {
+function load_single_meta(show_sidebar,token) {
     return (pid)=>{
         let color_picker=new ColorPicker();
         let title_elem='树洞 #'+pid;
@@ -47,7 +47,7 @@ function load_single_meta(show_sidebar,token,parents) {
                     <FlowSidebar key={+new Date()}
                         info={single.data} replies={replies.data} attention={replies.attention}
                         token={token} show_sidebar={show_sidebar} color_picker={color_picker}
-                        deletion_detect={localStorage['DELETION_DETECT']==='on'} parents={parents}
+                        deletion_detect={localStorage['DELETION_DETECT']==='on'}
                     />,
                     'replace'
                 )
@@ -57,7 +57,7 @@ function load_single_meta(show_sidebar,token,parents) {
                 show_sidebar(
                     title_elem,
                     <div className="box box-tip">
-                        <p><a onClick={()=>load_single_meta(show_sidebar,token,parents)(pid)}>重新加载</a></p>
+                        <p><a onClick={()=>load_single_meta(show_sidebar,token)(pid)}>重新加载</a></p>
                         <p>{''+e}</p>
                     </div>,
                     'replace'
@@ -335,7 +335,7 @@ class FlowSidebar extends PureComponent {
         if(this.state.loading_status==='loading')
             return (<p className="box box-tip">加载中……</p>);
 
-        let show_pid=load_single_meta(this.props.show_sidebar,this.props.token,this.props.parents.concat([this.state.info.pid]));
+        let show_pid=load_single_meta(this.props.show_sidebar,this.props.token);
 
         let replies_to_show=this.state.filter_name ? this.state.replies.filter((r)=>r.name===this.state.filter_name) : this.state.replies.slice();
         if(this.state.rev) replies_to_show.reverse();
@@ -496,7 +496,7 @@ class FlowItemRow extends PureComponent {
             <FlowSidebar key={+new Date()}
                 info={this.state.info} replies={this.state.replies} attention={this.state.attention} sync_state={this.setState.bind(this)}
                 token={this.props.token} show_sidebar={this.props.show_sidebar} color_picker={this.color_picker}
-                deletion_detect={this.props.deletion_detect} parents={[]}
+                deletion_detect={this.props.deletion_detect}
             />
         );
     }
