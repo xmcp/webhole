@@ -33,7 +33,9 @@
     color: white;
 }
 .control-btn-label {
-    margin-left: .25em;
+    margin-left: .25rem;
+    font-size: .9em;
+    vertical-align: .05em;
 }
 @media screen and (max-width: 900px) {
     .control-btn {
