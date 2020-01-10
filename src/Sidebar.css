@@ -36,7 +36,7 @@
     overflow-y: auto;
     padding-top: 3em;
     padding-bottom: 1em;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(5px);
 }
 
 .root-dark-mode .sidebar {
@@ -44,14 +44,53 @@
 }
 
 .sidebar, .sidebar-title {
-    will-change: left;
-    left: 100%;
-    transition: left 200ms cubic-bezier(0.15, 0.55, 0.55, 1);
+    left: 700px;
+    will-change: opacity, transform;
     z-index: 21;
     width: calc(100% - 700px);
 }
+
 .sidebar-on .sidebar, .sidebar-on .sidebar-title {
-    left: 700px;
+    opacity: 1;
+    animation: sidebar-fadein .15s cubic-bezier(0.15, 0.4, 0.6, 1);
+}
+.sidebar-off .sidebar, .sidebar-off .sidebar-title {
+    opacity: 0;
+    pointer-events: none;
+    backdrop-filter: none;
+    animation: sidebar-fadeout .2s cubic-bezier(0.15, 0.4, 0.6, 1);
+}
+.sidebar-container {
+    animation: sidebar-initial .25s linear; /* skip initial animation */
+}
+
+@keyframes sidebar-fadeout {
+    from {
+        opacity: 1;
+        transform: none;
+        backdrop-filter: none;
+    }
+    to {
+        opacity: 0;
+        transform: translateX(40vw);
+        backdrop-filter: none;
+    }
+}
+@keyframes sidebar-fadein {
+    from {
+        opacity: 0;
+        transform: translateX(40vw);
+        backdrop-filter: none;
+    }
+    to {
+        opacity: 1;
+        transform: none;
+        backdrop-filter: none;
+    }
+}
+@keyframes sidebar-initial {
+    from {visibility: hidden;}
+    to {visibility: hidden;}
 }
 
 .sidebar-title {
@@ -64,7 +103,7 @@
     padding-left: .5em;
     background-color: rgba(255,255,255,.6);
     pointer-events: none;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(5px);
     box-shadow: 0 3px 5px rgba(0,0,0,.2);
 }
 
@@ -85,26 +124,18 @@
 
 @media screen and (max-width: 1300px) {
     .sidebar, .sidebar-title {
+        left: calc(100% - 550px);
         width: 550px;
-    }
-    .sidebar, .sidebar-title {
         padding-left: .5em;
         padding-right: .5em;
-    }
-    .sidebar-on .sidebar, .sidebar-on .sidebar-title {
-        left: calc(100% - 550px);
     }
 }
 @media screen and (max-width: 580px) {
     .sidebar, .sidebar-title {
+        left: 27px;
         width: calc(100% - 27px);
-    }
-    .sidebar, .sidebar-title {
         padding-left: .25em;
         padding-right: .25em;
-    }
-    .sidebar-on .sidebar, .sidebar-on .sidebar-title {
-        left: 27px;
     }
 }
 

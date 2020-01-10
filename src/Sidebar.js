@@ -27,7 +27,7 @@ export class Sidebar extends PureComponent {
     render() {
         let [cur_title,cur_content]=this.props.stack[this.props.stack.length-1];
         return (
-            <div className={cur_title!==null ? 'sidebar-on' : ''}>
+            <div className={'sidebar-container '+(cur_title!==null ? 'sidebar-on' : 'sidebar-off')}>
                 <div className="sidebar-shadow" onClick={this.do_back_bound} onTouchEnd={(e)=>{e.preventDefault();e.target.click();}} />
                 <div ref={this.sidebar_ref} className="sidebar">
                     {cur_content}
