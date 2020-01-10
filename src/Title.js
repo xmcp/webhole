@@ -7,6 +7,7 @@ import {ConfigUI} from './Config';
 
 import './Title.css';
 import {BalanceShower} from './BalanceShower';
+import {cache} from './cache';
 
 const flag_re=/^\/\/setflag ([a-zA-Z0-9_]+)=(.*)$/;
 
@@ -36,6 +37,7 @@ const HELP_TEXT=(
                             }
                         });
                 }
+                cache().clear();
                 setTimeout(()=>{
                     window.location.reload(true);
                 },200);

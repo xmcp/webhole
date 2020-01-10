@@ -1,3 +1,4 @@
+const HOLE_CACHE_DB_NAME='hole_cache_db';
 const CACHE_DB_VER=1;
 const MAINTENANCE_STEP=500;
 const MAINTENANCE_COUNT=5000;
@@ -6,7 +7,7 @@ class Cache {
     constructor() {
         this.db=null;
         this.added_items_since_maintenance=0;
-        const open_req=indexedDB.open('hole_cache_db',CACHE_DB_VER);
+        const open_req=indexedDB.open(HOLE_CACHE_DB_NAME,CACHE_DB_VER);
         open_req.onerror=console.error.bind(console);
         open_req.onupgradeneeded=(event)=>{
             console.log('comment cache db upgrade');
@@ -92,6 +93,13 @@ class Cache {
             this.added_items_since_maintenance=0;
         };
         count_req.onerror=console.error.bind(console);
+    }
+
+    clear() {
+        if(!this.db)
+            return;
+        indexedDB.deleteDatabase(HOLE_CACHE_DB_NAME);
+        console.log('delete comment cache db');
     }
 };
 
