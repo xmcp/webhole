@@ -25,6 +25,7 @@ class Cache {
     }
 
     get(pid,target_version) {
+        pid=parseInt(pid);
         return new Promise((resolve,reject)=>{
             if(!this.db)
                 return resolve(null);
@@ -37,12 +38,12 @@ class Cache {
                     //console.log('comment cache miss '+pid);
                     resolve(null);
                 } else if(target_version===res.version) { // hit
-                    console.log('comment cache hit '+pid);
+                    console.log('comment cache hit',pid);
                     res.last_access=(+new Date());
                     store.put(res);
                     resolve(res.data);
                 } else { // expired
-                    console.log('comment cache expired '+pid+': ver',res.version,'target',target_version);
+                    console.log('comment cache expired',pid,': ver',res.version,'target',target_version);
                     store.delete(pid);
                     resolve(null);
                 }
@@ -52,6 +53,7 @@ class Cache {
     }
 
     put(pid,target_version,data) {
+        pid=parseInt(pid);
         return new Promise((resolve,reject)=>{
             if(!this.db)
                 return resolve();
@@ -65,6 +67,23 @@ class Cache {
             });
             if(++this.added_items_since_maintenance===MAINTENANCE_STEP)
                 setTimeout(this.maintenance.bind(this),1);
+        });
+    }
+
+    delete(pid) {
+        pid=parseInt(pid);
+        return new Promise((resolve,reject)=>{
+            if(!this.db)
+                return resolve();
+            const tx=this.db.transaction(['comment'],'readwrite');
+            const store=tx.objectStore('comment');
+            let req=store.delete(pid);
+            //console.log('comment cache delete',pid);
+            req.onerror=()=>{
+                console.warn('comment cache delete failed ',pid);
+                return resolve();
+            };
+            req.onsuccess=()=>resolve();
         });
     }
 
@@ -88,7 +107,7 @@ class Cache {
                     }
                 };
             } else {
-                console.log('comment cache db not full',count);
+                console.log('comment cache db no need to maintenance',count);
             }
             this.added_items_since_maintenance=0;
         };

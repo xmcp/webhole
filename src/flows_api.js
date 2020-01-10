@@ -31,7 +31,9 @@ export const API={
                     else throw new Error(JSON.stringify(json));
                 }
 
-                cache().put(pid,cache_version,json);
+                cache().delete(pid).then(()=>{
+                    cache().put(pid,cache_version,json);
+                });
 
                 // also change load_replies_with_cache!
                 json.data=json.data
@@ -85,6 +87,7 @@ export const API={
         })
             .then(get_json)
             .then((json)=>{
+                cache().delete(pid);
                 if(json.code!==0) {
                     if(json.msg && json.msg==='已经关注过了') {}
                     else {
@@ -143,7 +146,7 @@ export const API={
             .then(get_json)
             .then((json)=>{
                 if(json.code!==0) {
-                    if(json.msg) alert(json.msg);
+                    if(json.msg) throw new Error(json.msg);
                     throw new Error(JSON.stringify(json));
                 }
                 return json;
@@ -174,7 +177,7 @@ export const API={
             .then(get_json)
             .then((json)=>{
                 if(json.code!==0) {
-                    if(json.msg) alert(json.msg);
+                    if(json.msg) throw new Error(json.msg);
                     throw new Error(JSON.stringify(json));
                 }
                 return json;
