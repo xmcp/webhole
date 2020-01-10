@@ -56,6 +56,7 @@ class App extends Component {
                     ns.splice(1,1);
                 ns=ns.concat([[title,content]]);
             } else if(mode==='pop') {
+                if(ns.length===1) return;
                 ns.pop();
             } else if(mode==='replace') {
                 ns.pop();
