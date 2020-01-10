@@ -22,14 +22,15 @@ window.LATEST_POST_ID=parseInt(localStorage['_LATEST_POST_ID'],10)||0;
 const DZ_NAME='洞主';
 
 function load_single_meta(show_sidebar,token) {
-    return (pid)=>{
+    return (pid,replace=false)=>{
         let color_picker=new ColorPicker();
         let title_elem='树洞 #'+pid;
         show_sidebar(
             title_elem,
             <div className="box box-tip">
                 正在加载 #{pid}
-            </div>
+            </div>,
+            replace?'replace':'push'
         );
         API.get_single(pid,token)
             .then((single)=>{
@@ -57,7 +58,7 @@ function load_single_meta(show_sidebar,token) {
                 show_sidebar(
                     title_elem,
                     <div className="box box-tip">
-                        <p><a onClick={()=>load_single_meta(show_sidebar,token)(pid)}>重新加载</a></p>
+                        <p><a onClick={()=>load_single_meta(show_sidebar,token)(pid,true)}>重新加载</a></p>
                         <p>{''+e}</p>
                     </div>,
                     'replace'
@@ -450,6 +451,7 @@ class FlowItemRow extends PureComponent {
         this.state={
             replies: [],
             reply_status: 'done',
+            reply_error: null,
             info: Object.assign({},props.info,{variant: {}}),
             attention: false,
         };
@@ -466,6 +468,7 @@ class FlowItemRow extends PureComponent {
         console.log('fetching reply',this.state.info.pid);
         this.setState({
             reply_status: 'loading',
+            reply_error: null,
         });
         API.load_replies_with_cache(this.state.info.pid,this.props.token,this.color_picker,parseInt(this.state.info.reply))
             .then((json)=>{
@@ -479,6 +482,7 @@ class FlowItemRow extends PureComponent {
                     }),
                     attention: !!json.attention,
                     reply_status: 'done',
+                    reply_error: null,
                 }),callback);
             })
             .catch((e)=>{
@@ -486,6 +490,7 @@ class FlowItemRow extends PureComponent {
                 this.setState({
                     replies: [],
                     reply_status: 'failed',
+                    reply_error: ''+e,
                 },callback);
             });
     }
@@ -535,7 +540,10 @@ class FlowItemRow extends PureComponent {
                 <div className="flow-reply-row">
                     {this.state.reply_status==='loading' && <div className="box box-tip">加载中</div>}
                     {this.state.reply_status==='failed' &&
-                        <div className="box box-tip"><a onClick={()=>{this.load_replies()}}>重新加载</a></div>
+                        <div className="box box-tip">
+                            <p><a onClick={()=>{this.load_replies()}}>重新加载评论</a></p>
+                            <p>{this.state.reply_error}</p>
+                        </div>
                     }
                     {this.state.replies.slice(0,PREVIEW_REPLY_COUNT).map((reply)=>(
                         <Reply key={reply.cid} info={reply} color_picker={this.color_picker} show_pid={show_pid} />
