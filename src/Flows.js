@@ -532,7 +532,7 @@ class FlowItemRow extends PureComponent {
             }}>
                 <FlowItem parts={parts} info={this.state.info} attention={this.state.attention} img_clickable={false} is_quote={this.props.is_quote}
                     color_picker={this.color_picker} show_pid={show_pid} replies={this.state.replies} />
-                <div className={'flow-reply-row'+(window.config.horizontal_scroll ? '' : ' config-no-scroll')}>
+                <div className="flow-reply-row">
                     {this.state.reply_status==='loading' && <div className="box box-tip">加载中</div>}
                     {this.state.reply_status==='failed' &&
                         <div className="box box-tip"><a onClick={()=>{this.load_replies()}}>重新加载</a></div>

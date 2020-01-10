@@ -14,9 +14,7 @@ const DEFAULT_CONFIG={
     background_img: 'static/bg/gbp.jpg',
     background_color: '#113366',
     pressure: false,
-    horizontal_scroll: true,
     easter_egg: true,
-    comment_cache: false,
     color_scheme: 'default',
 };
 
@@ -223,7 +221,6 @@ export class ConfigUI extends PureComponent {
             <div>
                 <div className="box config-ui-header">
                     <p>这些功能仍在测试，可能不稳定（<a onClick={this.reset_settings.bind(this)}>全部重置</a>）</p>
-                    <p>我们会收集你的设置，以用于改进产品</p>
                     <p><b>修改设置后 <a onClick={()=>{window.location.reload()}}>刷新页面</a> 方可生效</b></p>
                 </div>
                 <div className="box">
@@ -233,14 +230,6 @@ export class ConfigUI extends PureComponent {
                     <hr />
                     <ConfigSwitch callback={this.save_changes_bound} id="pressure" name="快速返回"
                                   description="短暂按住 Esc 键或重压屏幕（3D Touch）可以快速返回或者刷新树洞"
-                    />
-                    <hr />
-                    <ConfigSwitch callback={this.save_changes_bound} id="horizontal_scroll" name="横向滚动"
-                                  description="在树洞列表里横向滚动浏览回复，如果经常误触可以把它关掉"
-                    />
-                    <hr />
-                    <ConfigSwitch callback={this.save_changes_bound} id="comment_cache" name="评论缓存"
-                                  description="缓存已读树洞的评论（加载更快，但可能有bug）"
                     />
                     <hr />
                     <ConfigSwitch callback={this.save_changes_bound} id="easter_egg" name="允许彩蛋"

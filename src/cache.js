@@ -6,23 +6,21 @@ class Cache {
     constructor() {
         this.db=null;
         this.added_items_since_maintenance=0;
-        if(window.config.comment_cache) {
-            const open_req=indexedDB.open('hole_cache_db',CACHE_DB_VER);
-            open_req.onerror=console.error.bind(console);
-            open_req.onupgradeneeded=(event)=>{
-                console.log('comment cache db upgrade');
-                const db=event.target.result;
-                const store=db.createObjectStore('comment',{
-                    keyPath: 'pid',
-                });
-                store.createIndex('last_access','last_access',{unique: false});
-            };
-            open_req.onsuccess=(event)=>{
-                console.log('comment cache db loaded');
-                this.db=event.target.result;
-                setTimeout(this.maintenance.bind(this),1);
-            };
-        }
+        const open_req=indexedDB.open('hole_cache_db',CACHE_DB_VER);
+        open_req.onerror=console.error.bind(console);
+        open_req.onupgradeneeded=(event)=>{
+            console.log('comment cache db upgrade');
+            const db=event.target.result;
+            const store=db.createObjectStore('comment',{
+                keyPath: 'pid',
+            });
+            store.createIndex('last_access','last_access',{unique: false});
+        };
+        open_req.onsuccess=(event)=>{
+            console.log('comment cache db loaded');
+            this.db=event.target.result;
+            setTimeout(this.maintenance.bind(this),1);
+        };
     }
 
     get(pid,target_version) {
@@ -35,15 +33,15 @@ class Cache {
             get_req.onsuccess=()=>{
                 let res=get_req.result;
                 if(!res)  {
-                    console.log('cache miss');
+                    //console.log('comment cache miss '+pid);
                     resolve(null);
                 } else if(target_version===res.version) { // hit
-                    console.log('cache hit');
+                    console.log('comment cache hit '+pid);
                     res.last_access=(+new Date());
                     store.put(res);
                     resolve(res.data);
                 } else { // expired
-                    console.log('cache expired: ver',res.version,'target',target_version);
+                    console.log('comment cache expired '+pid+': ver',res.version,'target',target_version);
                     store.delete(pid);
                     resolve(null);
                 }
