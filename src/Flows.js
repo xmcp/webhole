@@ -453,7 +453,7 @@ class FlowItemRow extends PureComponent {
             reply_status: 'done',
             reply_error: null,
             info: Object.assign({},props.info,{variant: {}}),
-            attention: false,
+            attention: props.attention_override===null ? false : props.attention_override,
         };
         this.color_picker=new ColorPicker();
     }
@@ -649,6 +649,7 @@ function FlowChunk(props) {
                                 </div>
                             }
                             <FlowItemRow info={info} show_sidebar={props.show_sidebar} token={token}
+                                    attention_override={props.mode==='attention_finished' ? true : null}
                                     deletion_detect={props.deletion_detect} search_param={props.search_param} />
                         </div>
                     </LazyLoad>
