@@ -51,11 +51,10 @@
 }
 
 .sidebar-on .sidebar, .sidebar-on .sidebar-title {
-    opacity: 1;
     animation: sidebar-fadein .15s cubic-bezier(0.15, 0.4, 0.6, 1);
 }
 .sidebar-off .sidebar, .sidebar-off .sidebar-title {
-    opacity: 0;
+    visibility: hidden;
     pointer-events: none;
     backdrop-filter: none;
     animation: sidebar-fadeout .2s cubic-bezier(0.15, 0.4, 0.6, 1);
@@ -66,11 +65,13 @@
 
 @keyframes sidebar-fadeout {
     from {
+        visibility: visible;
         opacity: 1;
         transform: none;
         backdrop-filter: none;
     }
     to {
+        visibility: visible;
         opacity: 0;
         transform: translateX(40vw);
         backdrop-filter: none;
@@ -89,8 +90,8 @@
     }
 }
 @keyframes sidebar-initial {
-    from {visibility: hidden;}
-    to {visibility: hidden;}
+    from {opacity: 0;}
+    to {opacity: 0;}
 }
 
 .sidebar-title {
