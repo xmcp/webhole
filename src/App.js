@@ -6,6 +6,7 @@ import {PressureHelper} from './PressureHelper';
 import {TokenCtx} from './UserAction';
 import {load_config,bgimg_style} from './Config';
 import {listen_darkmode} from './infrastructure/functions';
+import {LoginPopup, TitleLine} from './infrastructure/widgets';
 
 const MAX_SIDEBAR_STACK_SIZE=10;
 
@@ -99,7 +100,14 @@ class App extends Component {
                         {!token.value &&
                             <div className="flow-item-row aux-margin">
                                 <div className="box box-tip">
-                                    <p>点击右上角的 <span className="icon icon-login" /> 按钮登录</p>
+                                    <p>
+                                        <LoginPopup token_callback={token.set_value}>{(do_popup)=>(
+                                            <a onClick={do_popup}>
+                                                <span className="icon icon-login" />
+                                                &nbsp;登录到 PKU Helper
+                                            </a>
+                                        )}</LoginPopup>
+                                    </p>
                                 </div>
                             </div>
                         }
@@ -107,11 +115,7 @@ class App extends Component {
                             <Flow key={this.state.flow_render_key} show_sidebar={this.show_sidebar_bound}
                                   mode={this.state.mode} search_text={this.state.search_text} token={token.value}
                             /> :
-                            <div className="flow-item-row aux-margin">
-                                <div className="box box-tip">
-                                    <p>本网站仅限校内用户使用，请登录后访问。</p>
-                                </div>
-                            </div>
+                            <TitleLine text="请登录后查看内容" />
                         }
                         <br />
                     </div>

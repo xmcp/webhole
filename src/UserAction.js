@@ -5,8 +5,7 @@ import {MessageViewer} from './Message';
 import {API_VERSION_PARAM, PKUHELPER_ROOT, API, get_json, token_param} from './flows_api';
 
 import './UserAction.css';
-
-const LOGIN_BASE=PKUHELPER_ROOT+'services/login';
+import {LoginPopup} from './infrastructure/widgets';
 
 const BASE64_RATE=4/3;
 const MAX_IMG_DIAM=8000;
@@ -73,117 +72,6 @@ class ResetUsertokenWidget extends Component {
 }
 
 export class LoginForm extends Component {
-    constructor(props) {
-        super(props);
-        this.state={
-            loading_status: 'done',
-        };
-
-        this.username_ref=React.createRef();
-        this.password_ref=React.createRef();
-        this.input_token_ref=React.createRef();
-    }
-
-    do_sendcode(api_name) {
-        if(this.state.loading_status==='loading')
-            return;
-
-        this.setState({
-            loading_status: 'loading',
-        },()=>{
-            fetch(
-                PKUHELPER_ROOT+'api_xmcp/isop/'+api_name
-                +'?user='+encodeURIComponent(this.username_ref.current.value)
-                +API_VERSION_PARAM()
-            )
-                .then(get_json)
-                .then((json)=>{
-                    console.log(json);
-                    if(!json.success)
-                        throw new Error(JSON.stringify(json));
-
-                    alert(json.msg);
-                    this.setState({
-                        loading_status: 'done',
-                    });
-                })
-                .catch((e)=>{
-                    console.error(e);
-                    alert('发送失败\n'+e);
-                    this.setState({
-                        loading_status: 'done',
-                    });
-                });
-
-        });
-    }
-
-    do_login(set_token) {
-        if(this.state.loading_status==='loading')
-            return;
-
-        this.setState({
-            loading_status: 'loading',
-        },()=>{
-            let data=new URLSearchParams();
-            data.append('username', this.username_ref.current.value);
-            data.append('valid_code', this.password_ref.current.value);
-            data.append('isnewloginflow', 'true');
-            fetch(LOGIN_BASE+'/login.php?platform=webhole'+API_VERSION_PARAM(), {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: data,
-            })
-                .then(get_json)
-                .then((json)=>{
-                    if(json.code!==0) {
-                        if(json.msg) throw new Error(json.msg);
-                        throw new Error(JSON.stringify(json));
-                    }
-
-                    set_token(json.user_token);
-                    alert(`成功以 ${json.name} 的身份登录`);
-                    this.setState({
-                        loading_status: 'done',
-                    });
-                })
-                .catch((e)=>{
-                    console.error(e);
-                    alert('登录失败\n'+e);
-                    this.setState({
-                        loading_status: 'done',
-                    });
-                });
-        });
-    }
-
-    do_input_token(set_token) {
-        if(this.state.loading_status==='loading')
-            return;
-
-        let token=this.input_token_ref.current.value;
-        this.setState({
-            loading_status: 'loading',
-        },()=>{
-            API.get_attention(token)
-                .then((_)=>{
-                    this.setState({
-                        loading_status: 'done',
-                    });
-                    set_token(token);
-                })
-                .catch((e)=>{
-                    alert('Token检验失败\n'+e);
-                    this.setState({
-                        loading_status: 'done',
-                    });
-                    console.error(e);
-                });
-        });
-    }
-
     copy_token(token) {
         if(copy(token))
             alert('复制成功！\n请一定不要泄露哦');
@@ -217,43 +105,19 @@ export class LoginForm extends Component {
                                 User Token 用于迁移登录状态，切勿告知他人，若怀疑被盗号请尽快 <ResetUsertokenWidget token={token.value} />
                             </p>
                         </div> :
-                        <div>
-                            <p>接收验证码来登录 PKU Helper</p>
-                            <p>
-                                <label>
-                                    　学号&nbsp;
-                                    <input ref={this.username_ref} type="tel" />
-                                </label>
-                                <span className="login-type">
-                                    <a onClick={(e)=>this.do_sendcode('validcode')}>
-                                        &nbsp;短信&nbsp;
-                                    </a>
-                                    /
-                                    <a onClick={(e)=>this.do_sendcode('validcode2mail')}>
-                                        &nbsp;邮件&nbsp;
-                                    </a>
-                                </span>
-                            </p>
-                            <p>
-                                <label>
-                                    验证码&nbsp;
-                                    <input ref={this.password_ref} type="tel" />
-                                </label>
-                                <button type="button" disabled={this.state.loading_status==='loading'}
-                                        onClick={(e)=>this.do_login(token.set_value)}>
-                                    登录
-                                </button>
-                            </p>
-                            <hr />
-                            <p>从其他设备导入登录状态</p>
-                            <p>
-                                <input ref={this.input_token_ref} placeholder="User Token" />
-                                <button type="button" disabled={this.state.loading_status==='loading'}
-                                        onClick={(e)=>this.do_input_token(token.set_value)}>
-                                    导入
-                                </button>
-                            </p>
-                        </div>
+                        <LoginPopup token_callback={token.set_value}>{(do_popup)=>(
+                            <div>
+                                <p>
+                                    <button type="button" onClick={do_popup}>
+                                        <span className="icon icon-login" />
+                                        &nbsp;登录
+                                    </button>
+                                </p>
+                                <p><small>
+                                    PKU Helper 面向北京大学学生，通过 ISOP（北京大学数据共享开放服务平台）验证您的身份并提供服务。
+                                </small></p>
+                            </div>
+                        )}</LoginPopup>
                     }
                 </div>
             }</TokenCtx.Consumer>

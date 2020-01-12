@@ -2,16 +2,8 @@
     margin: 1em 0;
     text-align: center;
 }
-.login-form input {
-    width: 8rem;
-}
 .login-form button {
     width: 6rem;
-}
-.login-type {
-    display: inline-block;
-    width: 6rem;
-    margin: 0 .5rem;
 }
 
 .reply-form {

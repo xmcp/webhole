@@ -1,12 +1,9 @@
-import {get_json} from './infrastructure/functions';
+import {get_json, API_VERSION_PARAM} from './infrastructure/functions';
 import {PKUHELPER_ROOT} from './infrastructure/const';
 import {API_BASE} from './Common';
 import {cache} from './cache';
 
-export function API_VERSION_PARAM() {
-    return '&PKUHelperAPI=3.0&jsapiver='+encodeURIComponent((process.env.REACT_APP_BUILD_INFO||'null')+'-'+Math.floor(+new Date()/3600000));
-}
-export {PKUHELPER_ROOT};
+export {PKUHELPER_ROOT, API_VERSION_PARAM};
 
 export function token_param(token) {
     return API_VERSION_PARAM()+(token ? ('&user_token='+token) : '');
