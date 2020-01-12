@@ -64,13 +64,14 @@ export class SafeTextarea extends Component {
         this.clear=this.clear.bind(this);
         this.area_ref=React.createRef();
         this.change_callback=props.on_change||(()=>{});
-        this.change_callback(this.state.text);
         this.submit_callback=props.on_submit||(()=>{});
     }
 
     componentDidMount() {
         this.setState({
             text: window.TEXTAREA_BACKUP[this.props.id]||''
+        },()=>{
+            this.change_callback(this.state.text);
         });
     }
 
