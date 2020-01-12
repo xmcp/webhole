@@ -270,17 +270,22 @@ export class ReplyForm extends Component {
         };
         this.on_change_bound=this.on_change.bind(this);
         this.area_ref=this.props.area_ref||React.createRef();
+        this.global_keypress_handler_bound=this.global_keypress_handler.bind(this);
     }
 
-    componentDidMount() {
-        document.addEventListener('keypress',(e)=>{
-            if(e.code==='Enter' && !e.ctrlKey && !e.altKey && ['input','textarea'].indexOf(e.target.tagName.toLowerCase())===-1) {
-                if(this.area_ref.current) {
-                    e.preventDefault();
-                    this.area_ref.current.focus();
-                }
+    global_keypress_handler(e) {
+        if(e.code==='Enter' && !e.ctrlKey && !e.altKey && ['input','textarea'].indexOf(e.target.tagName.toLowerCase())===-1) {
+            if(this.area_ref.current) {
+                e.preventDefault();
+                this.area_ref.current.focus();
             }
-        });
+        }
+    }
+    componentDidMount() {
+        document.addEventListener('keypress',this.global_keypress_handler_bound);
+    }
+    componentWillUnmount() {
+        document.removeEventListener('keypress',this.global_keypress_handler_bound);
     }
 
     on_change(value) {
