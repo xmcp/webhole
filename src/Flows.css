@@ -52,6 +52,7 @@
     margin-left: -25px;
     padding-left: 18px;
     overflow-x: auto;
+    -ms-overflow-style: none;
 }
 
 .flow-reply-row::-webkit-scrollbar {
