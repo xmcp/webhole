@@ -13,6 +13,7 @@ html::-webkit-scrollbar {
 }
 html {
     scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
 :root {

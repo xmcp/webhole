@@ -59,6 +59,7 @@
 }
 .flow-reply-row {
     scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
 .flow-reply-row:empty {
