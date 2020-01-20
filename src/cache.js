@@ -48,7 +48,11 @@ class Cache {
                     resolve(null);
                 }
             };
-            get_req.onerror=reject;
+            get_req.onerror=(e)=>{
+                console.warn('comment cache indexeddb open failed');
+                console.error(e);
+                resolve(null);
+            };
         });
     }
 
@@ -100,7 +104,7 @@ class Cache {
                 store.index('last_access').openKeyCursor().onsuccess=(e)=>{
                     let cur=e.target.result;
                     if(cur) {
-                        console.log('maintenance: delete',cur);
+                        //console.log('maintenance: delete',cur);
                         store.delete(cur.primaryKey);
                         if(--count>MAINTENANCE_COUNT)
                             cur.continue();
