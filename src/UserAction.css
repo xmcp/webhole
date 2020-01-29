@@ -57,3 +57,24 @@
     min-height: 5em;
     height: 20em;
 }
+
+.life-info-table {
+    width: 100%;
+    margin: auto;
+}
+@media screen and (min-width: 375px) {
+    .life-info-table {
+        width: 315px;
+    }
+}
+.life-info-table td {
+    padding: .25em;
+}
+.life-info-table td:nth-child(1) {
+    font-weight: bold;
+    text-align: right;
+}
+
+.life-info-error a {
+    --var-link-color: hsl(25,100%,45%);
+}
