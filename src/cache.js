@@ -1,12 +1,16 @@
 const HOLE_CACHE_DB_NAME='hole_cache_db';
 const CACHE_DB_VER=1;
-const MAINTENANCE_STEP=500;
-const MAINTENANCE_COUNT=5000;
+const MAINTENANCE_STEP=200;
+const MAINTENANCE_COUNT=2500;
+
+const ENC_KEY=42;
 
 class Cache {
     constructor() {
         this.db=null;
         this.added_items_since_maintenance=0;
+        this.encrypt=this.encrypt.bind(this);
+        this.decrypt=this.decrypt.bind(this);
         const open_req=indexedDB.open(HOLE_CACHE_DB_NAME,CACHE_DB_VER);
         open_req.onerror=console.error.bind(console);
         open_req.onupgradeneeded=(event)=>{
@@ -24,6 +28,40 @@ class Cache {
         };
     }
 
+    // use window.hole_cache.encrypt() only after cache is loaded!
+    encrypt(pid,data) {
+        let s=JSON.stringify(data);
+        let o='';
+        for(let i=0,key=(ENC_KEY^pid)%128;i<s.length;i++) {
+            let c=s.charCodeAt(i);
+            let new_key=(key^(c/2))%128;
+            o+=String.fromCharCode(key^s.charCodeAt(i));
+            key=new_key;
+        }
+        return o;
+    }
+
+    // use window.hole_cache.decrypt() only after cache is loaded!
+    decrypt(pid,s) {
+        let o='';
+        if(typeof(s)!==typeof('str'))
+            return null;
+
+        for(let i=0,key=(ENC_KEY^pid)%128;i<s.length;i++) {
+            let c=key^s.charCodeAt(i);
+            o+=String.fromCharCode(c);
+            key=(key^(c/2))%128;
+        }
+
+        try {
+            return JSON.parse(o);
+        } catch(e) {
+            console.error('decrypt failed');
+            console.trace(e);
+            return null;
+        }
+    }
+
     get(pid,target_version) {
         pid=parseInt(pid);
         return new Promise((resolve,reject)=>{
@@ -34,14 +72,15 @@ class Cache {
             const get_req=store.get(pid);
             get_req.onsuccess=()=>{
                 let res=get_req.result;
-                if(!res)  {
+                if(!res || !res.data_str)  {
                     //console.log('comment cache miss '+pid);
                     resolve(null);
                 } else if(target_version===res.version) { // hit
                     console.log('comment cache hit',pid);
                     res.last_access=(+new Date());
                     store.put(res);
-                    resolve(res.data);
+                    let data=this.decrypt(pid,res.data_str);
+                    resolve(data); // obj or null
                 } else { // expired
                     console.log('comment cache expired',pid,': ver',res.version,'target',target_version);
                     store.delete(pid);
@@ -66,7 +105,7 @@ class Cache {
             store.put({
                 pid: pid,
                 version: target_version,
-                data: data,
+                data_str: this.encrypt(pid,data),
                 last_access: +new Date(),
             });
             if(++this.added_items_since_maintenance===MAINTENANCE_STEP)
@@ -127,7 +166,7 @@ class Cache {
 };
 
 export function cache() {
-    if(!window._cache)
-        window._cache=new Cache();
-    return window._cache;
+    if(!window.hole_cache)
+        window.hole_cache=new Cache();
+    return window.hole_cache;
 }
