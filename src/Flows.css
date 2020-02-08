@@ -54,6 +54,10 @@
     overflow-x: auto;
 }
 
+.flow-item pre, .flow-reply pre {
+    cursor: text;
+}
+
 .flow-reply-row::-webkit-scrollbar {
     display: none;
 }

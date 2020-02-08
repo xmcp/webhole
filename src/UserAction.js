@@ -63,8 +63,7 @@ class LifeInfoBox extends Component {
             )
                 .then(get_json)
                 .then((json)=>{
-                    console.log(json);
-
+                    //console.log(json);
                     this.setState({
                         [state_key]: json,
                     });
