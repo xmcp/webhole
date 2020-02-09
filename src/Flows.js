@@ -516,7 +516,7 @@ class FlowItemRow extends PureComponent {
             ['nickname',NICKNAME_RE],
         ];
         if(this.props.search_param)
-            hl_rules.push(['search',build_highlight_re(this.props.search_param,' ')]);
+            hl_rules.push(['search',build_highlight_re(this.props.search_param,' ','gi')]);
         let parts=split_text(this.state.info.text,hl_rules);
 
         let quote_id=null;

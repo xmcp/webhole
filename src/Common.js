@@ -13,8 +13,8 @@ function escape_regex(string) {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 }
 
-export function build_highlight_re(txt,split) {
-    return txt ? new RegExp(`(${txt.split(split).filter((x)=>!!x).map(escape_regex).join('|')})`,'g') : /^$/g;
+export function build_highlight_re(txt,split,option='g') {
+    return txt ? new RegExp(`(${txt.split(split).filter((x)=>!!x).map(escape_regex).join('|')})`,option) : /^$/g;
 }
 
 export function ColoredSpan(props) {
