@@ -1,17 +1,18 @@
 import React, {Component, PureComponent} from 'react';
-import copy from 'copy-to-clipboard';
 import {API_BASE, SafeTextarea, PromotionBar} from './Common';
 import {MessageViewer} from './Message';
+import {LoginPopup} from './infrastructure/widgets';
+import {ConfigUI} from './Config';
+import fixOrientation from 'fix-orientation';
+import copy from 'copy-to-clipboard';
+import {cache} from './cache';
 import {API_VERSION_PARAM, PKUHELPER_ROOT, API, get_json, token_param} from './flows_api';
 
 import './UserAction.css';
-import {LoginPopup} from './infrastructure/widgets';
-import {ConfigUI} from './Config';
-import {cache} from './cache';
 
 const BASE64_RATE=4/3;
 const MAX_IMG_DIAM=8000;
-const MAX_IMG_PX=6000000;
+const MAX_IMG_PX=5000000;
 const MAX_IMG_FILESIZE=450000*BASE64_RATE;
 
 export const TokenCtx=React.createContext({
@@ -543,11 +544,8 @@ export class PostForm extends Component {
             }
 
             let reader=new FileReader();
-            reader.onload=((event)=>{ // check size
-                const url=event.target.result;
+            function on_got_img(url) {
                 const image = new Image();
-                image.src=url;
-
                 image.onload=(()=>{
                     let width=image.width;
                     let height=image.height;
@@ -600,7 +598,13 @@ export class PostForm extends Component {
                         reject('图片过大，无法上传');
                     }
                 });
-            });
+                image.src=url;
+            }
+            reader.onload=(event)=>{
+                fixOrientation(event.target.result,{},(fixed_dataurl)=>{
+                    on_got_img(fixed_dataurl);
+                });
+            };
             reader.readAsDataURL(file);
         });
     }
