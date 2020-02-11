@@ -11,7 +11,9 @@ import {LoginPopup, TitleLine} from './infrastructure/widgets';
 const MAX_SIDEBAR_STACK_SIZE=10;
 
 function DeprecatedAlert(props) {
-    return null;
+    return (
+        <div id="global-hint-container" style={{display: 'none'}} />
+    );
 }
 
 class App extends Component {
