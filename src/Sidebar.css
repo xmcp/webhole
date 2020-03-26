@@ -21,10 +21,10 @@
 }
 
 .root-dark-mode .sidebar-on .sidebar-shadow {
-    opacity: .5;
+    opacity: .65;
 }
 .root-dark-mode .sidebar-on .sidebar-shadow:active {
-    opacity: .65;
+    opacity: .8;
 }
 
 .sidebar {
@@ -109,7 +109,7 @@
 }
 
 .root-dark-mode .sidebar-title {
-    background-color: hsla(0,0%,20%,.6);
+    background-color: hsla(0,0%,18%,.6);
     color: var(--foreground-dark);
     text-shadow: 0 0 3px black;
 }

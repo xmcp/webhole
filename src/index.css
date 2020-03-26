@@ -57,17 +57,31 @@ button, .button {
 }
 
 .root-dark-mode button, .root-dark-mode .button {
-    background-color: rgba(255,255,255,.6);
+    background-color: hsl(0,0%,30%);
+    color: var(--foreground-dark);
 }
 
 button:hover, .button:hover {
     background-color: rgba(255,255,255,.7);
 }
 
+.root-dark-mode button:hover, .root-dark-mode .button:hover {
+    background-color: hsl(0,0%,40%);
+}
+
 button:disabled, .button:disabled {
     background-color: rgba(128,128,128,.5);
 }
 
+.root-dark-mode button:disabled, .root-dark-mode .button:disabled {
+    background-color: hsl(0,0%,20%);
+    color: hsl(0,0%,60%);
+}
+
 .root-dark-mode input:not([type=file]), .root-dark-mode textarea {
-    background-color: hsl(0,0%,80%);
+    background-color: hsl(0,0%,30%);
+    color: var(--foreground-dark);
+}
+.root-dark-mode input:not([type=file])::placeholder {
+    color: var(--foreground-dark);
 }

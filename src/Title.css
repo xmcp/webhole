@@ -12,8 +12,8 @@
 }
 
 .root-dark-mode .title-bar {
-    background-color: hsla(0,0%,15%,.6);
-    box-shadow: 0 0 15px rgba(255,255,255,.2);
+    background-color: hsla(0,0%,12%,.8);
+    box-shadow: 0 0 5px rgba(255,255,255,.1);
 }
 
 .control-bar {
@@ -29,7 +29,7 @@
     border-radius: 5px;
 }
 .control-btn:hover {
-    background-color: #555555;
+    background-color: #666666;
     color: white;
 }
 .control-btn-label {
@@ -71,10 +71,12 @@
 }
 
 .root-dark-mode .control-search {
-    background-color: rgba(255,255,255,.7) !important;
+    background-color: hsla(0,0%,35%,.6) !important;
+    color: var(--foreground-dark);
 }
 .root-dark-mode .control-search:focus {
-    background-color: hsl(0,0%,90%) !important;
+    background-color: hsl(0,0%,80%) !important;
+    color: black !important;
 }
 
 .list-menu {

@@ -1,6 +1,6 @@
 :root {
     --box-bgcolor-light: hsl(0,0%,97%);
-    --box-bgcolor-dark: hsl(0,0%,20%);
+    --box-bgcolor-dark: hsl(0,0%,16%);
 }
 
 .box {
@@ -15,11 +15,7 @@
 .root-dark-mode .box {
     background-color: var(--box-bgcolor-dark);
     color: var(--foreground-dark);
-    box-shadow: 0 0 3px rgba(255,255,255,.2);
-}
-
-.root-dark-mode .sidebar .box {
-    --box-bgcolor-dark: hsl(0,0%,25%);
+    box-shadow: 0 0 2px rgba(255,255,255,.25), 0 0 7px rgba(0,0,0,.15);
 }
 
 .box-tip {
