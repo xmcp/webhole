@@ -1,4 +1,4 @@
-PKU Helper 网页版 P大树洞：[pkuhelper.pku.edu.cn/hole](https://pkuhelper.pku.edu.cn/hole/)
+网页版 T大树洞：[https://thuhole.github.io/](https://thuhole.github.io/)
 
 ## 浏览器兼容
 
@@ -22,13 +22,13 @@ PKU Helper 网页版 P大树洞：[pkuhelper.pku.edu.cn/hole](https://pkuhelper.
 
 ## 问题反馈
 
-对 PKU Helper 网页版的 bug 反馈请在相应仓库提交 Issue。
+对 T大树洞 网页版的 bug 反馈请在相应仓库提交 Issue。
 
 欢迎提出功能和 UI 建议，但可能不会被采纳。根据 GPL，你有权自行实现你的想法。
 
-不方便在 GitHub 上说明的问题可以邮件 xmcp at pku dot edu dot cn。邮件内容可能会被公开。
+不方便在 GitHub 上说明的问题可以邮件 thuhole at protonmail dot com。邮件内容可能会被公开。
 
-对 PKU Helper 后端服务、客户端、账号、树洞内容的反馈请联系相应人员，或邮件 helper at pku dot edu dot cn。
+对 T大树洞 后端服务、客户端、账号、树洞内容的反馈请联系相应人员，或邮件 thuhole at protonmail dot com。
 
 ## License
 

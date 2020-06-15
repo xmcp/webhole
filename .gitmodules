@@ -4,4 +4,4 @@
 
 [submodule "src/infrastructure"]
 	path = src/infrastructure
-	url = https://github.com/pkuhelper-web/infrastructure
+	url = https://github.com/thuhole/infrastructure
