@@ -1,5 +1,5 @@
 import React, {Component, PureComponent} from 'react';
-import {AppSwitcher} from './infrastructure/widgets';
+// import {AppSwitcher} from './infrastructure/widgets';
 import {InfoSidebar, PostForm} from './UserAction';
 import {TokenCtx} from './UserAction';
 
@@ -94,7 +94,7 @@ class ControlBar extends PureComponent {
                     />
                     <a className="no-underline control-btn" onClick={()=>{
                         this.props.show_sidebar(
-                            'P大树洞',
+                            'T大树洞',
                             <InfoSidebar show_sidebar={this.props.show_sidebar} />
                         )
                     }}>
@@ -124,15 +124,15 @@ class ControlBar extends PureComponent {
 export function Title(props) {
     return (
         <div className="title-bar">
-            <AppSwitcher appid="hole" />
+            {/* <AppSwitcher appid="hole" /> */}
             <div className="aux-margin">
                 <div className="title">
                     <p className="centered-line">
                         <span onClick={()=>props.show_sidebar(
-                            'P大树洞',
+                            'T大树洞',
                             <InfoSidebar show_sidebar={props.show_sidebar} />
                         )}>
-                            P大树洞
+                            T大树洞
                         </span>
                     </p>
                 </div>

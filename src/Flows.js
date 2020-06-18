@@ -8,14 +8,15 @@ import LazyLoad from './react-lazyload/src';
 import {AudioWidget} from './AudioWidget';
 import {TokenCtx, ReplyForm} from './UserAction';
 
-import {API, PKUHELPER_ROOT} from './flows_api';
+import {API, THUHOLE_API_ROOT} from './flows_api';
 
-const IMAGE_BASE=PKUHELPER_ROOT+'services/pkuhole/images/';
-const AUDIO_BASE=PKUHELPER_ROOT+'services/pkuhole/audios/';
+const IMAGE_BASE=THUHOLE_API_ROOT+'services/thuhole/images/';
+const AUDIO_BASE=THUHOLE_API_ROOT+'services/thuhole/audios/';
 
 const CLICKABLE_TAGS={a: true, audio: true};
 const PREVIEW_REPLY_COUNT=10;
-const QUOTE_BLACKLIST=['23333','233333','66666','666666','10086','10000','100000','99999','999999','55555','555555'];
+// const QUOTE_BLACKLIST=['23333','233333','66666','666666','10086','10000','100000','99999','999999','55555','555555'];
+const QUOTE_BLACKLIST=[];
 
 window.LATEST_POST_ID=parseInt(localStorage['_LATEST_POST_ID'],10)||0;
 
@@ -521,7 +522,8 @@ class FlowItemRow extends PureComponent {
 
         let quote_id=null;
         if(!this.props.is_quote)
-            for(let [mode,content] of parts)
+            for(let [mode,content] of parts) {
+                content = content.length > 0 ? content.substring(1) : content
                 if(mode==='pid' && QUOTE_BLACKLIST.indexOf(content)===-1 && parseInt(content)<parseInt(this.state.info.pid))
                     if(quote_id===null)
                         quote_id=parseInt(content);
@@ -529,6 +531,7 @@ class FlowItemRow extends PureComponent {
                         quote_id=null;
                         break;
                     }
+            }
 
         let res=(
             <div className={'flow-item-row flow-item-row-with-prompt'+(this.props.is_quote ? ' flow-item-row-quote' : '')} onClick={(event)=>{
@@ -809,7 +812,7 @@ export class Flow extends PureComponent {
                 <TitleLine text={
                     this.state.loading_status==='loading' ?
                         <span><span className="icon icon-loading" />&nbsp;Loading...</span> :
-                        '© xmcp'
+                        '© thuhole'
                 } />
             </div>
         );

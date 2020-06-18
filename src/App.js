@@ -106,14 +106,14 @@ class App extends Component {
                                         <LoginPopup token_callback={token.set_value}>{(do_popup)=>(
                                             <a onClick={do_popup}>
                                                 <span className="icon icon-login" />
-                                                &nbsp;登录到 PKU Helper
+                                                &nbsp;登录到 T大树洞
                                             </a>
                                         )}</LoginPopup>
                                     </p>
                                 </div>
                             </div>
                         }
-                        {this.inpku_flag||token.value ?
+                        {this.inpku_flag||token.value||true ?
                             <Flow key={this.state.flow_render_key} show_sidebar={this.show_sidebar_bound}
                                   mode={this.state.mode} search_text={this.state.search_text} token={token.value}
                             /> :

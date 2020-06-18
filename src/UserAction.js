@@ -6,7 +6,7 @@ import {ConfigUI} from './Config';
 import fixOrientation from 'fix-orientation';
 import copy from 'copy-to-clipboard';
 import {cache} from './cache';
-import {API_VERSION_PARAM, PKUHELPER_ROOT, API, get_json, token_param} from './flows_api';
+import {API_VERSION_PARAM, THUHOLE_API_ROOT, API, get_json, token_param} from './flows_api';
 
 import './UserAction.css';
 
@@ -20,179 +20,179 @@ export const TokenCtx=React.createContext({
     set_value: ()=>{},
 });
 
-class LifeInfoBox extends Component {
-    constructor(props) {
-        super(props);
-        if(!window._life_info_cache)
-            window._life_info_cache={};
-        this.CACHE_TIMEOUT_S=15;
-        this.state={
-            today_info: this.cache_get('today_info'),
-            card_balance: this.cache_get('card_balance'),
-            net_balance: this.cache_get('net_balance'),
-            mail_count: this.cache_get('mail_count'),
-        };
-        this.INTERNAL_NETWORK_FAILURE='_network_failure';
-        this.API_NAME={
-            today_info: 'hole/today_info',
-            card_balance: 'isop/card_balance',
-            net_balance: 'isop/net_balance',
-            mail_count: 'isop/mail_count',
-        };
-    }
-
-    cache_get(key) {
-        let cache_item=window._life_info_cache[key];
-        if(!cache_item || (+new Date())-cache_item[0]>1000*this.CACHE_TIMEOUT_S)
-            return null;
-        else
-            return cache_item[1];
-    }
-    cache_set(key,value) {
-        if(!window._life_info_cache[key] || window._life_info_cache[key][1]!==value)
-            window._life_info_cache[key]=[+new Date(),value];
-    }
-
-    load(state_key) {
-        this.setState({
-            [state_key]: null,
-        },()=>{
-            fetch(
-                PKUHELPER_ROOT+'api_xmcp/'+this.API_NAME[state_key]
-                +'?user_token='+encodeURIComponent(this.props.token)
-                +API_VERSION_PARAM()
-            )
-                .then(get_json)
-                .then((json)=>{
-                    //console.log(json);
-                    this.setState({
-                        [state_key]: json,
-                    });
-                })
-                .catch((e)=>{
-                    this.setState({
-                        [state_key]: {
-                            errMsg: '网络错误 '+e,
-                            errCode: this.INTERNAL_NETWORK_FAILURE,
-                            success: false,
-                        }
-                    });
-                })
-        });
-    }
-
-    componentDidMount() {
-        ['today_info','card_balance','net_balance','mail_count'].forEach((k)=>{
-            if(!this.state[k])
-                this.load(k);
-        });
-    }
-
-    reload_all() {
-        ['today_info','card_balance','net_balance','mail_count'].forEach((k)=>{
-            this.load(k);
-        });
-    }
-
-    render_line(state_key,title,value_fn,action,url_fn,do_login) {
-        let s=this.state[state_key];
-        if(!s)
-            return (
-                <tr>
-                    <td>{title}</td>
-                    <td>加载中……</td>
-                    <td />
-                </tr>
-            );
-        else if(!s.success) {
-            let type='加载失败';
-            if(s.errCode===this.INTERNAL_NETWORK_FAILURE)
-                type='网络错误';
-            else if(['E01','E02','E03'].indexOf(s.errCode)!==-1)
-                type='授权失效';
-
-            let details=JSON.stringify(s);
-            if(s.errMsg)
-                details=s.errMsg;
-            else if(s.error)
-                details=s.error;
-
-            return (
-                <tr>
-                    <td>{title}</td>
-                    <td className="life-info-error">
-                        <a onClick={()=>alert(details)}>{type}</a>
-                    </td>
-                    <td>
-                        {type==='授权失效' ?
-                            <a onClick={do_login}>
-                                <span className="icon icon-forward" />&nbsp;重新登录
-                            </a> :
-                            <a onClick={()=>this.load(state_key)}>
-                                <span className="icon icon-forward" />&nbsp;重试
-                            </a>
-                        }
-                    </td>
-                </tr>
-            )
-        }
-        else {
-            this.cache_set(state_key,s);
-
-            return (
-                <tr>
-                    <td>{title}</td>
-                    <td>{value_fn(s)}</td>
-                    <td>
-                        <a href={url_fn(s)} target="_blank">
-                            <span className="icon icon-forward" />&nbsp;{action}
-                        </a>
-                    </td>
-                </tr>
-            );
-        }
-    }
-
-    render() {
-        return (
-            <LoginPopup token_callback={(t)=>{
-                this.props.set_token(t);
-                this.reload_all();
-            }}>{(do_login)=>(
-                <div className="box">
-                    <table className="life-info-table">
-                        <tbody>
-                            {this.render_line(
-                                'today_info',
-                                '今日',(s)=>s.info,
-                                '校历',(s)=>s.schedule_url,
-                                do_login,
-                            )}
-                            {this.render_line(
-                                'card_balance',
-                                '校园卡',(s)=>`余额￥${s.balance.toFixed(2)}`,
-                                '充值',()=>'https://virtualprod.alipay.com/educate/educatePcRecharge.htm?schoolCode=PKU&schoolName=',
-                                do_login,
-                            )}
-                            {this.render_line(
-                                'net_balance',
-                                '网费',(s)=>`余额￥${s.balance.toFixed(2)}`,
-                                '充值',()=>'https://its.pku.edu.cn/epay.jsp',
-                                do_login,
-                            )}
-                            {this.render_line(
-                                'mail_count',
-                                '邮件',(s)=>`未读 ${s.count} 封`,
-                                '查看',()=>'https://mail.pku.edu.cn/',
-                                do_login,
-                            )}
-                        </tbody>
-                    </table>
-                </div>
-            )}</LoginPopup>
-        )
-    }
-}
+// class LifeInfoBox extends Component {
+//     constructor(props) {
+//         super(props);
+//         if(!window._life_info_cache)
+//             window._life_info_cache={};
+//         this.CACHE_TIMEOUT_S=15;
+//         this.state={
+//             today_info: this.cache_get('today_info'),
+//             card_balance: this.cache_get('card_balance'),
+//             net_balance: this.cache_get('net_balance'),
+//             mail_count: this.cache_get('mail_count'),
+//         };
+//         this.INTERNAL_NETWORK_FAILURE='_network_failure';
+//         this.API_NAME={
+//             today_info: 'hole/today_info',
+//             card_balance: 'isop/card_balance',
+//             net_balance: 'isop/net_balance',
+//             mail_count: 'isop/mail_count',
+//         };
+//     }
+//
+//     cache_get(key) {
+//         let cache_item=window._life_info_cache[key];
+//         if(!cache_item || (+new Date())-cache_item[0]>1000*this.CACHE_TIMEOUT_S)
+//             return null;
+//         else
+//             return cache_item[1];
+//     }
+//     cache_set(key,value) {
+//         if(!window._life_info_cache[key] || window._life_info_cache[key][1]!==value)
+//             window._life_info_cache[key]=[+new Date(),value];
+//     }
+//
+//     load(state_key) {
+//         this.setState({
+//             [state_key]: null,
+//         },()=>{
+//             fetch(
+//                 PKUHELPER_ROOT+'api_xmcp/'+this.API_NAME[state_key]
+//                 +'?user_token='+encodeURIComponent(this.props.token)
+//                 +API_VERSION_PARAM()
+//             )
+//                 .then(get_json)
+//                 .then((json)=>{
+//                     //console.log(json);
+//                     this.setState({
+//                         [state_key]: json,
+//                     });
+//                 })
+//                 .catch((e)=>{
+//                     this.setState({
+//                         [state_key]: {
+//                             errMsg: '网络错误 '+e,
+//                             errCode: this.INTERNAL_NETWORK_FAILURE,
+//                             success: false,
+//                         }
+//                     });
+//                 })
+//         });
+//     }
+//
+//     componentDidMount() {
+//         ['today_info','card_balance','net_balance','mail_count'].forEach((k)=>{
+//             if(!this.state[k])
+//                 this.load(k);
+//         });
+//     }
+//
+//     reload_all() {
+//         ['today_info','card_balance','net_balance','mail_count'].forEach((k)=>{
+//             this.load(k);
+//         });
+//     }
+//
+//     render_line(state_key,title,value_fn,action,url_fn,do_login) {
+//         let s=this.state[state_key];
+//         if(!s)
+//             return (
+//                 <tr>
+//                     <td>{title}</td>
+//                     <td>加载中……</td>
+//                     <td />
+//                 </tr>
+//             );
+//         else if(!s.success) {
+//             let type='加载失败';
+//             if(s.errCode===this.INTERNAL_NETWORK_FAILURE)
+//                 type='网络错误';
+//             else if(['E01','E02','E03'].indexOf(s.errCode)!==-1)
+//                 type='授权失效';
+//
+//             let details=JSON.stringify(s);
+//             if(s.errMsg)
+//                 details=s.errMsg;
+//             else if(s.error)
+//                 details=s.error;
+//
+//             return (
+//                 <tr>
+//                     <td>{title}</td>
+//                     <td className="life-info-error">
+//                         <a onClick={()=>alert(details)}>{type}</a>
+//                     </td>
+//                     <td>
+//                         {type==='授权失效' ?
+//                             <a onClick={do_login}>
+//                                 <span className="icon icon-forward" />&nbsp;重新登录
+//                             </a> :
+//                             <a onClick={()=>this.load(state_key)}>
+//                                 <span className="icon icon-forward" />&nbsp;重试
+//                             </a>
+//                         }
+//                     </td>
+//                 </tr>
+//             )
+//         }
+//         else {
+//             this.cache_set(state_key,s);
+//
+//             return (
+//                 <tr>
+//                     <td>{title}</td>
+//                     <td>{value_fn(s)}</td>
+//                     <td>
+//                         <a href={url_fn(s)} target="_blank">
+//                             <span className="icon icon-forward" />&nbsp;{action}
+//                         </a>
+//                     </td>
+//                 </tr>
+//             );
+//         }
+//     }
+//
+//     render() {
+//         return (
+//             <LoginPopup token_callback={(t)=>{
+//                 this.props.set_token(t);
+//                 this.reload_all();
+//             }}>{(do_login)=>(
+//                 <div className="box">
+//                     <table className="life-info-table">
+//                         <tbody>
+//                             {this.render_line(
+//                                 'today_info',
+//                                 '今日',(s)=>s.info,
+//                                 '校历',(s)=>s.schedule_url,
+//                                 do_login,
+//                             )}
+//                             {this.render_line(
+//                                 'card_balance',
+//                                 '校园卡',(s)=>`余额￥${s.balance.toFixed(2)}`,
+//                                 '充值',()=>'https://virtualprod.alipay.com/educate/educatePcRecharge.htm?schoolCode=PKU&schoolName=',
+//                                 do_login,
+//                             )}
+//                             {this.render_line(
+//                                 'net_balance',
+//                                 '网费',(s)=>`余额￥${s.balance.toFixed(2)}`,
+//                                 '充值',()=>'https://its.pku.edu.cn/epay.jsp',
+//                                 do_login,
+//                             )}
+//                             {this.render_line(
+//                                 'mail_count',
+//                                 '邮件',(s)=>`未读 ${s.count} 封`,
+//                                 '查看',()=>'https://mail.pku.edu.cn/',
+//                                 do_login,
+//                             )}
+//                         </tbody>
+//                     </table>
+//                 </div>
+//             )}</LoginPopup>
+//         )
+//     }
+// }
 
 export function InfoSidebar(props) {
     return (
@@ -207,23 +207,25 @@ export function InfoSidebar(props) {
                     <span className="icon icon-settings" /><label>网页版树洞设置</label>
                 </a>
                 &nbsp;&nbsp;
-                <a href="http://pkuhelper.pku.edu.cn/treehole_rules.html" target="_blank">
-                    <span className="icon icon-textfile" /><label>树洞规范</label>
-                </a>
-                &nbsp;&nbsp;
-                <a href="https://github.com/pkuhelper-web/webhole/issues" target="_blank">
+                {/*<a href="http://pkuhelper.pku.edu.cn/treehole_rules.html" target="_blank">*/}
+                {/*    <span className="icon icon-textfile" /><label>树洞规范</label>*/}
+                {/*</a>*/}
+                {/*&nbsp;&nbsp;*/}
+                <a href="https://github.com/thuhole/webhole/issues" target="_blank">
                     <span className="icon icon-github" /><label>意见反馈</label>
                 </a>
             </div>
             <div className="box help-desc-box">
                 <p>
-                    PKUHelper 网页版树洞 by @xmcp，
+                    T大树洞 网页版 by @thuhole，
                     基于&nbsp;
                     <a href="https://www.gnu.org/licenses/gpl-3.0.zh-cn.html" target="_blank">GPLv3</a>
-                    &nbsp;协议在 <a href="https://github.com/pkuhelper-web/webhole" target="_blank">GitHub</a> 开源
+                    &nbsp;协议在 <a href="https://github.com/thuhole/webhole" target="_blank">GitHub</a> 开源
                 </p>
                 <p>
-                    PKUHelper 网页版的诞生离不开&nbsp;
+                    T大树洞 网页版的诞生离不开&nbsp;
+                    <a href="https://github.com/pkuhelper-web/webhole" target="_blank" rel="noopener">P大树洞</a>
+                    、
                     <a href="https://reactjs.org/" target="_blank" rel="noopener">React</a>
                     、
                     <a href="https://icomoon.io/#icons" target="_blank" rel="noopener">IcoMoon</a>
@@ -280,7 +282,7 @@ class ResetUsertokenWidget extends Component {
                 this.setState({
                     loading_status: 'loading',
                 },()=>{
-                    fetch(PKUHELPER_ROOT+'api_xmcp/hole/reset_usertoken', {
+                    fetch(THUHOLE_API_ROOT+'api_xmcp/hole/reset_usertoken', {
                         method: 'post',
                         headers: {
                             'Content-Type': 'application/json',
@@ -329,9 +331,9 @@ export class LoginForm extends Component {
         return (
             <TokenCtx.Consumer>{(token)=>
                 <div>
-                    {!!token.value &&
-                        <LifeInfoBox token={token.value} set_token={token.set_value} />
-                    }
+                    {/*{!!token.value &&*/}
+                    {/*    <LifeInfoBox token={token.value} set_token={token.set_value} />*/}
+                    {/*}*/}
                     <div className="login-form box">
                         {token.value ?
                             <div>
@@ -354,7 +356,7 @@ export class LoginForm extends Component {
                                 </p>
                                 <p>
                                     <a onClick={this.copy_token.bind(this,token.value)}>复制 User Token</a><br />
-                                    User Token 用于迁移登录状态，切勿告知他人，若怀疑被盗号请尽快 <ResetUsertokenWidget token={token.value} />
+                                    User Token 用于迁移登录状态，切勿告知他人{/*，若怀疑被盗号请尽快 <ResetUsertokenWidget token={token.value} />*/}
                                 </p>
                             </div> :
                             <LoginPopup token_callback={token.set_value}>{(do_popup)=>(
@@ -366,7 +368,7 @@ export class LoginForm extends Component {
                                         </button>
                                     </p>
                                     <p><small>
-                                        PKU Helper 面向北京大学学生，通过 ISOP（北京大学数据共享开放服务平台）验证您的身份并提供服务。
+                                        T大树洞 面向清华大学学生，通过清华邮箱验证您的身份并提供服务。
                                     </small></p>
                                 </div>
                             )}</LoginPopup>

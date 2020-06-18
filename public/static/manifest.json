@@ -1,10 +1,10 @@
 {
   "short_name": "树洞",
-  "name": "P大树洞",
+  "name": "T大树洞",
   "icons": [
     {
-      "src": "favicon/256.png",
-      "sizes": "256x256",
+      "src": "favicon/512.png",
+      "sizes": "512x512",
       "type": "image/png"
     },
     {

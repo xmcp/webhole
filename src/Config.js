@@ -7,6 +7,7 @@ const BUILTIN_IMGS={
     'static/bg/eriri.jpg': '平成著名画师',
     'static/bg/yurucamp.jpg': '露营天下第一',
     'static/bg/minecraft.jpg': '麦恩·库拉夫特',
+    'static/bg/cyberpunk.jpg': '赛博城市',
     'static/bg/sif.jpg': '梦开始的地方',
 };
 
@@ -238,7 +239,7 @@ export class ConfigUI extends PureComponent {
                     <hr />
                     <p>
                         新功能建议或问题反馈请在&nbsp;
-                        <a href="https://github.com/pkuhelper-web/webhole/issues" target="_blank">GitHub <span className="icon icon-github" /></a>
+                        <a href="https://github.com/thuhole/webhole/issues" target="_blank">GitHub <span className="icon icon-github" /></a>
                         &nbsp;提出。
                     </p>
                 </div>

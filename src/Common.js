@@ -1,12 +1,12 @@
 import React, {Component, PureComponent} from 'react';
 import {format_time,Time,TitleLine} from './infrastructure/widgets';
-import {PKUHELPER_ROOT} from './flows_api';
+import {THUHOLE_API_ROOT} from './flows_api';
 
 import './Common.css';
 
 export {format_time,Time,TitleLine};
 
-export const API_BASE=PKUHELPER_ROOT+'services/pkuhole';
+export const API_BASE=THUHOLE_API_ROOT+'services/thuhole';
 
 // https://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
 function escape_regex(string) {
@@ -37,9 +37,9 @@ export class HighlightedText extends PureComponent {
                     let [rule,p]=part;
                     return (
                         <span key={idx}>{
-                            rule==='url_pid' ? <span className="url-pid-link" title={p}>/hole/##</span> :
+                            rule==='url_pid' ? <span className="url-pid-link" title={p}>/##</span> :
                             rule==='url' ? <a href={normalize_url(p)} target="_blank" rel="noopener">{p}</a> :
-                            rule==='pid' ? <a href={'##'+p} onClick={(e)=>{e.preventDefault(); this.props.show_pid(p);}}>{p}</a> :
+                            rule==='pid' ? <a href={'#'+p} onClick={(e)=>{e.preventDefault(); this.props.show_pid(p.substring(1));}}>{p}</a> :
                             rule==='nickname' ? <ColoredSpan colors={this.props.color_picker.get(p)}>{p}</ColoredSpan> :
                             rule==='search' ? <span className="search-query-highlight">{p}</span> :
                             p

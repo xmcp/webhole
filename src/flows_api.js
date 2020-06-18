@@ -1,9 +1,9 @@
 import {get_json, API_VERSION_PARAM} from './infrastructure/functions';
-import {PKUHELPER_ROOT} from './infrastructure/const';
+import {THUHOLE_API_ROOT} from './infrastructure/const';
 import {API_BASE} from './Common';
 import {cache} from './cache';
 
-export {PKUHELPER_ROOT, API_VERSION_PARAM};
+export {THUHOLE_API_ROOT, API_VERSION_PARAM};
 
 export function token_param(token) {
     return API_VERSION_PARAM()+(token ? ('&user_token='+token) : '');
