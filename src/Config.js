@@ -239,7 +239,7 @@ export class ConfigUI extends PureComponent {
                     <hr />
                     <p>
                         新功能建议或问题反馈请在&nbsp;
-                        <a href="https://github.com/thuhole/webhole/issues" target="_blank">GitHub <span className="icon icon-github" /></a>
+                        <a href="https://github.com/thuhole/thuhole-go-backend/issues" target="_blank">GitHub <span className="icon icon-github" /></a>
                         &nbsp;提出。
                     </p>
                 </div>
