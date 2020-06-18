@@ -344,10 +344,10 @@ export class LoginForm extends Component {
                                     </button>
                                     <br />
                                 </p>
-                                <p>
+                                {/*<p>*/}
                                     {/*根据计算中心要求，访问授权三个月内有效，过期需重新登录。*/}
-                                    T大树洞将会单向加密(i.e. 哈希散列)您的邮箱后再存入数据库，因此您的发帖具有较强的匿名性。具体可见我们的<a href="https://github.com/thuhole/thuhole-go-backend/blob/76f56e6b75257b59e552b6bdba77e114151fcad1/src/db.go#L184">后端开源代码</a>。
-                                </p>
+                                    {/*T大树洞将会单向加密(i.e. 哈希散列)您的邮箱后再存入数据库，因此您的发帖具有较强的匿名性。具体可见我们的<a href="https://github.com/thuhole/thuhole-go-backend/blob/76f56e6b75257b59e552b6bdba77e114151fcad1/src/db.go#L184">后端开源代码</a>。*/}
+                                {/*</p>*/}
                                 {/*<p>*/}
                                 {/*    <a onClick={()=>{this.props.show_sidebar(*/}
                                 {/*        '系统消息',*/}
