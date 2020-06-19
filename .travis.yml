@@ -1,0 +1,10 @@
+language: node_js
+node_js:
+  - "node"
+
+after_success:
+  - git config --global user.name "thuhole"
+  - git config --global user.email "thuhole@users.noreply.github.com"
+  - git remote rm origin
+  - git remote add origin https://thuhole:${GH_TOKEN}@github.com/thuhole/webhole.git
+  - REACT_APP_BUILD_INFO=$(TZ=America/New_York date +"%y%m%d%H%M%S") npm run deploy

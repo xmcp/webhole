@@ -5,6 +5,7 @@
   "dependencies": {
     "copy-to-clipboard": "^3.0.8",
     "fix-orientation": "^1.1.0",
+    "gh-pages": "^3.0.0",
     "load-script": "^1.0.0",
     "pressure": "^2.1.2",
     "react": "^16.9.0",
@@ -16,9 +17,11 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "eject": "react-scripts eject"
   },
-  "homepage": ".",
+  "homepage": "https://://cdn.jsdelivr.net/gh/thuhole/webhole@gh-pages",
   "browserslist": {
     "production": [
       ">0.2%",
