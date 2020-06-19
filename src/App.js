@@ -33,7 +33,7 @@ class App extends Component {
         this.on_pressure_bound=this.on_pressure.bind(this);
         // a silly self-deceptive approach to ban guests, enough to fool those muggles
         //                     document             cookie                    'pku_ip_flag=yes'
-        this.inpku_flag=window[atob('ZG9jdW1lbnQ')][atob('Y29va2ll')].indexOf(atob('cGt1X2lwX2ZsYWc9eWVz'))!==-1;
+        this.inthu_flag=window[atob('ZG9jdW1lbnQ')][atob('Y29va2ll')].indexOf(atob('dGh1X2lwX2ZsYWc9eWVz'))!==-1;
     }
 
     static is_darkmode() {
@@ -113,7 +113,7 @@ class App extends Component {
                                 </div>
                             </div>
                         }
-                        {this.inpku_flag||token.value||true ?
+                        {this.inthu_flag||token.value||true ?
                             <Flow key={this.state.flow_render_key} show_sidebar={this.show_sidebar_bound}
                                   mode={this.state.mode} search_text={this.state.search_text} token={token.value}
                             /> :
