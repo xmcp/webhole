@@ -1,4 +1,4 @@
-网页版 T大树洞：[https://thuhole.tech/](https://thuhole.tech/)
+网页版 T大树洞：[https://thuhole.com/](https://thuhole.com/)
 
 ![https://api.travis-ci.org/thuhole/webhole.svg?branch=master](https://api.travis-ci.org/thuhole/webhole.svg?branch=master)
 
