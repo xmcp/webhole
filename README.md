@@ -1,4 +1,6 @@
-网页版 T大树洞：[https://thuhole.github.io/](https://thuhole.github.io/)
+网页版 T大树洞：[https://thuhole.tech/](https://thuhole.tech/)
+
+![https://api.travis-ci.org/thuhole/webhole.svg?branch=master](https://api.travis-ci.org/thuhole/webhole.svg?branch=master)
 
 ## 浏览器兼容
 
