@@ -10,4 +10,4 @@ after_success:
   - git config --global user.email "thuhole@users.noreply.github.com"
   - git remote rm origin
   - git remote add origin https://thuhole:${GH_TOKEN}@github.com/thuhole/webhole.git
-  - CI=false REACT_APP_BUILD_INFO=$(TZ=Asia/Shanghai date +"%y%m%d%H%M%S") npm run deploy
+  - CI=false REACT_APP_BUILD_INFO=$(printf "Travis%s" "$(TZ=Asia/Shanghai date +"%y%m%d%H%M%S")") npm run deploy
