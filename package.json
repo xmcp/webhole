@@ -18,7 +18,7 @@
     "build": "react-scripts build",
     "test": "echo 'skipped react-scripts test --env=jsdom'",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
+    "deploy": "gh-pages -d build -m $(TZ=Asia/Shanghai date +\"%y%m%d%H%M%S\")",
     "eject": "react-scripts eject"
   },
   "homepage": "https://://cdn.jsdelivr.net/gh/thuhole/webhole@gh-pages",
