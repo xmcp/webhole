@@ -21,7 +21,7 @@
     "deploy": "gh-pages -d build -m $(TZ=Asia/Shanghai date +\"%y%m%d%H%M%S\")",
     "eject": "react-scripts eject"
   },
-  "homepage": ".",
+  "homepage": "https://://cdn.jsdelivr.net/gh/thuhole/webhole@gh-pages",
   "browserslist": {
     "production": [
       ">0.2%",
