@@ -369,7 +369,7 @@ export class LoginForm extends Component {
                                         </button>
                                     </p>
                                     <p><small>
-                                        T大树洞 面向清华大学学生，通过清华邮箱验证您的身份并提供服务。
+                                        T大树洞 面向T大学生，通过T大邮箱验证您的身份并提供服务。
                                     </small></p>
                                 </div>
                             )}</LoginPopup>
