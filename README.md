@@ -30,7 +30,7 @@
 
 不方便在 GitHub 上说明的问题可以邮件 thuhole at protonmail dot com。邮件内容可能会被公开。
 
-对 T大树洞 后端服务、客户端、账号、树洞内容的反馈请联系相应人员，或邮件 thuhole at protonmail dot com。
+对 T大树洞 后端服务、客户端、账号、树洞内容的反馈请联系邮件 thuhole at protonmail dot com。
 
 ## License
 
