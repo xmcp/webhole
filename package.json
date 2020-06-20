@@ -17,7 +17,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "echo 'skipped react-scripts test --env=jsdom'",
-    "predeploy": "npm run build",
+    "predeploy": "npm run build && sed -i 's/\\/\\/cdn\\.jsdelivr\\.net\\/gh\\/thuhole\\/webhole\\@gh\\-pages\\/index\\.html/\\.\\/index\\.html/g' build/precache-*",
     "deploy": "gh-pages -d build -m $(TZ=Asia/Shanghai date +\"%y%m%d%H%M%S\")",
     "eject": "react-scripts eject"
   },
