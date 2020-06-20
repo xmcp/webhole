@@ -691,7 +691,7 @@ export class PostForm extends Component {
                 }
                 <SafeTextarea ref={this.area_ref} id="new_post" on_change={this.on_change_bound} on_submit={this.on_submit.bind(this)} />
                 <p><small>
-                    请遵守<a href="http://pkuhelper.pku.edu.cn/treehole_rules.html" target="_blank">树洞管理规范</a>，文明发言
+                    请您文明发帖，不要发表垃圾广告、不友善、政治敏感、低俗色情等内容。{/*请遵守<a href="http://pkuhelper.pku.edu.cn/treehole_rules.html" target="_blank">树洞管理规范</a>，文明发言*/}
                 </small></p>
             </form>
         )
