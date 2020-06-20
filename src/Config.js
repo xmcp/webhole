@@ -3,12 +3,12 @@ import React, {Component, PureComponent} from 'react';
 import './Config.css';
 
 const BUILTIN_IMGS={
-    'static/bg/gbp.jpg': '寻觅繁星（默认）',
-    'static/bg/eriri.jpg': '平成著名画师',
-    'static/bg/yurucamp.jpg': '露营天下第一',
-    'static/bg/minecraft.jpg': '麦恩·库拉夫特',
-    'static/bg/cyberpunk.jpg': '赛博城市',
-    'static/bg/sif.jpg': '梦开始的地方',
+    'https://cdn.jsdelivr.net/gh/thuhole/webhole@gh-pages/static/bg/gbp.jpg': '寻觅繁星（默认）',
+    'https://cdn.jsdelivr.net/gh/thuhole/webhole@gh-pages/static/bg/eriri.jpg': '平成著名画师',
+    'https://cdn.jsdelivr.net/gh/thuhole/webhole@gh-pages/static/bg/yurucamp.jpg': '露营天下第一',
+    'https://cdn.jsdelivr.net/gh/thuhole/webhole@gh-pages/static/bg/minecraft.jpg': '麦恩·库拉夫特',
+    'https://cdn.jsdelivr.net/gh/thuhole/webhole@gh-pages/static/bg/cyberpunk.jpg': '赛博城市',
+    'https://cdn.jsdelivr.net/gh/thuhole/webhole@gh-pages/static/bg/sif.jpg': '梦开始的地方',
 };
 
 const DEFAULT_CONFIG={
