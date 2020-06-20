@@ -11,7 +11,8 @@ after_success:
   - git remote rm origin
   - git remote add origin https://thuhole:${GH_TOKEN}@github.com/thuhole/webhole.git
   - CI=false REACT_APP_BUILD_INFO=$(printf "Travis%s" "$(TZ=Asia/Shanghai date +"%y%m%d%H%M%S")") npm run build
-  - sed -i 's/\/\/cdn.jsdelivr.net\/gh\/thuhole\/webhole@gh-pages\/index.html/.\/index.html/g' build/*-* #额，这里用了个骚操作来修复Service Worker在Precache CDN内容的时候index.html返回content-type text/plain的问题
+  #额，这里用了个骚操作来修复Service Worker在Precache CDN内容的时候index.html返回content-type text/plain的问题
+  - sed -i 's/\/\/cdn.jsdelivr.net\/gh\/thuhole\/webhole@gh-pages\/index.html/.\/index.html/g' build/*-*
   - sed -i 's/\/\/cdn.jsdelivr.net\/gh\/thuhole\/webhole@gh-pages\/service-worker.js/.\/service-worker.js/g' build/*-*
   - sed -i 's/"\/\/cdn.jsdelivr.net\/gh\/thuhole\/webhole@gh-pages","\/service-worker.js"/".","\/service-worker.js"/' build/static/js/*.js
   - npm run deploy
