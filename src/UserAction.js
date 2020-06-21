@@ -224,7 +224,7 @@ export function InfoSidebar(props) {
                 </p>
                 <p>
                     T大树洞 网页版的诞生离不开&nbsp;
-                    <a href="https://github.com/pkuhelper-web/webhole" target="_blank" rel="noopener">P大树洞</a>
+                    <a href="https://github.com/pkuhelper-web/webhole" target="_blank" rel="noopener">P大树洞网页版 by @xmcp</a>
                     、
                     <a href="https://reactjs.org/" target="_blank" rel="noopener">React</a>
                     、
