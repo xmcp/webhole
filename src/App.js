@@ -113,7 +113,7 @@ class App extends Component {
                                 </div>
                             </div>
                         }
-                        {this.inthu_flag||token.value||true ?
+                        {this.inthu_flag||token.value ?
                             <Flow key={this.state.flow_render_key} show_sidebar={this.show_sidebar_bound}
                                   mode={this.state.mode} search_text={this.state.search_text} token={token.value}
                             /> :
