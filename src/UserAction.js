@@ -357,7 +357,7 @@ export class LoginForm extends Component {
                                 {/*</p>*/}
                                 <p>
                                     <a onClick={this.copy_token.bind(this,token.value)}>复制 User Token</a><br />
-                                    User Token 用于迁移登录状态，切勿告知他人{/*，若怀疑被盗号请尽快 <ResetUsertokenWidget token={token.value} />*/}
+                                    复制 User Token 可以在新设备登录，切勿告知他人。{/*，若怀疑被盗号请尽快 <ResetUsertokenWidget token={token.value} />*/}
                                 </p>
                             </div> :
                             <LoginPopup token_callback={token.set_value}>{(do_popup)=>(
