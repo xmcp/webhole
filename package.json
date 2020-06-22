@@ -5,7 +5,11 @@
   "dependencies": {
     "copy-to-clipboard": "^3.0.8",
     "fix-orientation": "^1.1.0",
+    "highlight.js": "^10.1.1",
+    "html-to-react": "^1.4.3",
     "load-script": "^1.0.0",
+    "markdown-it": "^11.0.0",
+    "markdown-it-katex": "^2.0.3",
     "pressure": "^2.1.2",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",

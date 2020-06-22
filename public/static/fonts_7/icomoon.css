@@ -99,3 +99,7 @@
 .icon-github:before {
   content: "\eab0";
 }
+
+.icon-new-tab:before {
+  content: "\ea7e";
+}

@@ -2,7 +2,13 @@ import React, {Component, PureComponent} from 'react';
 import {format_time,Time,TitleLine} from './infrastructure/widgets';
 import {PKUHELPER_ROOT} from './flows_api';
 
+
+import HtmlToReact from 'html-to-react'
+
 import './Common.css';
+import { URL_PID_RE, URL_RE, PID_RE, NICKNAME_RE, split_text } from './text_splitter';
+
+import renderMd from './Markdown'
 
 export {format_time,Time,TitleLine};
 
@@ -26,11 +32,12 @@ export function ColoredSpan(props) {
     )
 }
 
+function normalize_url(url) {
+    return /^https?:\/\//.test(url) ? url : 'http://'+url;
+}
+
 export class HighlightedText extends PureComponent {
     render() {
-        function normalize_url(url) {
-            return /^https?:\/\//.test(url) ? url : 'http://'+url;
-        }
         return (
             <pre>
                 {this.props.parts.map((part,idx)=>{
@@ -48,6 +55,96 @@ export class HighlightedText extends PureComponent {
                 })}
             </pre>
         )
+    }
+}
+
+// props: author, text, show_pid, color_picker
+export class HighlightedMarkdown extends Component {
+    render() {
+        const props = this.props
+        const processDefs = new HtmlToReact.ProcessNodeDefinitions(React)
+        const processInstructions = [
+            {
+                shouldProcessNode: (node) => node.name === 'img', // disable images
+                processNode (node) {
+                    return (<div>[图片]</div>)
+                }
+            },
+            {
+                shouldProcessNode: (node) => (/^h[123456]$/.test(node.name)),
+                processNode (node, children, index) {
+                    let currentLevel = +(node.name[1])
+                    if (currentLevel < 3) currentLevel = 3;
+                    const HeadingTag = `h${currentLevel}`
+                    return (
+                        <HeadingTag key={index}>{children}</HeadingTag>
+                    )
+                }
+            },
+            {
+                shouldProcessNode: (node) => node.name === 'a',
+                processNode (node, children) {
+                    return (
+                        <a href={normalize_url(node.attribs.href)} target="_blank" rel="noopenner noreferrer" class="ext-link">
+                            {children}
+                            <span className="icon icon-new-tab" />
+                        </a>
+                    )
+                }
+            },
+            {
+                shouldProcessNode (node) {
+                    return node.type === 'text' // pid, nickname, search
+                },
+                processNode (node) {
+                    const originalText = node.data
+                    const splitted = split_text(originalText, [
+                        ['url_pid', URL_PID_RE],
+                        ['url',URL_RE],
+                        ['pid',PID_RE],
+                        ['nickname',NICKNAME_RE],
+                    ])
+
+                    return (
+                        <>
+                            {splitted.map(([rule, p], idx) => {
+                                return (<span key={idx}>
+                                    {
+                                    rule==='url_pid' ? <span className="url-pid-link" title={p}>/##</span> :
+                                    rule==='url' ? <a href={normalize_url(p)} class="ext-link" target="_blank" rel="noopener noreferrer">
+                                        {p}
+                                        <span className="icon icon-new-tab" />
+                                    </a> :
+                                    rule==='pid' ? <a href={'#'+p} onClick={(e)=>{e.preventDefault(); props.show_pid(p.substring(1));}}>{p}</a> :
+                                    rule==='nickname' ? <ColoredSpan colors={props.color_picker.get(p)}>{p}</ColoredSpan> :
+                                    rule==='search' ? <span className="search-query-highlight">{p}</span> :
+                                    p}
+                                </span>)
+                            })}
+                        </>
+                    )
+                }
+            },
+            {
+                shouldProcessNode: () => true,
+                processNode: processDefs.processDefaultNode
+            }
+        ]
+        const parser = new HtmlToReact.Parser()
+        if (props.author && props.text.match(/^(?:#+ |>|```|\t|\s*-|\s*\d+\.)/)) {
+            const renderedMarkdown = renderMd(props.text)
+            return (
+                <>
+                    {props.author}
+                    {parser.parseWithInstructions(renderedMarkdown, node => node.type !== 'script', processInstructions)}
+                </>
+            )
+        } else {
+            let rawMd = props.text
+            if (props.author) rawMd = props.author + ' ' + rawMd
+            const renderedMarkdown = renderMd(rawMd)
+            return parser.parseWithInstructions(renderedMarkdown, node => node.type !== 'script', processInstructions)
+        }
     }
 }
 
