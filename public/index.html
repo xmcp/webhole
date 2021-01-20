@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="icon" href="%PUBLIC_URL%/static/favicon/256.png">
+    <meta name="format-detection" content="telephone=no">
+
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="shortcut icon" href="%PUBLIC_URL%/static/favicon/256.png">
+    <link rel="manifest" href="%PUBLIC_URL%/static/manifest.json">
+    <meta name="theme-color" content="#333333"/>
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/static/favicon/180.png" />
+    <link rel="apple-touch-icon" sizes="256x256" href="%PUBLIC_URL%/static/favicon/256.png" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="_BRAND_NAME">
+
+    <link rel="preconnect" href="https://_BRAND_HAPI_DOMAIN" crossorigin>
+    <link rel="preconnect" href="https://_BRAND_GATEWAY_DOMAIN" crossorigin>
+
+    <title>_BRAND_NAME</title>
+    <script>
+        window.__WEBHOLE_HAPI_DOMAIN = 'https://_BRAND_HAPI_DOMAIN';
+        window.__WEBHOLE_GATEWAY_DOMAIN = 'https://_BRAND_GATEWAY_DOMAIN';
+        window.__WEBHOLE_DEV_SERVER_FLAG = true;
+        window.__WEBHOLE_DISABLE_WEBP = true;
+    </script>
+</head>
+<body>
+    <div id="root"></div>
+</body>
+</html>

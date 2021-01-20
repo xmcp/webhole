@@ -1,0 +1,114 @@
+.box.login-box {
+    font-size: 1rem;
+    text-align: center;
+    padding: 1em .25em;
+    border-radius: 10px;
+}
+
+.login-box-background {
+    color: black;
+    background-color: rgba(255,255,255,.85);
+    box-shadow: 0 0 30px rgba(255,255,255,.6);
+    backdrop-filter: blur(5px);
+}
+
+.root-dark-mode .box.login-box-background {
+    color: var(--foreground-dark);
+    background-color: rgba(0,0,0,.7);
+    box-shadow: 0 0 200px rgba(255,255,255,.4);
+}
+.login-box-btn {
+    min-width: 12em;
+}
+.login-box p {
+    margin: .5rem 0;
+}
+
+.login-box .login-box-title {
+    font-size: 1.1em;
+    margin-bottom: 1rem;
+}
+
+.title-bar-landing {
+    height: 7em;
+    position: unset;
+    margin-bottom: 2em;
+}
+
+.landing-container {
+    margin: 0 auto 4em auto;
+    padding: 0 2em;
+    max-width: 1100px;
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.landing-container-side {
+    flex: 0 0 350px;
+    margin-left: 2em;
+}
+
+.landing-container-content {
+    flex: 1 1;
+}
+
+.landing-content {
+    margin-top: 1rem;
+    text-shadow: 0 0 6px black, 0 0 3px black, 0 0 2px black;
+}
+.landing-content h1 {
+    font-size: 1.35em;
+}
+.landing-content p {
+    font-size: 1.05em;
+}
+.landing-content a {
+    color: unset;
+    border-bottom: 1px solid white;
+    margin-bottom: -1px;
+}
+.landing-content strong {
+    font-weight: normal;
+    color: #ffff88;
+}
+
+.bg-img-landing {
+    filter: contrast(.9) brightness(0.75);
+}
+
+@media screen and (max-width: 950px) {
+    .landing-container {
+        padding: 0 .5em;
+    }
+    .landing-container-side {
+        flex: 0 0 310px;
+        margin-left: 1em;
+    }
+    .landing-content h1 {
+        font-size: 1.2em;
+    }
+    .landing-content p {
+        font-size: 1em;
+    }
+    .title-bar-landing {
+        margin-bottom: .5em;
+    }
+}
+
+@media screen and (max-width: 650px) {
+    .landing-container {
+        padding: 0 1.5em;
+    }
+    .landing-container {
+        display: block;
+    }
+    .landing-container-side {
+        margin-left: 0;
+    }
+    .title-bar-landing {
+        margin-bottom: 1.5em;
+    }
+    .landing-content {
+        margin-top: 1em;
+    }
+}

@@ -1,0 +1,143 @@
+.centered-line {
+    overflow: hidden;
+    text-align: center;
+}
+
+.centered-line::before,
+.centered-line::after {
+    background-color: #000;
+    content: "";
+    display: inline-block;
+    height: 1px;
+    position: relative;
+    vertical-align: middle;
+    width: 50%;
+}
+
+.root-dark-mode .centered-line {
+    color: var(--foreground-dark);
+}
+.root-dark-mode .centered-line::before, .root-dark-mode .centered-line::after {
+    background-color: var(--foreground-dark);
+}
+
+.centered-line::before {
+    right: 1em;
+    margin-left: -50%;
+}
+
+.centered-line::after {
+    left: 1em;
+    margin-right: -50%;
+}
+
+.title-line {
+    color: #fff;
+    margin-top: 1em;
+}
+.title-line::before,
+.title-line::after {
+    background-color: #fff;
+    box-shadow: 0 1px 1px #000;
+}
+
+.root-dark-mode .title-line {
+    color: var(--foreground-dark);
+}
+.root-dark-mode .title-line::before, .root-dark-mode .title-line::after {
+    background-color: var(--foreground-dark);
+}
+
+.aux-margin {
+    width: calc(100% - 2 * 50px);
+    margin: 0 50px;
+}
+@media screen and (max-width: 1300px) {
+    .aux-margin {
+        width: calc(100% - 2 * 10px);
+        margin: 0 10px;
+    }
+}
+
+.title {
+    font-size: 1.5em;
+    height: 5.25rem;
+    padding-top: 1rem;
+    text-align: center;
+}
+
+.title-slogan {
+    font-size: 1rem;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.bg-img {
+    position: fixed;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.root-dark-mode .bg-img {
+    filter: brightness(.6);
+}
+
+.black-outline {
+    text-shadow: /* also change .flow-item-row-with-prompt:hover::before */
+        -1px -1px 0 rgba(0,0,0,.6),
+        0 -1px 0 rgba(0,0,0,.6),
+        1px -1px 0 rgba(0,0,0,.6),
+        -1px 1px 0 rgba(0,0,0,.6),
+        0 1px 0 rgba(0,0,0,.6),
+        1px 1px 0 rgba(0,0,0,.6);
+}
+
+.search-query-highlight {
+    border-bottom: 1px solid black;
+    font-weight: bold;
+}
+
+.root-dark-mode .search-query-highlight {
+    border-bottom: 1px solid white;
+}
+
+.url-pid-link {
+    opacity: .6;
+}
+
+:root {
+    --coloredspan-bgcolor-light: white;
+    --coloredspan-bgcolor-dark: black;
+}
+
+.colored-span {
+    background-color: var(--coloredspan-bgcolor-light);
+}
+
+.root-dark-mode .colored-span {
+    background-color: var(--coloredspan-bgcolor-dark);
+}
+
+.icon+label {
+    font-size: .9em;
+    vertical-align: .05em;
+    cursor: inherit;
+    padding: 0 .1rem;
+    margin-left: .1rem;
+}
+
+code.pre {
+    white-space: pre;
+}
+
+.reply-nameplate {
+    margin-right: .25rem;
+    font-size: .85em;
+    vertical-align: .07em;
+    white-space: nowrap;
+}

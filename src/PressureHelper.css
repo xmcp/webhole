@@ -1,0 +1,16 @@
+.pressure-box {
+    border: 500px /* also change js! */ solid orange;
+    position: fixed;
+    margin: auto;
+    z-index: 100;
+    pointer-events: none;
+}
+
+.pressure-box-empty {
+    visibility: hidden;
+}
+
+.pressure-box-fired {
+    border-color: orangered;
+    pointer-events: initial !important;
+}

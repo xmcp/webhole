@@ -1,0 +1,74 @@
+.login-form p {
+    margin: 1em 0;
+    text-align: center;
+}
+.login-form button {
+    width: 6rem;
+}
+
+.reply-sticky {
+    position: sticky;
+    bottom: 0;
+    top: .5em;
+}
+
+.post-form-bar {
+    line-height: 1.75em;
+    display: flex;
+    margin-bottom: .25em;
+}
+.post-form-bar .post-form-switcher {
+    flex: 1;
+    font-size: .9em;
+}
+.post-form-switch {
+    padding: .1em .5em;
+    cursor: pointer;
+    opacity: .6;
+}
+.post-form-switch:not(.post-form-switch-cur) {
+    color: var(--var-link-color);
+}
+.post-form-switch-cur {
+    background-color: #fcfcfc;
+    box-shadow: 0 0 3px rgba(0,0,0,.5);
+    border-radius: 1em;
+}
+.root-dark-mode .post-form-switch-cur {
+    background-color: #333;
+    color: var(--foreground-dark);
+    box-shadow: 0 0 2px white;
+}
+.post-form-switch-cur, .post-form-switch:hover {
+    opacity: 1;
+}
+.post-form-bar .post-btn {
+    flex: 0 0 8em;
+    margin-right: 0;
+}
+.post-form-img-tip {
+    font-size: .9em;
+}
+.post-form textarea {
+    resize: vertical;
+    width: 100%;
+    min-height: 2em;
+    height: 8em;
+}
+.post-form-reply.box {
+
+    margin: 0 -.15em;
+    width: calc(100% + .3em) !important;
+}
+.post-form.post-form-reply textarea {
+    height: 4em;
+}
+
+.invite-code {
+    margin: .5rem;
+    font-size: 1.5em;
+}
+.invite-code a {
+    font-size: 1rem;
+    vertical-align: .2rem;
+}

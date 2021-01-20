@@ -1,0 +1,123 @@
+:root {
+    --foreground-dark: hsl(0,0%,93%);
+}
+
+body, textarea, pre {
+    font-family: 'Segoe UI', '微软雅黑', 'Microsoft YaHei', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    word-wrap: break-word;
+    -webkit-overflow-scrolling: touch;
+}
+
+p, pre {
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+pre {
+    white-space: pre-line;
+}
+
+code {
+    font-family: Consolas, Courier, monospace;
+}
+
+body {
+    background-size: cover;
+    user-select: none;
+    background-color: #333;
+    color: white;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    text-size-adjust: 100%;
+}
+
+body.root-dark-mode {
+    background-color: black;
+}
+
+html::-webkit-scrollbar {
+    display: none;
+}
+html {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+:root {
+    --var-link-color: #00c;
+}
+.root-dark-mode .box, .root-dark-mode .sidebar, .root-dark-mode .sidebar-title {
+    --var-link-color: #9bf;
+}
+
+a, .link-color {
+    color: var(--var-link-color);
+}
+a:not(.no-underline):hover {
+    border-bottom: 1px solid var(--var-link-color);
+    margin-bottom: -1px;
+}
+
+input, textarea {
+    border-radius: 5px;
+    border: 1px solid black;
+    outline: none;
+    margin: 0;
+}
+input {
+    padding: 0 1em;
+    line-height: 2em;
+}
+
+audio {
+    vertical-align: middle;
+}
+
+button, .button {
+    color: black;
+    background-color: rgba(235,235,235,.5);
+    border-radius: 5px;
+    text-align: center;
+    border: 1px solid black;
+    line-height: 2em;
+    margin: 0 .5rem;
+}
+
+.root-dark-mode button, .root-dark-mode .button {
+    background-color: hsl(0,0%,30%);
+    color: var(--foreground-dark);
+}
+
+button:hover, .button:hover {
+    background-color: rgba(255,255,255,.7);
+}
+
+.root-dark-mode button:hover, .root-dark-mode .button:hover {
+    background-color: hsl(0,0%,40%);
+}
+
+button:disabled, .button:disabled {
+    background-color: rgba(128,128,128,.5);
+}
+
+.root-dark-mode button:disabled, .root-dark-mode .button:disabled {
+    background-color: hsl(0,0%,20%);
+    color: hsl(0,0%,60%);
+}
+
+.root-dark-mode input:not([type=file]), .root-dark-mode textarea {
+    background-color: hsl(0,0%,30%);
+    color: var(--foreground-dark);
+}
+.root-dark-mode input:not([type=file])::placeholder {
+    color: var(--foreground-dark);
+}

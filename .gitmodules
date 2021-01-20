@@ -1,0 +1,3 @@
+[submodule "src/react-lazyload"]
+	path = src/react-lazyload
+	url = https://github.com/xmcp/react-lazyload

@@ -1,0 +1,16 @@
+.flow-item-toolbar {
+    border: 1px solid black;
+    border-radius: .5em;
+    padding: .5em;
+    margin-top: .5rem;
+}
+.bifrost-portlet-selector button {
+    margin: 0 .2em;
+}
+.bifrost-toolbar>:nth-child(2) {
+    margin-top: .5em;
+}
+.bifrost-toolbar textarea {
+    width: 100%;
+    height: 4em;
+}

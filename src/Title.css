@@ -1,0 +1,93 @@
+.title-bar {
+    z-index: 10;
+    position: sticky;
+    top: -6em;
+    left: 0;
+    width: 100%;
+    height: 9em;
+    background-color: rgba(255,255,255,.85);
+    color: black;
+    box-shadow: 0 0 25px rgba(0,0,0,.4);
+    margin-bottom: 1em;
+    backdrop-filter: blur(5px);
+}
+.root-no-blur .title-bar {
+    backdrop-filter: unset;
+}
+
+.root-dark-mode .title-bar {
+    background-color: hsla(0,0%,12%,.85);
+    color: var(--foreground-dark);
+    box-shadow: 0 0 5px rgba(255,255,255,.1);
+}
+
+.control-bar {
+    display: flex;
+    margin-top: .5em;
+    line-height: 2em;
+}
+
+.control-btn {
+    flex: 0 0 4.5em;
+    text-align: center;
+    color: black;
+    border-radius: 5px;
+}
+.control-btn:hover {
+    background-color: #666666;
+    color: white;
+}
+.control-btn-label {
+    margin-left: .25rem;
+    font-size: .9em;
+    vertical-align: .05em;
+}
+@media screen and (max-width: 900px) {
+    .control-btn {
+        flex: 0 0 2.5em;
+    }
+    .control-btn-label {
+        display: none;
+    }
+    .control-search {
+        padding: 0 .5em;
+    }
+}
+
+.root-dark-mode .control-btn {
+    color: var(--foreground-dark);
+    opacity: .9;
+}
+.root-dark-mode .control-btn:hover {
+    color: var(--foreground-dark);
+    opacity: 1;
+}
+
+.control-search {
+    flex: auto;
+    color: black;
+    background-color: rgba(255,255,255,.3) !important;
+    margin: 0 .5em;
+    min-width: 8em;
+}
+
+.control-search:focus {
+    background-color: white !important;
+}
+
+.root-dark-mode .control-search {
+    background-color: hsla(0,0%,35%,.6) !important;
+    color: var(--foreground-dark);
+}
+.root-dark-mode .control-search:focus {
+    background-color: hsl(0,0%,80%) !important;
+    color: black !important;
+}
+
+.list-menu {
+    text-align: center;
+}
+
+.help-desc-box p {
+    margin: .5em;
+}

@@ -1,0 +1,18 @@
+.flows-anim-exit {
+    opacity: 1;
+    transform: unset;
+}
+.flows-anim-exit-active {
+    opacity: 0;
+    transform: translateY(1.5em) scaleX(.9);
+    transition: opacity .1s ease-out, transform .1s ease-out;
+}
+.flows-anim-enter, .flows-anim-appear {
+    opacity: 0;
+    transform: translateY(-1em);
+}
+.flows-anim-enter-active, .flows-anim-appear-active {
+    opacity: 1;
+    transform: unset;
+    transition: opacity .1s ease-out, transform .1s ease-out;
+}

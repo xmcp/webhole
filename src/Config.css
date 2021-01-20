@@ -1,0 +1,14 @@
+.config-ui-header {
+    text-align: center;
+    top: 1em;
+    position: sticky;
+}
+
+.bg-preview {
+    height: 18em;
+    width: 32em;
+    max-height: 60vh;
+    max-width: 100%;
+    margin: .5em auto 1em;
+    box-shadow: 0 1px 5px rgba(0,0,0,.4);
+}
